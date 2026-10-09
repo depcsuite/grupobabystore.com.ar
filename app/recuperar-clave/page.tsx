@@ -1,0 +1,4 @@
+import { AuthButton, AuthDivider, AuthField, AuthHeading, AuthLayout, AuthLink, AuthLinks, AuthFormNote } from '@/components/auth-layout'
+
+export default function RecuperarClavePage() {
+  return <AuthLayout><AuthHeading eyebrow="ÁREA DE CLIENTES" title="Recuperá tu clave" description="Ingresá el email asociado a tu cuenta y te enviaremos instrucciones para restablecerla." /><AuthDivider /><form className="auth-form"><AuthField label="Email" type="email" placeholder="tu@email.com" /><AuthButton>Enviar instrucciones</AuthButton></form><AuthDivider /><AuthLinks><AuthLink href="/iniciar-sesion">Volver a iniciar sesión</AuthLink><span>·</span><AuthLink href="/registro">Crear una cuenta</AuthLink></AuthLinks><AuthFormNote>Si tu cuenta está activa, recibirás un correo con los próximos pasos.</AuthFormNote></AuthLayout>}

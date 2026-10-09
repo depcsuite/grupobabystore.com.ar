@@ -1,0 +1,29 @@
+"use client"
+
+import { useState } from "react"
+import Link from "next/link"
+import { ArrowDownToLine, ArrowRight, ChevronDown, Copy, FileText, RotateCcw, ShoppingCart, Wallet } from "lucide-react"
+import { SiteFooter } from "@/components/site-footer"
+
+const orders = [
+  { id: "#GB-1048", date: "18 jun 2025", products: "Nutrilon Profutura 1 x 12 · Avent Natural 2", amount: "$184.520", status: "Entregado", tone: "done" },
+  { id: "#GB-1042", date: "12 jun 2025", products: "NAN Expert Pro 1 x 6 · BIBS Chupete x 12", amount: "$96.800", status: "En preparación", tone: "progress" },
+  { id: "#GB-1031", date: "03 jun 2025", products: "Nutrilon Profutura 2 · Chicco Set Baño", amount: "$221.340", status: "Recibido", tone: "received" },
+]
+
+export type AccountSection = "profile" | "orders" | "account"
+
+export default function CuentaPage({ initialSection = "orders" }: { initialSection?: AccountSection }) {
+  const [section, setSection] = useState<AccountSection>(initialSection)
+  const [openOrder, setOpenOrder] = useState<string | null>(null)
+
+  return <main className="account-page">
+    <div className="promo-bar">Envíos gratis a partir de $150.000 · Atención personalizada para tu negocio</div>
+    <header className="site-header"><div className="header-inner"><Link className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /></Link><nav className="main-nav"><Link href="/">Inicio</Link><Link href="/nosotros">Nosotros</Link><Link href="/productos">Productos</Link><Link href="/como-comprar">Cómo comprar</Link><Link href="/contacto">Contacto</Link></nav><div className="header-actions"><Link className="header-login active" href="/cuenta">MI CUENTA</Link><Link className="header-cart" href="/productos" aria-label="Abrir carrito"><ShoppingCart size={16} /> Carrito</Link></div></div></header>
+    <div className="account-wrap">
+      <div className="account-intro"><div><span className="eyebrow">CUENTA MAYORISTA</span><h1>Hola, <span>María.</span></h1><p>Gestioná tus pedidos y consultá el estado de tu cuenta corriente.</p></div><Link className="primary-button" href="/productos">Nuevo pedido <ArrowRight size={16} /></Link></div>
+      <div className="account-layout"><aside className="account-menu"><Link className={section === "profile" ? "selected" : ""} href="/cuenta/datos-personales"><FileText size={18} /><span>Datos personales<small>Razón social y contacto</small></span><ArrowRight size={15} /></Link><Link className={section === "orders" ? "selected" : ""} href="/cuenta/mis-pedidos"><FileText size={18} /><span>Mis pedidos<small>Historial y estados</small></span><ArrowRight size={15} /></Link><Link className={section === "account" ? "selected" : ""} href="/cuenta/cuenta-corriente"><Wallet size={18} /><span>Cuenta corriente<small>Saldo y movimientos</small></span><ArrowRight size={15} /></Link><div className="account-help"><strong>¿Necesitás ayuda?</strong><p>Consultá con tu asesor comercial.</p><Link href="/contacto">Contactar <ArrowRight size={13} /></Link></div><button className="account-logout" type="button" onClick={() => { document.cookie = 'gb_logged_in=; path=/; max-age=0; SameSite=Lax'; window.location.href = '/' }}>Cerrar sesión</button></aside>
+        <section className="account-content">{section === "profile" ? <><div className="account-section-head"><div><span className="eyebrow">MI INFORMACIÓN</span><h2>Datos personales</h2></div></div><div className="profile-grid"><div><small>Razón social</small><strong>Grupo Baby Store S.R.L.</strong></div><div><small>CUIT</small><strong>30-71824563-4</strong></div><div><small>Teléfono de contacto</small><strong>+54 9 11 2563-6000</strong></div><div><small>Correo electrónico</small><strong>compras@grupobabystore.com.ar</strong></div></div></> : section === "orders" ? <><div className="account-section-head"><div><span className="eyebrow">HISTORIAL</span><h2>Mis pedidos</h2></div><span className="order-count">{orders.length} pedidos</span></div><div className="orders-list">{orders.map(order => <article className="order-card" key={order.id}><div className="order-card-top"><div><b>{order.id}</b><small>{order.date}</small></div><span className={`order-status ${order.tone}`}>{order.status}</span><button className="order-toggle" onClick={() => setOpenOrder(openOrder === order.id ? null : order.id)} aria-label="Ver detalle"><ChevronDown size={18} /></button></div><div className="order-card-info"><p>{order.products}</p><strong>{order.amount}<small> sin IVA</small></strong></div>{openOrder === order.id && <div className="order-card-actions"><button><ArrowDownToLine size={15} /> Descargar factura PDF</button><button><RotateCcw size={15} /> Repetir pedido</button><button><Copy size={15} /> Copiar número</button></div>}</article>)}</div></> : <><div className="account-section-head"><div><span className="eyebrow">ESTADO DE CUENTA</span><h2>Cuenta corriente</h2></div><span className="account-updated">Actualizado hoy</span></div><div className="balance-card"><div><small>Saldo pendiente</small><strong>$318.450</strong><span>Importe sin IVA</span></div><div className="balance-icon"><Wallet size={24} /></div></div><div className="account-movements"><div className="movement-head"><h3>Movimientos recientes</h3><button>Ver todos <ArrowRight size={14} /></button></div><div className="movement-row"><span className="movement-dot debit" /><div><b>Pedido #GB-1048</b><small>18 jun 2025 · Factura B 0004-001048</small></div><strong>$184.520</strong></div><div className="movement-row"><span className="movement-dot credit" /><div><b>Pago recibido</b><small>17 jun 2025 · Transferencia bancaria</small></div><strong className="credit-text">− $120.000</strong></div></div></>}</section></div></div>
+    <SiteFooter showContact={false} />
+  </main>
+}
