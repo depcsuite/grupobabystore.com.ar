@@ -19,7 +19,7 @@ export default function NosotrosPage() {
           <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
             <a className="active" href="/nosotros">Nosotros</a>
             <a href="/productos">Productos</a>
-            <a href="/como-comprar">Cómo comprar</a><a href="/showroom">Showroom</a><a href="/contacto">Contacto</a>
+            <a href="/">Inicio</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a>
           </nav><div className="header-actions"><a className="header-login" href="/iniciar-sesion">INGRESAR</a></div>
         </div>
       </header>

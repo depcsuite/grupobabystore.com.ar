@@ -20,6 +20,8 @@ import {
   X,
 } from 'lucide-react'
 
+const promoMessages = ['Hacé tu pedido y retiralo o recibilo en el mismo día', '¡Nuevos ingresos! Mamaderas, tetines y chupetes', 'Hasta 50% OFF en promociones']
+
 const banners = [
   {
     src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/banner-3-nMCDkwzmsiYHsuoGqPfpwTtqmv6gHQ.webp',
@@ -113,19 +115,21 @@ const categories = [
 
 export default function Page() {
   const [activeBanner, setActiveBanner] = useState(0)
+  const [promoIndex, setPromoIndex] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const [showExpress, setShowExpress] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => { setIsLoggedIn(document.cookie.includes('gb_logged_in=1')) }, [])
+  useEffect(() => { const timer = window.setInterval(() => setPromoIndex((current) => (current + 1) % promoMessages.length), 4200); return () => window.clearInterval(timer) }, [])
 
   const nextBanner = () => setActiveBanner((current) => (current + 1) % banners.length)
   const previousBanner = () => setActiveBanner((current) => (current - 1 + banners.length) % banners.length)
 
   return (
     <main className="site-shell">
-      <a className="promo-bar" href="/como-comprar" aria-label="Cómo hacer tu pedido en tres pasos"><Sparkles size={14} /> <span>Hacé tu pedido y <strong>retiralo o recibilo en el mismo día</strong></span><ArrowRight size={14} /></a>
+      <div className="promo-bar" role="region" aria-label="Promociones de Grupo Baby Store"><button className="promo-control" type="button" aria-label="Frase anterior" onClick={() => setPromoIndex((current) => (current - 1 + promoMessages.length) % promoMessages.length)}><ChevronLeft size={18} /></button><a className="promo-content" href="/como-comprar">{promoIndex === 0 ? <img className="promo-logo-express" src="/logo-express.svg" alt="Express" /> : <Sparkles className="promo-generic-icon" size={19} aria-hidden="true" />} <span key={promoIndex} className="promo-message">{promoMessages[promoIndex]}</span><ArrowRight size={14} /></a><button className="promo-control" type="button" aria-label="Frase siguiente" onClick={() => setPromoIndex((current) => (current + 1) % promoMessages.length)}><ChevronRight size={18} /></button></div>
       <header className="site-header">
         <div className="header-inner">
           <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
@@ -133,10 +137,10 @@ export default function Page() {
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" />
           </a>
           <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
-  <a href="/nosotros">Nosotros</a>
-  <a href="/productos">Productos</a>
-<a href="/como-comprar">Cómo comprar</a>
-  <a href="/showroom">Showroom</a>
+<a href="/">Inicio</a>
+            <a href="/nosotros">Nosotros</a>
+            <a href="/productos">Productos</a>
+  <a href="/como-comprar">Cómo comprar</a>
   <a href="/contacto">Contacto</a>
 </nav>
   <div className="header-actions">
@@ -171,7 +175,7 @@ export default function Page() {
 
       <section className="contact-section" id="contacto"><div><div className="eyebrow">ESTAMOS PARA AYUDARTE</div><h2>Hablemos de<br /><span>tu negocio.</span></h2><p>Si tenés dudas o consultas, escribinos. Un asesor comercial te va a responder a la brevedad.</p></div><div className="contact-details"><a href="mailto:info@grupobabystore.com.ar"><Mail /> info@grupobabystore.com.ar</a><a href="tel:+5491125636000"><Phone /> +54 9 11 2563-6000</a><span><MapPin /> Palpa 3824/28 · Chacarita, CABA</span><a className="whatsapp-link" href="https://wa.me/5491125636000"><MessageCircle /> Escribinos por WhatsApp <ArrowRight size={16} /></a></div></section>
 
-      <footer id="showroom"><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><form className="footer-subscribe" onSubmit={(event) => event.preventDefault()}><strong>Recibí nuestras novedades</strong><span>Ingresá tu email y enterate primero.</span><div><input type="email" required placeholder="tu@email.com" aria-label="Email para suscribirse" /><button type="submit">Suscribirme</button></div></form><div className="footer-legal">© {new Date().getFullYear()} Grupo Baby Store<br />Distribuidor oficial</div></footer>
+      <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><form className="footer-subscribe" onSubmit={(event) => event.preventDefault()}><strong>Recibí nuestras novedades</strong><span>Ingresá tu email y enterate primero.</span><div><input type="email" required placeholder="tu@email.com" aria-label="Email para suscribirse" /><button type="submit">Suscribirme</button></div></form><div className="footer-legal">© {new Date().getFullYear()} Grupo Baby Store<br />Distribuidor oficial</div></footer>
 
       <div className="floating-order"><a href="/iniciar-sesion"><ShoppingBag size={19} /> Hacé tu pedido</a></div>
       {showExpress && <div className="modal-backdrop" role="presentation" onClick={() => setShowExpress(false)}><div className="express-modal" role="dialog" aria-modal="true" aria-labelledby="express-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" aria-label="Cerrar" onClick={() => setShowExpress(false)}><X /></button><div className="eyebrow">NOVEDAD</div><h2 id="express-title">Envíos y retiros <em>express</em></h2><p>Hacé tu pedido antes de las 12 del mediodía y te lo entregamos en el día.</p><div className="modal-row"><Truck /><div><b>Entregas / Envíos</b><span>CABA $10.000 · 1er cordón $12.000 · 2do cordón $15.000</span></div></div><div className="modal-row"><PackageCheck /><div><b>Retiros express</b><span>Retirá en Palpa 3828, 3 horas después de hacer tu pedido.</span></div></div><div className="modal-note">Seleccioná la modalidad y escribí <strong>EXPRESS</strong> en comentarios. No te olvides de avisarle a tu comercial.</div><a href="/iniciar-sesion" className="primary-button" onClick={() => setShowExpress(false)}>Hacer mi pedido <ArrowRight size={17} /></a></div></div>}

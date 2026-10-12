@@ -13,7 +13,7 @@ export default function EnvioExpressPage() {
         <div className="header-inner">
           <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
           <a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" /></a>
-          <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/iniciar-sesion">Hacé tu pedido</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a><a className="header-cart" href="/productos" aria-label="Abrir carrito">Carrito</a></nav>
+          <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal"><a href="/">Inicio</a><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/iniciar-sesion">Hacé tu pedido</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a><a className="header-cart" href="/productos" aria-label="Abrir carrito">Carrito</a></nav>
           
         </div>
       </header>
