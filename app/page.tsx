@@ -122,14 +122,15 @@ export default function Page() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => { setIsLoggedIn(document.cookie.includes('gb_logged_in=1')) }, [])
-  useEffect(() => { const timer = window.setInterval(() => setPromoIndex((current) => (current + 1) % promoMessages.length), 4200); return () => window.clearInterval(timer) }, [])
+  const visiblePromoMessages = isLoggedIn ? promoMessages : promoMessages.slice(1)
+  useEffect(() => { setPromoIndex(0); const timer = window.setInterval(() => setPromoIndex((current) => (current + 1) % visiblePromoMessages.length), 4200); return () => window.clearInterval(timer) }, [isLoggedIn, visiblePromoMessages.length])
 
   const nextBanner = () => setActiveBanner((current) => (current + 1) % banners.length)
   const previousBanner = () => setActiveBanner((current) => (current - 1 + banners.length) % banners.length)
 
   return (
     <main className="site-shell">
-      <div className="promo-bar" role="region" aria-label="Promociones de Grupo Baby Store"><button className="promo-control" type="button" aria-label="Frase anterior" onClick={() => setPromoIndex((current) => (current - 1 + promoMessages.length) % promoMessages.length)}><ChevronLeft size={18} /></button><a className="promo-content" href="/como-comprar">{promoIndex === 0 ? <img className="promo-logo-express" src="/logo-express.svg" alt="Express" /> : <Sparkles className="promo-generic-icon" size={19} aria-hidden="true" />} <span key={promoIndex} className="promo-message">{promoMessages[promoIndex]}</span><ArrowRight size={14} /></a><button className="promo-control" type="button" aria-label="Frase siguiente" onClick={() => setPromoIndex((current) => (current + 1) % promoMessages.length)}><ChevronRight size={18} /></button></div>
+      <div className="promo-bar" role="region" aria-label="Promociones de Grupo Baby Store"><button className="promo-control" type="button" aria-label="Frase anterior" onClick={() => setPromoIndex((current) => (current - 1 + visiblePromoMessages.length) % visiblePromoMessages.length)}><ChevronLeft size={18} /></button><a className="promo-content" href="/como-comprar">{isLoggedIn && promoIndex === 0 ? <img className="promo-logo-express" src="/logo-express.svg" alt="Express" /> : <Sparkles className="promo-generic-icon" size={19} aria-hidden="true" />} <span key={`${isLoggedIn}-${promoIndex}`} className="promo-message">{visiblePromoMessages[promoIndex % visiblePromoMessages.length]}</span><ArrowRight size={14} /></a><button className="promo-control" type="button" aria-label="Frase siguiente" onClick={() => setPromoIndex((current) => (current + 1) % visiblePromoMessages.length)}><ChevronRight size={18} /></button></div>
       <header className="site-header">
         <div className="header-inner">
           <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
@@ -171,7 +172,7 @@ export default function Page() {
         <div className="brand-logo-grid" aria-label="Marcas destacadas">{featuredBrands.map((brand) => <a className="brand-logo-card" href={`/productos?marca=${encodeURIComponent(brand.name)}`} key={brand.name} aria-label={`Ver productos de ${brand.name}`}><img src={brand.src} alt={brand.name} /></a>)}</div>
       </section>
 
-      <section className="express-banner-section" id="oportunidades"><div className="express-seo-copy"><img className="express-block-logo" src="/logo-express.svg" alt="Express: envíos y retiros en el mismo día" /><div><div className="eyebrow">SERVICIO EXPRESS</div><h2>Envíos y retiros express<br /><span>para tu negocio.</span></h2><p>Hacé tu pedido mayorista antes del mediodía y retiralo o recibilo en el mismo día.</p></div><a className="express-seo-link" href="/envio-express">Ver zonas, horarios y condiciones <ArrowRight size={16} /></a></div></section>
+      {isLoggedIn && <section className="express-banner-section" id="oportunidades"><div className="express-seo-copy"><img className="express-block-logo" src="/logo-express.svg" alt="Express: envíos y retiros en el mismo día" /><div><div className="eyebrow">SERVICIO EXPRESS</div><h2>Envíos y retiros express<br /><span>para tu negocio.</span></h2><p>Hacé tu pedido mayorista antes del mediodía y retiralo o recibilo en el mismo día.</p></div><a className="express-seo-link" href="/envio-express">Ver zonas, horarios y condiciones <ArrowRight size={16} /></a></div></section>}
 
       <section className="contact-section" id="contacto"><div><div className="eyebrow">ESTAMOS PARA AYUDARTE</div><h2>Hablemos de<br /><span>tu negocio.</span></h2><p>Si tenés dudas o consultas, escribinos. Un asesor comercial te va a responder a la brevedad.</p></div><div className="contact-details"><a href="mailto:info@grupobabystore.com.ar"><Mail /> info@grupobabystore.com.ar</a><a href="tel:+5491125636000"><Phone /> +54 9 11 2563-6000</a><span><MapPin /> Palpa 3824/28 · Chacarita, CABA</span><a className="whatsapp-link" href="https://wa.me/5491125636000"><MessageCircle /> Escribinos por WhatsApp <ArrowRight size={16} /></a></div></section>
 

@@ -11,8 +11,8 @@ body { margin: 0; background: #fff; color: var(--ink); font-family: Arial, Helve
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 .site-shell { overflow: hidden; }
-.promo-bar { display:flex; justify-content:center; align-items:center; gap:9px; padding:10px 20px; color:#fff; background:linear-gradient(90deg,#147fca,#164a92); font-size:12px; font-weight:700; letter-spacing:.04em; transition:background .2s, padding .2s; }
-.promo-bar:hover { background:linear-gradient(90deg,#0d70b8,#123f84); }.promo-content { display:flex; align-items:center; justify-content:center; gap:9px; min-width:0; color:#fff; text-decoration:none; }.promo-control { display:grid; place-items:center; width:28px; height:28px; padding:0; border:1px solid #ffffff66; border-radius:50%; color:#fff; background:#ffffff14; cursor:pointer; }.promo-control:hover { background:#ffffff2e; }
+.promo-bar { display:flex; justify-content:space-between; align-items:center; gap:9px; padding:10px 20px; color:#fff; background:linear-gradient(90deg,#147fca,#164a92); font-size:12px; font-weight:700; letter-spacing:.04em; transition:background .2s, padding .2s; }
+.promo-bar:hover { background:linear-gradient(90deg,#0d70b8,#123f84); }.promo-content { display:flex; flex:1; align-items:center; justify-content:center; gap:9px; min-width:0; color:#fff; text-decoration:none; }.promo-control { display:grid; place-items:center; width:28px; height:28px; padding:0; border:1px solid #ffffff66; border-radius:50%; color:#fff; background:#ffffff14; cursor:pointer; }.promo-control:hover { background:#ffffff2e; }
 .promo-logo-express { width:64px; height:26px; object-fit:contain; filter:brightness(0) invert(1); }.promo-generic-icon { flex:0 0 auto; color:#fff; }.promo-message { display:inline-block; animation:promo-fade .35s ease; } @keyframes promo-fade { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }.promo-bar strong { color:#19df65; font-size:13px; letter-spacing:.02em; }
 .promo-bar svg:last-child { transition:transform .2s; }
 .promo-bar:hover svg:last-child { transform:translateX(3px); }
