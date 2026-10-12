@@ -138,9 +138,9 @@ export default function Page() {
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" />
           </a>
           <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
-<a href="/">Inicio</a>
-            <a href="/nosotros">Nosotros</a>
-            <a href="/productos">Productos</a>
+  <a href="/">Inicio</a>
+  <a href="/productos">Productos</a>
+  <a href="/nosotros">Nosotros</a>
   <a href="/como-comprar">Cómo comprar</a>
   <a href="/contacto">Contacto</a>
 </nav>
@@ -176,7 +176,7 @@ export default function Page() {
 
       <section className="contact-section" id="contacto"><div><div className="eyebrow">ESTAMOS PARA AYUDARTE</div><h2>Hablemos de<br /><span>tu negocio.</span></h2><p>Si tenés dudas o consultas, escribinos. Un asesor comercial te va a responder a la brevedad.</p></div><div className="contact-details"><a href="mailto:info@grupobabystore.com.ar"><Mail /> info@grupobabystore.com.ar</a><a href="tel:+5491125636000"><Phone /> +54 9 11 2563-6000</a><span><MapPin /> Palpa 3824/28 · Chacarita, CABA</span><a className="whatsapp-link" href="https://wa.me/5491125636000"><MessageCircle /> Escribinos por WhatsApp <ArrowRight size={16} /></a></div></section>
 
-      <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><form className="footer-subscribe" onSubmit={(event) => event.preventDefault()}><strong>Recibí nuestras novedades</strong><span>Ingresá tu email y enterate primero.</span><div><input type="email" required placeholder="tu@email.com" aria-label="Email para suscribirse" /><button type="submit">Suscribirme</button></div></form><div className="footer-legal">© {new Date().getFullYear()} Grupo Baby Store<br />Distribuidor oficial</div></footer>
+      <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/">Inicio</a><a href="/productos">Productos</a><a href="/nosotros">Nosotros</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><form className="footer-subscribe" onSubmit={(event) => event.preventDefault()}><strong>Recibí nuestras novedades</strong><span>Ingresá tu email y enterate primero.</span><div><input type="email" required placeholder="tu@email.com" aria-label="Email para suscribirse" /><button type="submit">Suscribirme</button></div></form><div className="footer-legal">© {new Date().getFullYear()} Grupo Baby Store<br />Distribuidor oficial</div></footer>
 
       <div className="floating-order"><a href="/iniciar-sesion"><ShoppingBag size={19} /> Hacé tu pedido</a></div>
       {showExpress && <div className="modal-backdrop" role="presentation" onClick={() => setShowExpress(false)}><div className="express-modal" role="dialog" aria-modal="true" aria-labelledby="express-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" aria-label="Cerrar" onClick={() => setShowExpress(false)}><X /></button><div className="eyebrow">NOVEDAD</div><h2 id="express-title">Envíos y retiros <em>express</em></h2><p>Hacé tu pedido antes de las 12 del mediodía y te lo entregamos en el día.</p><div className="modal-row"><Truck /><div><b>Entregas / Envíos</b><span>CABA $10.000 · 1er cordón $12.000 · 2do cordón $15.000</span></div></div><div className="modal-row"><PackageCheck /><div><b>Retiros express</b><span>Retirá en Palpa 3828, 3 horas después de hacer tu pedido.</span></div></div><div className="modal-note">Seleccioná la modalidad y escribí <strong>EXPRESS</strong> en comentarios. No te olvides de avisarle a tu comercial.</div><a href="/iniciar-sesion" className="primary-button" onClick={() => setShowExpress(false)}>Hacer mi pedido <ArrowRight size={17} /></a></div></div>}
