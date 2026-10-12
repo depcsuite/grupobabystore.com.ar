@@ -1,17 +1,19 @@
 'use client'
 
 import { ArrowRight, ChevronDown, Menu, ShoppingBag, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const values = ['Honestidad', 'Calidad', 'Proactividad', 'Responsabilidad', 'Integridad']
 const foundingYear = 2014
 
 export default function NosotrosPage() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  useEffect(() => setIsLoggedIn(document.cookie.includes('gb_logged_in=1')), [])
 
   return (
     <main className="site-shell about-page">
-      <a className="promo-bar" href="/como-comprar" aria-label="Cómo hacer tu pedido en tres pasos"><span>Hacé tu pedido y <strong>retiralo o recibilo en el mismo día</strong></span><ArrowRight size={14} /></a>
+      {isLoggedIn && <a className="promo-bar" href="/como-comprar" aria-label="Cómo hacer tu pedido en tres pasos"><img className="promo-logo-express" src="/logo-express.svg" alt="Express" /><span>Hacé tu pedido y <strong>retiralo o recibilo en el mismo día</strong></span><ArrowRight size={14} /></a>}
       <header className="site-header">
         <div className="header-inner">
           <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
@@ -22,7 +24,7 @@ export default function NosotrosPage() {
             <a className="active" href="/nosotros">Nosotros</a>
             <a href="/como-comprar">Cómo comprar</a>
             <a href="/contacto">Contacto</a>
-          </nav><div className="header-actions"><a className="header-login" href="/iniciar-sesion">INGRESAR</a></div>
+          </nav><div className="header-actions"><a className="header-login" href={isLoggedIn ? '/cuenta' : '/iniciar-sesion'}>{isLoggedIn ? 'Mi cuenta' : 'INGRESAR'}</a></div>
         </div>
       </header>
 
