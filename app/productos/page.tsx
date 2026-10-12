@@ -22,12 +22,6 @@ const filterGroups = [
   { name: 'Juguetes', items: ['Tatoon', 'Tramontina', 'Baby Safe', 'Ok Baby', 'A Wish', 'Floating Baby', 'Min Renée', 'Pocopiano', 'Woody Toys', 'Soft Blocks', "J'Adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'VTech', '5 Sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'PhiPhi Toys Madera', 'Bestway', 'Outlet'] },
   { name: 'Categorías', items: ['Promociones', 'Accesorios', 'Alimentación', 'Lactancia', 'Mamaderas y tetinas', 'Chupetes', 'Higiene', 'Juguetes', 'Baño', 'Seguridad', 'Paseo', 'Vasos', 'Tetinas', 'Mordillos', 'Repuestos', 'Etapa 1', 'Etapa 2', 'Etapa 3', 'Etapa 4'] },
 ]
-const novedades = [
-  { tag: 'NUEVO', title: 'Nuevas oportunidades para tu negocio', text: 'Conocé los ingresos y promociones de esta semana.' },
-  { tag: 'PROMO', title: 'Precios especiales por bulto', text: 'Más unidades, mejores condiciones mayoristas.' },
-  { tag: 'EXPRESS', title: 'Recibí o retiralo en el día', text: 'Hacé tu pedido antes de las 12 hs.' },
-]
-
 export default function ProductosPage() {
   const [authChecked, setAuthChecked] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
