@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowDownToLine, ArrowRight, Check, ChevronDown, Copy, FileText, Pencil, Plus, RotateCcw, ShoppingCart, Wallet } from "lucide-react"
+import { ArrowDownToLine, ArrowRight, Check, ChevronDown, Copy, FileText, Pencil, Plus, RotateCcw, Wallet } from "lucide-react"
 import { SiteFooter } from "@/components/site-footer"
 
 const orders = [
@@ -23,7 +23,7 @@ export default function CuentaPage({ initialSection = "orders" }: { initialSecti
 
   return <main className="account-page">
     <div className="promo-bar">Envíos gratis a partir de $150.000 · Atención personalizada para tu negocio</div>
-    <header className="site-header"><div className="header-inner"><Link className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /></Link><nav className="main-nav"><Link href="/">Inicio</Link><Link href="/nosotros">Nosotros</Link><Link href="/productos">Productos</Link><Link href="/como-comprar">Cómo comprar</Link><Link href="/contacto">Contacto</Link></nav><div className="header-actions"><Link className="header-login active" href="/cuenta">MI CUENTA</Link><Link className="header-cart" href="/productos" aria-label="Abrir carrito"><ShoppingCart size={16} /> Carrito</Link></div></div></header>
+    <header className="site-header"><div className="header-inner"><Link className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /></Link><nav className="main-nav"><Link href="/">Inicio</Link><Link href="/productos">Productos</Link><Link href="/nosotros">Nosotros</Link><Link href="/como-comprar">Cómo comprar</Link><Link href="/contacto">Contacto</Link></nav><div className="header-actions"><Link className="header-login active" href="/cuenta">MI CUENTA</Link></div></div></header>
     <div className="account-wrap">
       <div className="account-intro"><div><span className="eyebrow">CUENTA MAYORISTA</span><h1>Hola, <span>María.</span></h1><p>Gestioná tus pedidos y consultá el estado de tu cuenta corriente.</p></div><Link className="primary-button" href="/productos">Nuevo pedido <ArrowRight size={16} /></Link></div>
       <div className="account-layout"><aside className="account-menu"><Link className={section === "profile" ? "selected" : ""} href="/cuenta/datos-personales"><FileText size={18} /><span>Datos personales<small>Razón social y contacto</small></span><ArrowRight size={15} /></Link><Link className={section === "orders" ? "selected" : ""} href="/cuenta/mis-pedidos"><FileText size={18} /><span>Mis pedidos<small>Historial y estados</small></span><ArrowRight size={15} /></Link><Link className={section === "account" ? "selected" : ""} href="/cuenta/cuenta-corriente"><Wallet size={18} /><span>Cuenta corriente<small>Saldo y movimientos</small></span><ArrowRight size={15} /></Link><div className="account-help"><strong>¿Necesitás ayuda?</strong><p>Consultá con tu asesor comercial.</p><Link href="/contacto">Contactar <ArrowRight size={13} /></Link></div><button className="account-logout" type="button" onClick={() => { document.cookie = 'gb_logged_in=; path=/; max-age=0; SameSite=Lax'; window.location.href = '/' }}>Cerrar sesión</button></aside>
