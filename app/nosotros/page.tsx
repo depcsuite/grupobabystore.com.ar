@@ -24,7 +24,7 @@ export default function NosotrosPage() {
             <a className="active" href="/nosotros">Nosotros</a>
             <a href="/como-comprar">Cómo comprar</a>
             <a href="/contacto">Contacto</a>
-          </nav><div className="header-actions"><a className="header-login" href={isLoggedIn ? '/cuenta' : '/iniciar-sesion'}>{isLoggedIn ? 'Mi cuenta' : 'INGRESAR'}</a></div>
+          </nav><div className="header-actions"><a className="header-login" href={isLoggedIn ? '/cuenta' : '/iniciar-sesion'}>{isLoggedIn ? 'Mi cuenta' : <><ShoppingBag size={16} /> INGRESAR</>}</a></div>
         </div>
       </header>
 
