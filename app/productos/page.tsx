@@ -9,12 +9,12 @@ import { SiteFooter } from '@/components/site-footer'
 import { PromoTopbar } from '@/components/promo-topbar'
 
 const products = [
-  { id: 'nutrilon-1-brick', category: 'Etapa 1', brand: 'Nutrilon', name: 'Nutrilon Profutura 1 Brick x 200 ml', code: 'AA NUT 1 BRICK PR', price: 1808, originalPrice: 2232 },
-  { id: 'nutrilon-1-tarro', category: 'Etapa 1', brand: 'Nutrilon', name: 'Nutrilon Profutura 1 Tarro x 800 g', code: 'AA NUT 1 TARRO PR', price: 35855, originalPrice: 44266 },
-  { id: 'nutrilon-1-pack', category: 'Etapa 1', brand: 'Nutrilon', name: 'Nutrilon Profutura 1 Pack x 1,2 kg', code: 'AA NUT 1 POUCH PR', price: 46161, originalPrice: 56989, packItems: 6 },
-  { id: 'nutrilon-2-brick', category: 'Etapa 2', brand: 'Nutrilon', name: 'Nutrilon Profutura 2 Brick x 200 ml', code: 'AA NUT 2 BRICK PR', price: 1720, originalPrice: 2123 },
-  { id: 'vital-4', category: 'Etapa 4', brand: 'Vital', name: 'Vital 4 Fórmula infantil', code: 'AA VIT 4 TARRO', price: 24000 },
-  { id: 'nan-1', category: 'Etapa 1', brand: 'NAN', name: 'NAN Expert Pro 1 Fórmula infantil', code: 'AA NAN 1 TARRO', price: 29500 },
+  { id: 'nutrilon-1-brick', category: 'Fórmulas Infantiles', brand: 'Nutrilon', name: 'Nutrilon Profutura 1 Brick x 200 ml', code: 'AA NUT 1 BRICK PR', price: 1808, originalPrice: 2232 },
+  { id: 'nutrilon-1-tarro', category: 'Fórmulas Infantiles', brand: 'Nutrilon', name: 'Nutrilon Profutura 1 Tarro x 800 g', code: 'AA NUT 1 TARRO PR', price: 35855, originalPrice: 44266 },
+  { id: 'nutrilon-1-pack', category: 'Fórmulas Infantiles', brand: 'Nutrilon', name: 'Nutrilon Profutura 1 Pack x 1,2 kg', code: 'AA NUT 1 POUCH PR', price: 46161, originalPrice: 56989, packItems: 6 },
+  { id: 'nutrilon-2-brick', category: 'Fórmulas Infantiles', brand: 'Nutrilon', name: 'Nutrilon Profutura 2 Brick x 200 ml', code: 'AA NUT 2 BRICK PR', price: 1720, originalPrice: 2123 },
+  { id: 'vital-4', category: 'Fórmulas Infantiles', brand: 'Vital', name: 'Vital 4 Fórmula infantil', code: 'AA VIT 4 TARRO', price: 24000 },
+  { id: 'nan-1', category: 'Fórmulas Infantiles', brand: 'NAN', name: 'NAN Expert Pro 1 Fórmula infantil', code: 'AA NAN 1 TARRO', price: 29500 },
 ]
 const money = (value: number) => `$${value.toLocaleString('es-AR')}`
 const filterGroups = [
@@ -23,7 +23,7 @@ const filterGroups = [
   { name: 'Nutrición infantil', items: ['Nutrilon', 'Vital', 'La Serenísima Baby', 'Sancor', 'NAN', 'Nidina', 'Nido', 'Nestum'] },
   { name: 'Accesorios', items: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Baby Innovation', 'Loopi', 'Punti', 'Minikoioi', 'Ingenuity', 'Bright Starts', 'Baby Einstein', 'Bubba', 'Contigo', 'Termy'] },
   { name: 'Juguetes', items: ['Tatoon', 'Tramontina', 'Baby Safe', 'Ok Baby', 'A Wish', 'Floating Baby', 'Min Renée', 'Pocopiano', 'Woody Toys', 'Soft Blocks', "J'Adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'VTech', '5 Sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'PhiPhi Toys Madera', 'Bestway', 'Outlet'] },
-  { name: 'Categorías', items: ['Promociones', 'Accesorios', 'Alimentación', 'Lactancia', 'Mamaderas y tetinas', 'Chupetes', 'Higiene', 'Juguetes', 'Baño', 'Seguridad', 'Paseo', 'Vasos', 'Tetinas', 'Mordillos', 'Repuestos', 'Etapa 1', 'Etapa 2', 'Etapa 3', 'Etapa 4'] },
+  { name: 'Categorías', items: ['Fórmulas Infantiles', 'Puericultura Liviana: Accesorios para el cuidado y crianza del bebé', 'Juguetes: Didácticos y Primera infancia'] },
 ]
 export default function ProductosPage() {
   const { isLoggedIn, isReady: authChecked } = useAuthSession()
