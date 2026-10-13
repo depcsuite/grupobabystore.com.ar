@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowRight, ChevronDown, Menu, ShoppingBag, X } from 'lucide-react'
+import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Menu, ShoppingBag, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const values = ['Honestidad', 'Calidad', 'Proactividad', 'Responsabilidad', 'Integridad']
@@ -8,12 +8,16 @@ const foundingYear = 2014
 
 export default function NosotrosPage() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  useEffect(() => setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))), [])
+const [isLoggedIn, setIsLoggedIn] = useState(false)
+const [promoIndex, setPromoIndex] = useState(0)
+const promoMessages = ['Hacé tu pedido y retiralo o recibilo en el mismo día', '¡Nuevos ingresos! Mamaderas, tetines y chupetes', 'Hasta 50% OFF en promociones']
+const visiblePromoMessages = isLoggedIn ? promoMessages : promoMessages.slice(1)
+useEffect(() => { const syncAuth = () => setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))); syncAuth(); window.addEventListener('pageshow', syncAuth); return () => window.removeEventListener('pageshow', syncAuth) }, [])
+useEffect(() => { setPromoIndex(0); const timer = window.setInterval(() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length), 4200); return () => window.clearInterval(timer) }, [isLoggedIn, visiblePromoMessages.length])
 
   return (
     <main className="site-shell about-page">
-      {isLoggedIn && <a className="promo-bar" href="/como-comprar" aria-label="Cómo hacer tu pedido en tres pasos"><img className="promo-logo-express" src="/logo-express.svg" alt="Express" /><span>Hacé tu pedido y <strong>retiralo o recibilo en el mismo día</strong></span><ArrowRight size={14} /></a>}
+      <div className="promo-bar" role="region" aria-label="Promociones de Grupo Baby Store"><button className="promo-control" type="button" aria-label="Frase anterior" onClick={() => setPromoIndex(current => (current - 1 + visiblePromoMessages.length) % visiblePromoMessages.length)}><ChevronLeft size={18} /></button><a className="promo-content" href="/como-comprar">{isLoggedIn && promoIndex === 0 ? <img className="promo-logo-express" src="/logo-express.svg" alt="Express" /> : <Sparkles className="promo-generic-icon" size={19} aria-hidden="true" />} <span className="promo-message">{visiblePromoMessages[promoIndex]}</span><ArrowRight size={14} /></a><button className="promo-control" type="button" aria-label="Frase siguiente" onClick={() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length)}><ChevronRight size={18} /></button></div>
       <header className="site-header">
         <div className="header-inner">
           <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
