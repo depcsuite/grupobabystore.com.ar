@@ -1,11 +1,15 @@
 'use client'
 
-import { ArrowRight, CheckCircle2, Mail, MapPin, Menu, MessageCircle, Phone, Send, ShoppingBag, X } from 'lucide-react'
+import { CheckCircle2, Mail, MapPin, Menu, MessageCircle, Phone, Search, Send, X } from 'lucide-react'
+import { PromoTopbar } from '@/components/promo-topbar'
 import { FormEvent, useState } from 'react'
+import { useAuthSession } from '@/components/auth-session-sync'
+import { AccountMenu } from '@/components/account-menu'
 
 export default function ContactoPage() {
   const [sent, setSent] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { isLoggedIn } = useAuthSession()
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -14,9 +18,9 @@ export default function ContactoPage() {
 
   return (
     <main className="site-shell contact-page">
-      <a className="promo-bar" href="/como-comprar" aria-label="Cómo hacer tu pedido en tres pasos"><span>Hacé tu pedido y <strong>retiralo o recibilo en el mismo día</strong></span><ArrowRight size={14} /></a>
+      <PromoTopbar />
       <header className="site-header">
-        <div className="header-inner"><button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button><a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" /></a><nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal"><a href="/">Inicio</a><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/">Inicio</a><a className="active" href="/contacto">Contacto</a></nav><div className="header-actions"><a className="header-login" href="/iniciar-sesion"><ShoppingBag size={16} /> INGRESAR</a></div></div>
+        <div className="header-inner"><button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button><a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" /></a><nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal"><a href="/">Inicio</a><a href="/productos">Productos</a><a href="/nosotros">Nosotros</a><a href="/como-comprar">Cómo comprar</a><a className="active" href="/contacto">Contacto</a></nav><div className="header-actions"><AccountMenu /><button className="icon-button" type="button" aria-label="Buscar"><Search size={18} /></button></div></div>
       </header>
 
       <section className="contact-faq"><div className="contact-faq-intro"><div className="eyebrow">CENTRO DE AYUDA</div><h1>Encontrá respuestas<br /><span>rápidamente.</span></h1><p>Reunimos las consultas más frecuentes para que puedas resolver lo que necesitás rápidamente.</p></div><div className="section-heading"><div><div className="eyebrow">PREGUNTAS FRECUENTES</div><h2>Resolvemos tus dudas</h2></div><p>Respuestas rápidas para comprar mejor.</p></div><div className="faq-grid"><details open><summary>¿Cómo hago un pedido mayorista?<span>+</span></summary><p>Ingresá al catálogo, agregá productos al carrito y completá el checkout con la modalidad de entrega o retiro.</p></details><details><summary>¿Los precios incluyen IVA?<span>+</span></summary><p>No. Todos los precios del catálogo son sin IVA. En el checkout se adiciona el IVA del 21% al final.</p></details><details><summary>¿Hacen entregas express?<span>+</span></summary><p>Sí. Seleccioná envío a domicilio y escribí EXPRESS en comentarios. Consultá zonas y horarios en la sección express.</p></details><details><summary>¿Puedo retirar mi pedido?<span>+</span></summary><p>Sí, podés elegir retiro por depósito en Palpa 3828 y te indicaremos cuándo está disponible.</p></details></div></section>

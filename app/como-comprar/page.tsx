@@ -1,7 +1,9 @@
 'use client'
 
-import { ArrowRight, Mail, MapPin, Menu, Phone, Search, ShoppingBag, Sparkles, X } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowRight, ChevronLeft, ChevronRight, Mail, MapPin, Menu, Phone, Search, Sparkles, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useAuthSession } from '@/components/auth-session-sync'
+import { AccountMenu } from '@/components/account-menu'
 
 const steps = [
  { number: '01', title: 'Registrate', text: 'Completá tus datos para que podamos validar tu cuenta comercial.' },
@@ -12,16 +14,21 @@ const steps = [
 
 export default function ComoComprarPage() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [promoIndex, setPromoIndex] = useState(0)
+  const { isLoggedIn } = useAuthSession()
+  const promoMessages = ['Hacé tu pedido y retiralo o recibilo en el mismo día', '¡Nuevos ingresos! Mamaderas, tetines y chupetes', 'Hasta 50% OFF en promociones']
+  const visiblePromoMessages = isLoggedIn ? promoMessages : promoMessages.slice(1)
+  useEffect(() => { setPromoIndex(0); const timer = window.setInterval(() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length), 4200); return () => window.clearInterval(timer) }, [isLoggedIn, visiblePromoMessages.length])
 
   return (
     <main className="site-shell">
-      <a className="promo-bar" href="/como-comprar" aria-label="Cómo hacer tu pedido en tres pasos"><Sparkles size={14} /> <span>Hacé tu pedido y <strong>retiralo o recibilo en el mismo día</strong></span><ArrowRight size={14} /></a>
+      <div className="promo-bar" role="region" aria-label="Promociones de Grupo Baby Store"><button className="promo-control" type="button" aria-label="Frase anterior" onClick={() => setPromoIndex(current => (current - 1 + visiblePromoMessages.length) % visiblePromoMessages.length)}><ChevronLeft size={18} /></button><a className="promo-content" href="/como-comprar">{isLoggedIn && promoIndex === 0 ? <img className="promo-logo-express" src="/logo-express.svg" alt="Express" /> : <Sparkles className="promo-generic-icon" size={19} aria-hidden="true" />} <span className="promo-message">{visiblePromoMessages[promoIndex]}</span><ArrowRight size={14} /></a><button className="promo-control" type="button" aria-label="Frase siguiente" onClick={() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length)}><ChevronRight size={18} /></button></div>
       <header className="site-header">
         <div className="header-inner">
           <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
           <a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" /></a>
           <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
-            <a href="/">Inicio</a><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/">Inicio</a><a href="/contacto">Contacto</a></nav><div className="header-actions"><a className="header-login" href="/iniciar-sesion"><ShoppingBag size={16} /> INGRESAR</a><button aria-label="Buscar" className="icon-button" type="button"><Search /></button></div>
+            <a href="/">Inicio</a><a href="/productos">Productos</a><a href="/nosotros">Nosotros</a><a className="active" href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></nav><div className="header-actions"><AccountMenu /><button aria-label="Buscar" className="icon-button" type="button"><Search size={18} /></button></div>
         </div>
       </header>
 

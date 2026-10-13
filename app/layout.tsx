@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { CartProvider } from '@/components/cart-context'
+import { AuthSessionProvider } from '@/components/auth-session-sync'
 import './auth.css'
 
 export const metadata: Metadata = {
@@ -30,7 +31,11 @@ export default function RootLayout({
   return (
     <html lang="es-AR">
       <body className="antialiased">
-        <CartProvider>{children}</CartProvider>
+        <AuthSessionProvider>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </AuthSessionProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
