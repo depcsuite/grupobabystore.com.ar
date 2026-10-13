@@ -46,6 +46,9 @@ button, input { font: inherit; }
 .icon-button svg, .mobile-menu svg { width:19px; }
 .header-order, .primary-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:999px; padding:13px 18px; background:var(--blue); color:#fff; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; transition:transform .2s, background .2s; }
 .header-order:hover, .primary-button:hover { background:#176d9f; transform:translateY(-2px); }
+  .novelty-cart-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:1px solid #e995a5 !important; border-radius:999px; padding:11px 16px; background:#e995a5 !important; color:#fff !important; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; cursor:pointer; transition:transform .2s, background .2s, border-color .2s; }
+  .novelty-cart-button:hover { border-color:#d77c8f !important; background:#d77c8f !important; transform:translateY(-2px); }
+  .novelty-cart-button svg { flex:0 0 auto; }
 .header-login, .header-order { box-sizing:border-box; height:38px; padding:0 15px; }
 .header-order { border:1px solid #e995a5; background:#e995a5; color:#fff; font-size:11px; letter-spacing:.05em; }
 .header-order:hover { border-color:#d77c8f; background:#d77c8f; }
