@@ -12,7 +12,7 @@ const [isLoggedIn, setIsLoggedIn] = useState(false)
 const [promoIndex, setPromoIndex] = useState(0)
 const promoMessages = ['Hacé tu pedido y retiralo o recibilo en el mismo día', '¡Nuevos ingresos! Mamaderas, tetines y chupetes', 'Hasta 50% OFF en promociones']
 const visiblePromoMessages = isLoggedIn ? promoMessages : promoMessages.slice(1)
-useEffect(() => { const syncAuth = () => setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))); syncAuth(); window.addEventListener('pageshow', syncAuth); return () => window.removeEventListener('pageshow', syncAuth) }, [])
+useEffect(() => { const syncAuth = () => setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))); syncAuth(); window.addEventListener('pageshow', syncAuth); window.addEventListener('focus', syncAuth); window.addEventListener('gb-auth-changed', syncAuth); return () => { window.removeEventListener('pageshow', syncAuth); window.removeEventListener('focus', syncAuth); window.removeEventListener('gb-auth-changed', syncAuth) } }, [])
 useEffect(() => { setPromoIndex(0); const timer = window.setInterval(() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length), 4200); return () => window.clearInterval(timer) }, [isLoggedIn, visiblePromoMessages.length])
 
   return (
