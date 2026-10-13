@@ -25,7 +25,7 @@ const filterGroups = [
 export default function ProductosPage() {
   const [authChecked, setAuthChecked] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  useEffect(() => { const syncAuth = () => { setIsLoggedIn(document.cookie.split('; ').some(cookie => cookie === 'gb_logged_in=1')); setAuthChecked(true) }; syncAuth(); window.addEventListener('pageshow', syncAuth); window.addEventListener('focus', syncAuth); return () => { window.removeEventListener('pageshow', syncAuth); window.removeEventListener('focus', syncAuth) } }, [])
+  useEffect(() => { const syncAuth = () => { setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))); setAuthChecked(true) }; syncAuth(); window.addEventListener('pageshow', syncAuth); window.addEventListener('focus', syncAuth); return () => { window.removeEventListener('pageshow', syncAuth); window.removeEventListener('focus', syncAuth) } }, [])
   const { items, addItem, updateQuantity, removeItem, subtotal, count } = useCart()
   const [query, setQuery] = useState('')
   const [selectedBrand, setSelectedBrand] = useState('')

@@ -121,7 +121,7 @@ export default function Page() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  useEffect(() => { setIsLoggedIn(document.cookie.includes('gb_logged_in=1')) }, [])
+  useEffect(() => { setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))) }, [])
   const visiblePromoMessages = isLoggedIn ? promoMessages : promoMessages.slice(1)
   useEffect(() => { setPromoIndex(0); const timer = window.setInterval(() => setPromoIndex((current) => (current + 1) % visiblePromoMessages.length), 4200); return () => window.clearInterval(timer) }, [isLoggedIn, visiblePromoMessages.length])
 
