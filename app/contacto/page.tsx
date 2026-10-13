@@ -1,16 +1,12 @@
 'use client'
 
-import { ArrowRight, CheckCircle2, ChevronLeft, Mail, MapPin, Menu, MessageCircle, Phone, Search, Send, ShoppingBag, X } from 'lucide-react'
-import { FormEvent, useEffect, useState } from 'react'
+import { CheckCircle2, Mail, MapPin, Menu, MessageCircle, Phone, Search, Send, ShoppingBag, X } from 'lucide-react'
+import { PromoTopbar } from '@/components/promo-topbar'
+import { FormEvent, useState } from 'react'
 
 export default function ContactoPage() {
   const [sent, setSent] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [promoIndex, setPromoIndex] = useState(0)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const promoMessages = ['Hacé tu pedido y retiralo o recibilo en el mismo día', '¡Nuevos ingresos! Mamaderas, tetines y chupetes', 'Hasta 50% OFF en promociones']
-  const visiblePromoMessages = isLoggedIn ? promoMessages : promoMessages.slice(1)
-  useEffect(() => { const syncAuth = () => setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))); syncAuth(); const timer = window.setInterval(() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length), 4200); return () => window.clearInterval(timer) }, [visiblePromoMessages.length])
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -19,7 +15,7 @@ export default function ContactoPage() {
 
   return (
     <main className="site-shell contact-page">
-      <div className="promo-bar" role="region" aria-label="Promociones de Grupo Baby Store"><button className="promo-control" type="button" aria-label="Frase anterior" onClick={() => setPromoIndex(current => (current - 1 + visiblePromoMessages.length) % visiblePromoMessages.length)}><ChevronLeft size={18} /></button><a className="promo-content" href="/como-comprar">{isLoggedIn && promoIndex === 0 ? <img className="promo-logo-express" src="/logo-express.svg" alt="Express" /> : <span>{visiblePromoMessages[promoIndex]}</span>}<ArrowRight size={14} /></a><button className="promo-control" type="button" aria-label="Frase siguiente" onClick={() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length)}><ArrowRight size={18} /></button></div>
+      <PromoTopbar />
       <header className="site-header">
         <div className="header-inner"><button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button><a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" /></a><nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal"><a href="/">Inicio</a><a href="/productos">Productos</a><a href="/nosotros">Nosotros</a><a href="/como-comprar">Cómo comprar</a><a className="active" href="/contacto">Contacto</a></nav><div className="header-actions"><a className="header-login" href="/iniciar-sesion"><ShoppingBag size={16} /> INGRESAR</a><button className="icon-button" type="button" aria-label="Buscar"><Search size={18} /></button></div></div>
       </header>
