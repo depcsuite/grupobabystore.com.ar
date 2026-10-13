@@ -20,6 +20,7 @@ export default function IniciarSesionPage() {
     setError('')
     document.cookie = 'gb_logged_in=1; path=/; max-age=2592000; SameSite=Lax'
     window.dispatchEvent(new Event('gb-auth-changed'))
+    window.dispatchEvent(new Event('gb-auth-changed'))
     window.location.assign('/productos')
   }
 

@@ -9,7 +9,7 @@ const foundingYear = 2014
 export default function NosotrosPage() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  useEffect(() => setIsLoggedIn(document.cookie.includes('gb_logged_in=1')), [])
+  useEffect(() => setIsLoggedIn(document.cookie.split(';').some(cookie => cookie.trim().startsWith('gb_logged_in=1'))), [])
 
   return (
     <main className="site-shell about-page">
