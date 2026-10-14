@@ -8,8 +8,11 @@ import {
   ChevronRight,
   Minus,
   Plus,
+  Menu,
+  Search,
   ShoppingBag,
   ShoppingCart,
+  X,
 } from 'lucide-react'
 import { AccountMenu } from '@/components/account-menu'
 import { PromoTopbar } from '@/components/promo-topbar'
@@ -36,6 +39,8 @@ const relatedProducts = [
 
 export default function ProductDetailPage() {
   const { addItem, count } = useCart()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const [quantity, setQuantity] = useState(product.packItems)
   const [added, setAdded] = useState(false)
 
@@ -51,10 +56,23 @@ export default function ProductDetailPage() {
       <PromoTopbar />
       <header className="site-header">
         <div className="header-inner">
-          <a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /></a>
-          <nav className="main-nav" aria-label="Navegación principal"><a href="/">Inicio</a><a href="/nosotros">Nosotros</a><a className="active" href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></nav>
-          <div className="header-actions"><AccountMenu /></div>
+          <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+          <a className="brand" href="#inicio" aria-label="Grupo Baby Store inicio">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" />
+          </a>
+          <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
+            <a href="/">Inicio</a>
+            <a href="/productos">Productos</a>
+            <a href="/nosotros">Nosotros</a>
+            <a href="/como-comprar">Cómo comprar</a>
+            <a href="/contacto">Contacto</a>
+          </nav>
+          <div className="header-actions">
+            <AccountMenu />
+            <button aria-label="Buscar" className="icon-button" onClick={() => setSearchOpen(!searchOpen)}><Search /></button>
+          </div>
         </div>
+        {searchOpen && <div className="search-row"><Search size={18} /><input autoFocus placeholder="Buscá una marca o producto" aria-label="Buscar una marca o producto" /><button onClick={() => setSearchOpen(false)} aria-label="Cerrar búsqueda"><X size={18} /></button></div>}
       </header>
 
       <div className="product-detail-wrap">
