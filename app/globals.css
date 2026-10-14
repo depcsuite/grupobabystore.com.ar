@@ -22,17 +22,31 @@
   font-weight: 400;
 }
 
-.catalog-shell.is-logged-in .product-pack-column input {
-  width: 86px;
+.catalog-shell.is-logged-in .product-pack-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 34px;
-  padding: 5px 7px;
+  color: var(--muted);
+  font-weight: 700;
+  }
+
+.catalog-shell.is-logged-in .product-quantity-input {
+  width: 56px;
+  min-height: 30px;
+  padding: 4px 3px;
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--ink);
   background: #fff;
   text-align: center;
   font-weight: 700;
-}
+  }
+
+.catalog-shell.is-logged-in .product-quantity-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  }
 
 .catalog-shell.is-logged-in .product-quantity-column {
   display: flex;

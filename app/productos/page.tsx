@@ -624,13 +624,12 @@ export default function ProductosPage() {
                     </div>
                     {isLoggedIn && (
                       <div className="product-pack-column">
-                        <input
-                          type="number"
-                          min="1"
-                          step="1"
-                          defaultValue={product.packItems ?? 1}
+                        <span
+                          className="product-pack-value"
                           aria-label={`Cantidad por bulto de ${product.name}`}
-                        />
+                        >
+                          {product.packItems ?? 1}
+                        </span>
                       </div>
                     )}
                     {isLoggedIn && (
@@ -648,7 +647,28 @@ export default function ProductosPage() {
                           >
                             <Minus size={14} />
                           </button>
-                          <strong>{quantity}</strong>
+                          <input
+                            className="product-quantity-input"
+                            type="number"
+                            min="0"
+                            step={product.packItems ?? 1}
+                            value={quantity || ""}
+                            onChange={(event) => {
+                              const nextQuantity = Number(event.target.value);
+                              const packSize = product.packItems ?? 1;
+                              if (!Number.isInteger(nextQuantity) || nextQuantity < 0) {
+                                return;
+                              }
+                              if (nextQuantity > 0 && nextQuantity % packSize !== 0) {
+                                window.alert(
+                                  `La cantidad debe ser un múltiplo de ${packSize} unidades por bulto.`,
+                                );
+                                return;
+                              }
+                              updateQuantity(product.id, nextQuantity);
+                            }}
+                            aria-label={`Cantidad de ${product.name}`}
+                          />
                           <button
                             onClick={() => handleAddToCart(product)}
                             aria-label={`Agregar ${product.name}`}
