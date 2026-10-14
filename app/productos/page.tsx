@@ -379,24 +379,19 @@ export default function ProductosPage() {
                   </a>
                 </div>
                 <div className="novelty-card-body">
-                  <small>
-                    {product.brand} · {product.code}
-                  </small>
                   <h2 className="novelty-product-title">
                     <a href="/productos/nutrilon-pro-futura-1">
                       {product.name}
                     </a>
                   </h2>
+                  <small className="novelty-product-code">
+                    Código: {product.code}
+                  </small>
                   {product.packItems && (
                     <span className="pack-quantity">
                       Pack de {product.packItems} unidades
                     </span>
                   )}
-                  <strong>
-                    {isLoggedIn
-                      ? money(product.price)
-                      : "Ingresá para ver el precio"}
-                  </strong>
                   <button
                     className="novelty-cart-button"
                     type="button"
