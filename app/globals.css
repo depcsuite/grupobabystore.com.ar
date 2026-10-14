@@ -4,12 +4,34 @@
 
 /* La tabla mayorista mantiene cantidad, bulto y total en columnas independientes. */
 .catalog-shell.is-logged-in .catalog-columns {
-  grid-template-columns: minmax(0, 1fr) 82px 88px 76px 110px;
+  grid-template-columns: minmax(0, 1fr) 78px 78px 100px 96px;
   align-items: center;
 }
 
 .catalog-shell.is-logged-in .wholesale-product {
-  grid-template-columns: 112px minmax(0, 1fr) 110px 82px 76px 110px;
+  grid-template-columns: 112px minmax(0, 1fr) 96px 78px 100px 96px;
+  }
+
+.catalog-shell .wholesale-product-info h3,
+.catalog-shell .wholesale-product-info h3 a {
+  font-weight: 800;
+}
+
+.catalog-shell .product-code-line,
+.catalog-shell .product-code-line strong {
+  font-weight: 400;
+}
+
+.catalog-shell.is-logged-in .product-pack-column input {
+  width: 86px;
+  min-height: 34px;
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #fff;
+  text-align: center;
+  font-weight: 700;
 }
 
 .catalog-shell.is-logged-in .product-quantity-column {

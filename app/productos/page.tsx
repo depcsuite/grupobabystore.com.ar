@@ -628,7 +628,13 @@ export default function ProductosPage() {
                     </div>
                     {isLoggedIn && (
                       <div className="product-pack-column">
-                        {product.packItems ?? 1}
+                        <input
+                          type="number"
+                          min="1"
+                          step="1"
+                          defaultValue={product.packItems ?? 1}
+                          aria-label={`Cantidad por bulto de ${product.name}`}
+                        />
                       </div>
                     )}
                     {isLoggedIn && (
