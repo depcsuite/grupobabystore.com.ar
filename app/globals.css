@@ -201,7 +201,13 @@ footer { max-width:1192px; margin:auto; padding:54px 42px 30px; display:grid; gr
 .filter-option { width:100%; display:flex; align-items:center; justify-content:space-between; padding:10px 0; border:0; border-bottom:1px solid var(--line); color:var(--muted); background:transparent; cursor:pointer; text-align:left; font-size:13px; }
   .filter-option span,.brand-option span { font-size:11px; }.filter-option.selected { color:var(--blue); font-weight:800; }.filter-group { border-bottom:1px solid var(--line); }.filter-group summary,.brand-tree summary { list-style:none; }.filter-group summary::-webkit-details-marker,.brand-tree summary::-webkit-details-marker { display:none; }.filter-tree { padding:2px 0 10px 12px; }.brand-tree { border-left:1px solid #dbe8e9; }.brand-option { display:flex; justify-content:space-between; width:100%; padding:7px 8px; border:0; background:transparent; color:var(--ink); cursor:pointer; text-align:left; font-size:12px; }.brand-option.selected { color:var(--blue); font-weight:800; }.subfilter-list { display:grid; gap:2px; padding:2px 8px 8px 18px; }.subfilter-list button { border:0; background:transparent; color:var(--muted); cursor:pointer; font-size:11px; text-align:left; padding:4px 0; }.subfilter-list button:hover { color:var(--blue); }.brand-filter-label { margin-top:35px; }
 .catalog-filters select { width:100%; padding:11px 10px; border:1px solid var(--line); border-radius:9px; color:var(--ink); background:#fff; }
-.wholesale-sidebar .catalog-filter-panel { overflow:hidden; }
+  .wholesale-sidebar .catalog-filter-panel { overflow:hidden; }
+  .wholesale-sidebar .filter-group { position:relative; height:auto; min-height:0; overflow:visible; }
+  .wholesale-sidebar .filter-group-heading { position:relative; z-index:1; min-height:52px; padding:14px 0; line-height:1.25; background:#fff; }
+  .wholesale-sidebar .filter-group .filter-list { position:relative; height:auto; min-height:0; max-height:none; padding:0 0 12px; overflow:visible; }
+  .wholesale-sidebar .filter-group .filter-list button { min-height:36px; height:auto; padding:8px 9px; line-height:1.35; }
+  .wholesale-sidebar .filter-group .filter-list button span { display:block; line-height:1.35; }
+
 .wholesale-sidebar .filter-group { position:relative; clear:both; overflow:visible; }
 .wholesale-sidebar .filter-group-heading, .wholesale-sidebar .filter-group .filter-list, .wholesale-sidebar .filter-group .filter-list li { position:relative; float:none; }
 .wholesale-sidebar .filter-group .filter-list li { display:block; width:100%; }
