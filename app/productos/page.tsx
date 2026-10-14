@@ -415,7 +415,23 @@ export default function ProductosPage() {
         </div>
       </section>
       <section className="wholesale-catalog">
-        <aside className="wholesale-sidebar">
+        <div className="wholesale-sidebar-stack">
+          {isLoggedIn && (
+            <a className="express-catalog-note" href="/envio-express">
+              <img src="/logo-express.svg" alt="Express" />
+              <div>
+                <strong>Envíos y retiros express</strong>
+                <span>
+                  Hacé tu pedido antes de las 12 hs y recibilo o retiralo en el
+                  día.
+                </span>
+                <b>
+                  Ver condiciones <ArrowRight size={13} />
+                </b>
+              </div>
+            </a>
+          )}
+          <aside className="wholesale-sidebar">
           <div className="eyebrow">CATÁLOGO MAYORISTA</div>
           <div className="catalog-filter-panel">
             <label className="quick-filter">
@@ -518,22 +534,8 @@ export default function ProductosPage() {
               );
             })}
           </div>
-          {isLoggedIn && (
-            <a className="express-catalog-note" href="/envio-express">
-              <img src="/logo-express.svg" alt="Express" />
-              <div>
-                <strong>Envíos y retiros express</strong>
-                <span>
-                  Hacé tu pedido antes de las 12 hs y recibilo o retiralo en el
-                  día.
-                </span>
-                <b>
-                  Ver condiciones <ArrowRight size={13} />
-                </b>
-              </div>
-            </a>
-          )}
         </aside>
+        </div>
         <div className="wholesale-results">
           <div className="catalog-toolbar">
             <div className="catalog-search-row">
