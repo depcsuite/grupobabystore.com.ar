@@ -67,13 +67,22 @@
   min-height: 24px;
   padding: 0;
   border: 0;
-  border-bottom: 1px solid #bfd2d6;
+  border: 0;
   border-radius: 0;
   color: var(--ink);
   background: transparent;
   text-align: center;
   font-size: 12px;
   font-weight: 700;
+  appearance: textfield;
+  -moz-appearance: textfield;
+  }
+
+.catalog-shell.is-logged-in .product-quantity-input::-webkit-outer-spin-button,
+.catalog-shell.is-logged-in .product-quantity-input::-webkit-inner-spin-button {
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .catalog-shell.is-logged-in .product-quantity-input:focus {

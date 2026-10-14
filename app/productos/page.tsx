@@ -650,7 +650,8 @@ export default function ProductosPage() {
                           </button>
                           <input
                             className="product-quantity-input"
-                            type="number"
+                            type="text"
+                            inputMode="numeric"
                             min="0"
                             step={product.packItems ?? 1}
                             value={quantity || ""}
