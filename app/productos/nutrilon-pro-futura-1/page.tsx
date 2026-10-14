@@ -1,7 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowLeft, Check, Minus, Plus, ShoppingBag } from 'lucide-react'
+import {
+  ArrowLeft,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Minus,
+  Plus,
+  ShoppingBag,
+  ShoppingCart,
+} from 'lucide-react'
 import { AccountMenu } from '@/components/account-menu'
 import { PromoTopbar } from '@/components/promo-topbar'
 import { useCart } from '@/components/cart-context'
@@ -19,8 +28,14 @@ const product = {
 
 const money = (value: number) => `$${value.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`
 
+const relatedProducts = [
+  { id: 'nutrilon-2', name: 'Nutrilon Profutura 2 Brick x 200 ml', code: 'AA NUT 2 BRICK PR', price: 1912, image: '/hero-nutrilon-1.jpg' },
+  { id: 'nutrilon-confort', name: 'Nutrilon Confort 1 Brick x 200 ml', code: 'AA NUT CONF BRICK', price: 1874, image: '/hero-nutrilon-1.jpg' },
+  { id: 'nutrilon-premium', name: 'Nutrilon Premium 1 Brick x 200 ml', code: 'AA NUT PREM BRICK', price: 1750, image: '/hero-nutrilon-1.jpg' },
+]
+
 export default function ProductDetailPage() {
-  const { addItem } = useCart()
+  const { addItem, count } = useCart()
   const [quantity, setQuantity] = useState(product.packItems)
   const [added, setAdded] = useState(false)
 
@@ -70,7 +85,16 @@ export default function ProductDetailPage() {
         </section>
 
         <section className="product-detail-info-grid"><article><p className="product-kicker">DETALLE DEL PRODUCTO</p><h2>Nutrición pensada para cada etapa</h2><p>Nutrilon Profutura 1 acompaña la alimentación del bebé desde sus primeros meses, con una fórmula avanzada y una presentación lista para ofrecer.</p></article><aside><div><span>Presentación</span><strong>Brick x 200 ml</strong></div><div><span>Marca</span><strong>Nutrilon</strong></div><div><span>Categoría</span><strong>Fórmulas Infantiles</strong></div></aside></section>
+
+        <section className="related-products-section" aria-labelledby="related-products-title">
+          <div className="related-products-heading"><div><p className="product-kicker">TAMBIÉN TE PUEDE INTERESAR</p><h2 id="related-products-title">Otras personas también vieron</h2></div><div className="related-products-controls"><button type="button" aria-label="Productos anteriores"><ChevronLeft size={17} /></button><button type="button" aria-label="Productos siguientes"><ChevronRight size={17} /></button></div></div>
+          <div className="related-products-track">
+            {relatedProducts.map((item) => <article className="related-product-card" key={item.id}><div className="related-product-image"><img src={item.image} alt="" /></div><p className="related-product-code">Código: {item.code}</p><h3>{item.name}</h3><strong>{money(item.price)}</strong><button type="button" onClick={() => addItem({ ...item, packItems: 4 })}><ShoppingBag size={15} /> Agregar</button></article>)}
+          </div>
+        </section>
       </div>
+
+      <a className="floating-cart-button product-floating-cart" href="/checkout" aria-label={`Abrir carrito con ${count} productos`}><ShoppingCart size={20} /><span>Carrito</span>{count > 0 && <b>{count}</b>}</a>
 
       <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><div className="footer-legal">© 2025 Grupo Baby Store<br />Distribuidor oficial</div></footer>
     </main>
