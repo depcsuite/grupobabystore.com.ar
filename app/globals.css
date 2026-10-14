@@ -216,7 +216,8 @@ button, input { font: inherit; }
 .header-order { border:1px solid #e995a5; background:#e995a5; color:#fff; font-size:11px; letter-spacing:.05em; }
 .header-order:hover { border-color:#d77c8f; background:#d77c8f; }
 .mobile-menu { display:none; }
-.search-row { max-width:1120px; margin:10px 24px 13px; padding:10px 15px; display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:12px; color:var(--muted); }
+.search-row { max-width:1120px; margin:10px auto 13px; padding:10px 15px; display:flex; align-items:center; gap:10px; border:1px solid var(--line); border-radius:12px; color:var(--muted); }
+.catalog-site-header .search-row { width:calc(100% - 48px); box-sizing:border-box; }
 .search-row input { flex:1; border:0; outline:0; color:var(--ink); }
 .hero { position:relative; width:100vw; max-width:none; margin-left:calc(50% - 50vw); aspect-ratio:2/1; max-height:590px; background:#e9f6f7; }
 .hero img { width:100%; height:100%; display:block; object-fit:cover; }

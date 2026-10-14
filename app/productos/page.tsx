@@ -330,6 +330,25 @@ export default function ProductosPage() {
             </button>
           </div>
         </div>
+        {searchOpen && (
+          <div className="search-row catalog-header-search">
+            <Search size={18} />
+            <input
+              autoFocus
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Buscá una marca o producto"
+              aria-label="Buscar una marca o producto"
+            />
+            <button
+              type="button"
+              onClick={() => setSearchOpen(false)}
+              aria-label="Cerrar búsqueda"
+            >
+              ×
+            </button>
+          </div>
+        )}
       </header>
       <section className="catalog-novelties" aria-labelledby="novelties-title">
         <div className="catalog-novelties-head">
@@ -734,25 +753,6 @@ export default function ProductosPage() {
         </div>
       </section>
       <SiteFooter showContact={false} />
-      {searchOpen && (
-        <div className="catalog-header-search">
-          <Search size={18} />
-          <input
-            autoFocus
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Buscá una marca o producto"
-            aria-label="Buscar una marca o producto"
-          />
-          <button
-            type="button"
-            onClick={() => setSearchOpen(false)}
-            aria-label="Cerrar búsqueda"
-          >
-            ×
-          </button>
-        </div>
-      )}
       {priceModalOpen && (
         <div
           className="modal-backdrop"
