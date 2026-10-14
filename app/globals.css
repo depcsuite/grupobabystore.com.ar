@@ -2,10 +2,49 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
-/* La lista mayorista reserva una columna propia para el subtotal, después de la cantidad. */
+/* La tabla mayorista mantiene cantidad, bulto y total en columnas independientes. */
 .catalog-shell.is-logged-in .catalog-columns {
-  grid-template-columns: minmax(0, 1fr) 96px 140px 168px;
+  grid-template-columns: minmax(0, 1fr) 96px 110px 96px 140px;
   align-items: center;
+}
+
+.catalog-shell.is-logged-in .wholesale-product {
+  grid-template-columns: 112px minmax(0, 1fr) 140px 110px 96px 150px;
+}
+
+.catalog-shell.is-logged-in .product-quantity-column {
+  display: flex;
+  justify-content: center;
+}
+
+.catalog-shell.is-logged-in .product-pack-column {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.catalog-shell.is-logged-in .item-total {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.catalog-shell.is-logged-in .item-total > strong {
+  color: var(--ink);
+  font-size: 15px;
+  text-align: center;
+}
+
+.catalog-shell.is-logged-in .product-subtotal {
+  display: none;
+}
+
+.catalog-empty {
+  margin: 0;
+  padding: 32px 24px;
+  color: var(--muted);
 }
 
 .catalog-shell.is-logged-in .catalog-columns > * {
@@ -237,5 +276,5 @@ footer { max-width:1192px; margin:auto; padding:54px 42px 30px; display:grid; gr
 
 .product-quantity-column { position:relative; min-width:0; }
 .product-quantity-column .quantity-stepper { min-width:0; min-height:44px; box-sizing:border-box; }
-.product-subtotal { position:absolute; top:calc(100% + 12px); left:0; width:100%; color:var(--blue); text-align:center; font-weight:800; font-size:14px; }
-@media (max-width:900px) { .product-quantity-column { grid-column:2; grid-row:2; justify-self:start; min-width:112px; margin-bottom:32px; } .wholesale-product .item-total { align-self:start; } .product-subtotal { font-size:12px; } }
+.product-subtotal { display:none; }
+@media (max-width:900px) { .product-quantity-column { grid-column:2; grid-row:2; justify-self:start; min-width:112px; margin-bottom:0; } .product-pack-column { grid-column:3; grid-row:2; align-self:center; } .wholesale-product .item-total { align-self:start; } }
