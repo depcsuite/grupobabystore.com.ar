@@ -391,3 +391,10 @@ footer { max-width:1192px; margin:auto; padding:54px 42px 30px; display:grid; gr
 .product-quantity-column .quantity-stepper { min-width:0; min-height:44px; box-sizing:border-box; }
 .product-subtotal { display:none; }
 @media (max-width:900px) { .product-quantity-column { grid-column:2; grid-row:2; justify-self:start; min-width:112px; margin-bottom:0; } .product-pack-column { grid-column:3; grid-row:2; align-self:center; } .wholesale-product .item-total { align-self:start; } }
+
+.order-card-top { grid-template-columns:minmax(150px,1fr) auto minmax(130px,auto) auto; align-items:center; gap:16px; }
+.order-amount { display:flex; flex-direction:column; align-items:flex-end; gap:2px; min-width:130px; padding-left:16px; border-left:1px solid var(--line); }
+.order-amount small { color:var(--muted); font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+.order-amount strong { color:var(--ink); font-size:18px; line-height:1; }
+.order-status { white-space:nowrap; }
+@media (max-width:680px) { .order-card-top { grid-template-columns:1fr auto; gap:8px 12px; } .order-status { grid-column:1; grid-row:2; justify-self:start; } .order-amount { grid-column:2; grid-row:1 / span 2; min-width:0; padding-left:10px; } .order-amount strong { font-size:16px; } }
