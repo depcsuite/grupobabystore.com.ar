@@ -1,22 +1,121 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowRight, Check, ChevronDown, Menu, Minus, Plus, ShoppingBag, X } from 'lucide-react'
-import { PromoTopbar } from '@/components/promo-topbar'
+import {
+  ArrowLeft,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Minus,
+  Plus,
+  Menu,
+  Search,
+  ShoppingBag,
+  ShoppingCart,
+  X,
+} from 'lucide-react'
 import { AccountMenu } from '@/components/account-menu'
+import { PromoTopbar } from '@/components/promo-topbar'
+import { useCart } from '@/components/cart-context'
+
+const product = {
+  id: 'nutrilon-pro-futura-1',
+  name: 'Promo 19% OFF Nutrilon Profutura 1 Brick x 200 ml',
+  shortName: 'Nutrilon Profutura 1 Brick x 200 ml',
+  code: 'AA NUT 1 BRICK PR',
+  price: 1808,
+  originalPrice: 2232,
+  packItems: 4,
+  image: '/hero-nutrilon-1.jpg',
+}
+
+const money = (value: number) => `$${value.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`
+
+const relatedProducts = [
+  { id: 'nutrilon-2', name: 'Nutrilon Profutura 2 Brick x 200 ml', code: 'AA NUT 2 BRICK PR', price: 1912, image: '/hero-nutrilon-1.jpg' },
+  { id: 'nutrilon-confort', name: 'Nutrilon Confort 1 Brick x 200 ml', code: 'AA NUT CONF BRICK', price: 1874, image: '/hero-nutrilon-1.jpg' },
+  { id: 'nutrilon-premium', name: 'Nutrilon Premium 1 Brick x 200 ml', code: 'AA NUT PREM BRICK', price: 1750, image: '/hero-nutrilon-1.jpg' },
+  { id: 'nutrilon-3', name: 'Nutrilon Profutura 3 Brick x 200 ml', code: 'AA NUT 3 BRICK PR', price: 1986, image: '/hero-nutrilon-1.jpg' },
+]
 
 export default function ProductDetailPage() {
-  const [quantity, setQuantity] = useState(1)
-  const [variant, setVariant] = useState('Promo')
-  const [selectedImage, setSelectedImage] = useState('/hero-nutrilon-1.jpg')
-  const [isZoomOpen, setIsZoomOpen] = useState(false)
-  const productImages = ['/hero-nutrilon-1.jpg', '/hero-nutrilon-1.jpg', '/hero-nutrilon-1.jpg']
-  const relatedProducts = [{ name: 'Nutrilon Profutura 2 Brick x 200 ml', price: '$1.720,00', href: '/productos/nutrilon-pro-futura-1' }, { name: 'Nutrilon Profutura 1 Tarro x 800 g', price: '$35.855,00', href: '/productos/nutrilon-pro-futura-1' }, { name: 'Nutrilon Profutura 1 Pack x 1,2 kg', price: '$46.161,00', href: '/productos/nutrilon-pro-futura-1' }]
-  return <main className="site-shell product-detail-shell">
-    <PromoTopbar />
-    <header className="site-header"><div className="header-inner"><button className="mobile-menu" aria-label="Abrir menú"><Menu /></button><a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /></a><nav className="main-nav" aria-label="Navegación principal"><a href="/">Inicio</a><a href="/nosotros">Nosotros</a><a className="active" href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/">Inicio</a><a href="/contacto">Contacto</a></nav><div className="header-actions"><AccountMenu /></div></div></header>
-    <div className="product-breadcrumb"><a href="/">Inicio</a><span>/</span><a href="/productos">Nutrilon</a><span>/</span><span>Etapa 1</span></div>
-    <section className="product-detail"><aside className="product-detail-sidebar"><div className="detail-side-title">PRODUCTOS</div><strong>Nutrilon</strong><a href="/productos?marca=Nutrilon">Etapa 1</a><a href="/productos?marca=Nutrilon">Etapa 2</a><a href="/productos?marca=Nutrilon">Etapa 3</a><a href="/productos?marca=Nutrilon">Etapa 4</a></aside><div className="product-gallery-column"><button className="product-gallery" onClick={() => setIsZoomOpen(true)} aria-label="Ampliar imagen del producto"><span className="offer-badge">OFERTA</span><img src={selectedImage} alt="Nutrilon Pro Futura 1 Brick x 200ml" /><span className="zoom-hint">Ampliar imagen</span></button><div className="product-thumbnails" aria-label="Otras imágenes del producto">{productImages.map((image, index) => <button className={selectedImage === image && index === 0 ? 'product-thumbnail active' : 'product-thumbnail'} key={`${image}-${index}`} onClick={() => setSelectedImage(image)} aria-label={`Ver imagen ${index + 1}`}><img src={image} alt="" /></button>)}</div></div>{isZoomOpen && <div className="product-lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada del producto" onClick={() => setIsZoomOpen(false)}><button className="lightbox-close" onClick={() => setIsZoomOpen(false)} aria-label="Cerrar imagen ampliada"><X size={22} /></button><img src={selectedImage} alt="Nutrilon Pro Futura 1 Brick x 200ml ampliado" onClick={event => event.stopPropagation()} /></div>}<div className="product-info-panel"><div className="eyebrow">NUTRILON · ETAPA 1 · PROMOCIÓN</div><h1>Promo 19% OFF Nutrilon Profutura 1 Brick x 200 ml</h1><div className="product-price-row"><del>$2.232,00</del><strong>$1.808,00</strong><span>+ IVA</span></div><p className="product-code">Código: AA NUT 1 BRICK PR</p><h2>Descripción del producto</h2><p>Nueva fórmula avanzada con prebióticos GOS/FOS y postbiótico HMO para acompañar la nutrición infantil. Ideal para sumar una opción de nutrición de primera línea a tu catálogo mayorista.</p><div className="purchase-box"><label>Variante<select value={variant} onChange={event => setVariant(event.target.value)}><option>Promo</option><option>Regular</option></select></label><div className="stock"><Check size={17} /> Hay existencias</div><div className="quantity-row"><div className="quantity-control"><button onClick={() => setQuantity(Math.max(1, quantity - 1))} aria-label="Disminuir cantidad"><Minus size={15} /></button><span>{quantity}</span><button onClick={() => setQuantity(quantity + 1)} aria-label="Aumentar cantidad"><Plus size={15} /></button></div><a className="primary-button" href="/iniciar-sesion">Añadir al carrito <ArrowRight size={16} /></a></div></div></div></section>
-    <section className="related-products"><div className="eyebrow">NUTRILON · ETAPA 1</div><h2>Otras personas también vieron</h2><div className="related-product-grid">{relatedProducts.map(product => <a className="related-product-card" href={product.href} key={product.name}><img src="/hero-nutrilon-1.jpg" alt={product.name} /><div><span className="related-tag">PRODUCTO RELACIONADO</span><h3>{product.name}</h3><strong>{product.price}</strong></div><ArrowRight size={18} /></a>)}</div></section><footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><div className="footer-legal">© 2025 Grupo Baby Store<br />Distribuidor oficial</div></footer>
-  </main>
+  const { addItem, count } = useCart()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [quantity, setQuantity] = useState(product.packItems)
+  const [added, setAdded] = useState(false)
+
+  const changeQuantity = (next: number) => setQuantity(Math.max(product.packItems, next))
+  const addToCart = () => {
+    addItem(product)
+    setAdded(true)
+    window.setTimeout(() => setAdded(false), 1600)
+  }
+
+  return (
+    <main className="site-shell product-detail-shell">
+      <PromoTopbar />
+      <header className="site-header">
+        <div className="header-inner">
+          <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+          <a className="brand" href="#inicio" aria-label="Grupo Baby Store inicio">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" />
+          </a>
+          <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
+            <a href="/">Inicio</a>
+            <a href="/productos">Productos</a>
+            <a href="/nosotros">Nosotros</a>
+            <a href="/como-comprar">Cómo comprar</a>
+            <a href="/contacto">Contacto</a>
+          </nav>
+          <div className="header-actions">
+            <AccountMenu />
+            <button aria-label="Buscar" className="icon-button" onClick={() => setSearchOpen(!searchOpen)}><Search /></button>
+          </div>
+        </div>
+        {searchOpen && <div className="search-row"><Search size={18} /><input autoFocus placeholder="Buscá una marca o producto" aria-label="Buscar una marca o producto" /><button onClick={() => setSearchOpen(false)} aria-label="Cerrar búsqueda"><X size={18} /></button></div>}
+      </header>
+
+      <div className="product-detail-wrap">
+        <nav className="product-detail-breadcrumb" aria-label="Migas de pan"><a href="/productos"><ArrowLeft size={15} /> Volver a productos</a><span>/</span><span>Nutrilon · Etapa 1</span></nav>
+        <section className="product-hero-card">
+          <div className="product-hero-media">
+            <span className="product-offer-label">OFERTA MAYORISTA</span>
+            <img src={product.image} alt={product.shortName} />
+          </div>
+          <div className="product-hero-copy">
+            <p className="product-kicker">NUTRILON / ETAPA 1 / PROMOCIÓN</p>
+            <h1>{product.name}</h1>
+            <p className="product-code-line">Código: {product.code}</p>
+            <div className="product-price-block"><span className="product-old-price">{money(product.originalPrice)}</span><strong>{money(product.price)}</strong><small>+ IVA</small></div>
+            <div className="product-pack-note"><span>Pack mayorista</span><strong>{product.packItems} unidades por bulto</strong></div>
+            <p className="product-description">Nueva fórmula avanzada con prebióticos GOS/FOS y postbiótico HMO para acompañar la nutrición infantil. Una presentación práctica para sumar a tu catálogo mayorista.</p>
+            <div className="product-stock"><Check size={16} /> Hay existencias disponibles</div>
+            <div className="product-buy-row">
+              <div className="product-detail-stepper" aria-label="Cantidad de unidades">
+                <button type="button" onClick={() => changeQuantity(quantity - product.packItems)} disabled={quantity <= product.packItems} aria-label="Disminuir cantidad"><Minus size={15} /></button>
+                <strong>{quantity}</strong>
+                <button type="button" onClick={() => changeQuantity(quantity + product.packItems)} aria-label="Aumentar cantidad"><Plus size={15} /></button>
+              </div>
+              <button className={`product-add-button${added ? ' is-added' : ''}`} type="button" onClick={addToCart}>{added ? <><Check size={17} /> Agregado</> : <><ShoppingBag size={17} /> Agregar al carrito</>}</button>
+            </div>
+            <small className="product-buy-hint">La cantidad se modifica en múltiplos de {product.packItems}, según el pack.</small>
+          </div>
+        </section>
+
+        <section className="product-detail-info-grid"><article><p className="product-kicker">DETALLE DEL PRODUCTO</p><h2>Nutrición pensada para cada etapa</h2><p>Nutrilon Profutura 1 acompaña la alimentación del bebé desde sus primeros meses, con una fórmula avanzada y una presentación lista para ofrecer.</p></article><aside><div><span>Presentación</span><strong>Brick x 200 ml</strong></div><div><span>Marca</span><strong>Nutrilon</strong></div><div><span>Categoría</span><strong>Fórmulas Infantiles</strong></div></aside></section>
+
+        <section className="related-products-section" aria-labelledby="related-products-title">
+          <div className="related-products-heading"><div><p className="product-kicker">TAMBIÉN TE PUEDE INTERESAR</p><h2 id="related-products-title">Otras personas también vieron</h2></div><div className="related-products-controls"><button type="button" aria-label="Productos anteriores"><ChevronLeft size={17} /></button><button type="button" aria-label="Productos siguientes"><ChevronRight size={17} /></button></div></div>
+          <div className="related-products-track">
+            {relatedProducts.map((item) => <article className="novelty-card related-product-card" key={item.id}><div className="novelty-image related-product-image"><span>NUEVO</span><img src={item.image} alt={item.name} /></div><div className="novelty-card-body"><h2 className="novelty-product-title">{item.name}</h2><small className="novelty-product-code">Código: {item.code}</small><span className="pack-quantity">Pack de 4 unidades</span><strong>{money(item.price)}</strong><button type="button" onClick={() => addItem({ ...item, packItems: 4 })}><ShoppingBag size={15} /> Agregar al carrito</button></div></article>)}
+          </div>
+        </section>
+      </div>
+
+      <a className="floating-cart-button product-floating-cart" href="/checkout" aria-label={`Abrir carrito con ${count} productos`}><ShoppingCart size={20} /><span>Carrito</span>{count > 0 && <b>{count}</b>}</a>
+
+      <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><div className="footer-legal">© 2025 Grupo Baby Store<br />Distribuidor oficial</div></footer>
+    </main>
+  )
 }
