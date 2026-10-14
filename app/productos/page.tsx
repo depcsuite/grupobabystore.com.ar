@@ -20,10 +20,9 @@ const money = (value: number) => `$${value.toLocaleString('es-AR')}`
 const filterGroups = [
   { name: 'Promos accesorios', items: ['Bbox', 'Suavinex', 'Avent', 'Nuk', 'Chicco', 'Lansinoh', 'Bibs', 'Loopi', 'Baby Innovation', 'Minikoioi', 'Phi Phi Toys', 'Nuby', 'Lillo', 'Poco Piano', 'Love', 'Safety 1st', 'Punti', 'Ok Baby', 'Happy Little Moments'] },
   { name: 'Promos juguetes', items: ['Baby Einstein', 'Baby Sunki', 'Bright Starts', "J'Adore", 'Juliana', 'Phi Phi Toys', 'Pure Baby', 'Rondi', 'Soft Blocks', 'Sophie', 'V Tech', 'LeapFrog', 'Ok Baby', 'Win Fun', 'Playgro', 'Blocky', 'Rasti', 'Calesita', 'Animal Life', 'Bestway'] },
-  { name: 'Nutrición infantil', items: ['Nutrilon', 'Vital', 'La Serenísima Baby', 'Sancor', 'NAN', 'Nidina', 'Nido', 'Nestum'] },
-  { name: 'Accesorios', items: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Baby Innovation', 'Loopi', 'Punti', 'Minikoioi', 'Ingenuity', 'Bright Starts', 'Baby Einstein', 'Bubba', 'Contigo', 'Termy'] },
+  { name: 'Fórmulas Infantiles', items: ['Nutrilon', 'Vital', 'La Serenísima Baby', 'Sancor', 'NAN', 'Nidina', 'Nido', 'Nestum'] },
+  { name: 'Puericultura Liviana', items: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Baby Innovation', 'Loopi', 'Punti', 'Minikoioi', 'Ingenuity', 'Bright Starts', 'Baby Einstein', 'Bubba', 'Contigo', 'Termy'] },
   { name: 'Juguetes', items: ['Tatoon', 'Tramontina', 'Baby Safe', 'Ok Baby', 'A Wish', 'Floating Baby', 'Min Renée', 'Pocopiano', 'Woody Toys', 'Soft Blocks', "J'Adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'VTech', '5 Sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'PhiPhi Toys Madera', 'Bestway', 'Outlet'] },
-  { name: 'Categorías', items: ['Fórmulas Infantiles', 'Puericultura Liviana: Accesorios para el cuidado y crianza del bebé', 'Juguetes: Didácticos y Primera infancia'] },
 ]
 export default function ProductosPage() {
   const { isLoggedIn, isReady: authChecked } = useAuthSession()
@@ -42,7 +41,7 @@ export default function ProductosPage() {
   const [priceModalOpen, setPriceModalOpen] = useState(false)
   const [selectedPriceBrands, setSelectedPriceBrands] = useState<string[]>([])
   const [noveltyIndex, setNoveltyIndex] = useState(0)
-  const brands = Array.from(new Set(filterGroups.filter(group => group.name !== 'Categorías').flatMap(group => group.items)))
+  const brands = Array.from(new Set(filterGroups.flatMap(group => group.items)))
   useEffect(() => { setCartOpen(false) }, [count])
   const downloadPriceList = () => { const exportProducts = selectedPriceBrands.length ? products.filter(product => selectedPriceBrands.includes(product.brand)) : products; const rows = exportProducts.map(product => `<tr><td>${product.brand}</td><td>${product.name}</td><td>${product.code}</td><td>${product.price}</td><td>${product.originalPrice ?? ''}</td></tr>`).join(''); const blob = new Blob([`<table><tr><th>Marca</th><th>Producto</th><th>Código</th><th>Precio sin IVA</th><th>Precio anterior</th></tr>${rows}</table>`], { type: 'application/vnd.ms-excel' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'lista-de-precios-grupo-baby-store.xls'; link.click(); URL.revokeObjectURL(url) }
   const filtered = useMemo(() => products.filter(product => `${product.name} ${product.code}`.toLowerCase().includes(query.toLowerCase()) && (!selectedBrand || product.brand.toLowerCase() === selectedBrand.toLowerCase()) && (!selectedCategory || product.category.toLowerCase().includes(selectedCategory.toLowerCase()) || product.name.toLowerCase().includes(selectedCategory.toLowerCase()))), [query, selectedBrand, selectedCategory])
