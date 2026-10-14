@@ -4,12 +4,12 @@
 
 /* La tabla mayorista mantiene cantidad, bulto y total en columnas independientes. */
 .catalog-shell.is-logged-in .catalog-columns {
-  grid-template-columns: minmax(0, 1fr) 96px 110px 96px 140px;
+  grid-template-columns: minmax(0, 1fr) 82px 88px 76px 110px;
   align-items: center;
 }
 
 .catalog-shell.is-logged-in .wholesale-product {
-  grid-template-columns: 112px minmax(0, 1fr) 140px 110px 96px 150px;
+  grid-template-columns: 112px minmax(0, 1fr) 110px 82px 76px 110px;
 }
 
 .catalog-shell.is-logged-in .product-quantity-column {
