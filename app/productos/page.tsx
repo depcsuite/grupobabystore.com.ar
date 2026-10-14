@@ -201,6 +201,7 @@ export default function ProductosPage() {
     filterGroups[0].name,
   ]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [cartPulse, setCartPulse] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [promoIndex, setPromoIndex] = useState(0);
   const promoMessages = [
@@ -229,6 +230,11 @@ export default function ProductosPage() {
   useEffect(() => {
     setCartOpen(false);
   }, [count]);
+  const handleAddToCart = (product: (typeof products)[number]) => {
+    addItem(product);
+    setCartPulse(true);
+    window.setTimeout(() => setCartPulse(false), 650);
+  };
   const downloadPriceList = () => {
     const exportProducts = selectedPriceBrands.length
       ? products.filter((product) =>
@@ -399,7 +405,7 @@ export default function ProductosPage() {
                         window.location.href = "/iniciar-sesion";
                         return;
                       }
-                      addItem(product);
+                          handleAddToCart(product);
                     }}
                   >
                     <ShoppingCart size={16} aria-hidden="true" />
@@ -602,9 +608,9 @@ export default function ProductosPage() {
                           {product.name}
                         </a>
                       </h3>
-                      <p>
-                        {product.category} · Código:{" "}
-                        <strong>{product.code}</strong>
+                      <p>{product.category}</p>
+                      <p className="product-code-line">
+                        Código: <strong>{product.code}</strong>
                       </p>
                     </div>
                     <div
@@ -639,7 +645,7 @@ export default function ProductosPage() {
                           </button>
                           <strong>{quantity}</strong>
                           <button
-                            onClick={() => addItem({ ...product })}
+                            onClick={() => handleAddToCart(product)}
                             aria-label={`Agregar ${product.name}`}
                           >
                             <Plus size={14} />
@@ -765,7 +771,7 @@ export default function ProductosPage() {
         </div>
       )}
       <button
-        className="floating-cart-button"
+        className={`floating-cart-button${cartPulse ? " is-pulsing" : ""}`}
         type="button"
         onClick={() => setCartOpen(true)}
         aria-label={`Abrir carrito con ${count} productos`}
