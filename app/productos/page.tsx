@@ -570,8 +570,8 @@ export default function ProductosPage() {
             {isLoggedIn ? (
               <>
                 <span>Valor unitario</span>
-                <span>Cantidad</span>
-                <span>Cant x bulto</span>
+  <span>Cant x bulto</span>
+  <span>Cantidad</span>
                 <span>Total ítem</span>
               </>
             ) : (
