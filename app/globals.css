@@ -31,22 +31,57 @@
   font-weight: 700;
   }
 
-.catalog-shell.is-logged-in .product-quantity-input {
-  width: 56px;
-  min-height: 30px;
-  padding: 4px 3px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+.catalog-shell.is-logged-in .quantity-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 26px;
+}
+
+.catalog-shell.is-logged-in .quantity-stepper button {
+  display: inline-flex;
+  width: 20px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  color: var(--blue);
+  background: transparent;
+  cursor: pointer;
+}
+
+.catalog-shell.is-logged-in .quantity-stepper button:hover:not(:disabled) {
   color: var(--ink);
-  background: #fff;
+  background: #edf5f7;
+  border-radius: 4px;
+}
+
+.catalog-shell.is-logged-in .quantity-stepper button:disabled {
+  color: #b8c8cc;
+  cursor: not-allowed;
+}
+
+.catalog-shell.is-logged-in .product-quantity-input {
+  width: 34px;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid #bfd2d6;
+  border-radius: 0;
+  color: var(--ink);
+  background: transparent;
   text-align: center;
+  font-size: 12px;
   font-weight: 700;
-  }
+}
 
 .catalog-shell.is-logged-in .product-quantity-input:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-  }
+  outline: 0;
+  border-bottom-color: var(--blue);
+}
+
+
 
 .catalog-shell.is-logged-in .product-quantity-column {
   display: flex;
