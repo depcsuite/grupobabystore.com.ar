@@ -26,6 +26,7 @@ const products = [
     code: "AA NUT 1 BRICK PR",
     price: 1808,
     originalPrice: 2232,
+    packItems: 4,
   },
   {
     id: "nutrilon-1-tarro",
@@ -642,7 +643,10 @@ export default function ProductosPage() {
                         <div className="quantity-stepper">
                           <button
                             onClick={() =>
-                              updateQuantity(product.id, quantity - 1)
+                              updateQuantity(
+                                product.id,
+                                quantity - (product.packItems ?? 1),
+                              )
                             }
                             disabled={!quantity}
                             aria-label={`Quitar ${product.name}`}
