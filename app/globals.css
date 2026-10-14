@@ -2,6 +2,39 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 
+/* La lista mayorista reserva una columna propia para el subtotal, después de la cantidad. */
+.catalog-shell.is-logged-in .catalog-columns {
+  grid-template-columns: minmax(0, 1fr) 96px 140px 168px;
+  align-items: center;
+}
+
+.catalog-shell.is-logged-in .catalog-columns > * {
+  min-width: 0;
+}
+
+.catalog-shell.is-logged-in .catalog-columns .catalog-item-subtotal,
+.catalog-shell.is-logged-in .catalog-columns [data-column="subtotal"] {
+  display: block;
+  grid-column: 3;
+  text-align: right;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.catalog-shell.is-logged-in .catalog-columns .catalog-item-actions,
+.catalog-shell.is-logged-in .catalog-columns [data-column="actions"] {
+  grid-column: 4;
+}
+
+.catalog-shell.is-logged-in .catalog-columns .catalog-item-subtotal + .catalog-item-actions {
+  margin-top: 0;
+}
+
+.catalog-shell.is-guest .catalog-columns .catalog-item-subtotal,
+.catalog-shell.is-guest .catalog-columns [data-column="subtotal"] {
+  display: none;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root { color-scheme: light; --ink: #263b4a; --muted: #667987; --blue: #287fba; --sky: #e6f5f8; --coral: #f48588; --yellow: #f7c544; --mint: #d8f0e6; --line: #dce7eb; --radius: 18px; }
