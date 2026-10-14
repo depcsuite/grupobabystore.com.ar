@@ -271,13 +271,15 @@ footer { max-width:1192px; margin:auto; padding:54px 42px 30px; display:grid; gr
 .related-products-controls { display:flex; gap:6px; }
 .related-products-controls button { display:grid; width:34px; height:34px; place-items:center; border:1px solid #d6e7e8; border-radius:50%; color:var(--blue); background:#fff; cursor:pointer; }
 .related-products-track { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-.related-product-card { display:flex; flex-direction:column; min-width:0; padding:16px; border:1px solid #dbeaec; border-radius:16px; background:#fff; }
-.related-product-image { display:grid; height:160px; place-items:center; margin-bottom:12px; border-radius:12px; background:#f2f8f8; }
-.related-product-image img { width:76%; height:140px; object-fit:contain; mix-blend-mode:multiply; }
-.related-product-code { margin:0 0 5px; color:var(--muted); font-size:10px; }
-.related-product-card h3 { min-height:42px; margin:0; color:var(--ink); font-size:14px; line-height:1.2; }
-.related-product-card > strong { margin-top:12px; color:var(--blue); font-size:18px; }
-.related-product-card > button { display:inline-flex; align-items:center; justify-content:center; gap:6px; margin-top:14px; min-height:36px; border:0; border-radius:8px; color:#fff; background:var(--blue); font-size:12px; font-weight:800; cursor:pointer; }
+.related-product-card { display:flex; flex-direction:column; min-width:0; padding:0; border:1px solid #dbeaec; border-radius:16px; background:#fff; overflow:hidden; }
+.related-product-image { height:178px; margin:0; border-radius:0; background:#f2f8f8; }
+.related-product-image img { width:76%; height:148px; object-fit:contain; mix-blend-mode:multiply; }
+.related-product-card .novelty-card-body { min-height:178px; padding:14px 16px 16px; }
+.related-product-card .novelty-product-title { min-height:0; }
+.related-product-card .novelty-product-code { margin-top:1px; }
+.related-product-card .pack-quantity { margin-top:2px; }
+.related-product-card .novelty-card-body strong { margin-top:10px; }
+.related-product-card .novelty-card-body button { margin-top:auto; min-height:36px; }
 .product-add-button.is-added { color:#fff; background:#4f9a72; }
 .product-buy-hint { margin-top:8px; color:var(--muted); font-size:11px; }
 .product-detail-info-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:32px; margin-top:32px; padding:34px; border-radius:24px; background:#f2f8f8; }

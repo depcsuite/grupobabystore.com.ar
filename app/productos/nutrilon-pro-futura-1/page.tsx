@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
         <section className="related-products-section" aria-labelledby="related-products-title">
           <div className="related-products-heading"><div><p className="product-kicker">TAMBIÉN TE PUEDE INTERESAR</p><h2 id="related-products-title">Otras personas también vieron</h2></div><div className="related-products-controls"><button type="button" aria-label="Productos anteriores"><ChevronLeft size={17} /></button><button type="button" aria-label="Productos siguientes"><ChevronRight size={17} /></button></div></div>
           <div className="related-products-track">
-            {relatedProducts.map((item) => <article className="related-product-card" key={item.id}><div className="related-product-image"><img src={item.image} alt="" /></div><p className="related-product-code">Código: {item.code}</p><h3>{item.name}</h3><strong>{money(item.price)}</strong><button type="button" onClick={() => addItem({ ...item, packItems: 4 })}><ShoppingBag size={15} /> Agregar</button></article>)}
+            {relatedProducts.map((item) => <article className="novelty-card related-product-card" key={item.id}><div className="novelty-image related-product-image"><span>VISTO</span><img src={item.image} alt={item.name} /></div><div className="novelty-card-body"><h2 className="novelty-product-title">{item.name}</h2><small className="novelty-product-code">Código: {item.code}</small><span className="pack-quantity">Pack de 4 unidades</span><strong>{money(item.price)}</strong><button type="button" onClick={() => addItem({ ...item, packItems: 4 })}><ShoppingBag size={15} /> Agregar al carrito</button></div></article>)}
           </div>
         </section>
       </div>
