@@ -50,7 +50,19 @@
 
 .catalog-shell.is-logged-in .product-quantity-column {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 4px;
+}
+
+.catalog-shell.is-logged-in .quantity-validation-error {
+  max-width: 112px;
+  color: #c24156;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
 }
 
 .catalog-shell.is-logged-in .product-pack-column {

@@ -225,6 +225,7 @@ export default function ProductosPage() {
   const [priceModalOpen, setPriceModalOpen] = useState(false);
   const [selectedPriceBrands, setSelectedPriceBrands] = useState<string[]>([]);
   const [noveltyIndex, setNoveltyIndex] = useState(0);
+  const [quantityErrors, setQuantityErrors] = useState<Record<string, string>>({});
   const brands = Array.from(
     new Set(filterGroups.flatMap((group) => group.items)),
   );
@@ -654,28 +655,57 @@ export default function ProductosPage() {
                             step={product.packItems ?? 1}
                             value={quantity || ""}
                             onChange={(event) => {
-                              const nextQuantity = Number(event.target.value);
+                              const rawValue = event.target.value;
+                              const nextQuantity = Number(rawValue);
                               const packSize = product.packItems ?? 1;
+                              if (rawValue === "") {
+                                setQuantityErrors((current) => ({
+                                  ...current,
+                                  [product.id]: "",
+                                }));
+                                updateQuantity(product.id, 0);
+                                return;
+                              }
                               if (!Number.isInteger(nextQuantity) || nextQuantity < 0) {
+                                setQuantityErrors((current) => ({
+                                  ...current,
+                                  [product.id]: "Ingresá una cantidad válida.",
+                                }));
                                 return;
                               }
                               if (nextQuantity > 0 && nextQuantity % packSize !== 0) {
-                                window.alert(
-                                  `La cantidad debe ser un múltiplo de ${packSize} unidades por bulto.`,
-                                );
+                                setQuantityErrors((current) => ({
+                                  ...current,
+                                  [product.id]: `Debe ser múltiplo de ${packSize}.`,
+                                }));
                                 return;
                               }
+                              setQuantityErrors((current) => ({
+                                ...current,
+                                [product.id]: "",
+                              }));
                               updateQuantity(product.id, nextQuantity);
                             }}
                             aria-label={`Cantidad de ${product.name}`}
                           />
                           <button
-                            onClick={() => handleAddToCart(product)}
+                            onClick={() => {
+                              setQuantityErrors((current) => ({
+                                ...current,
+                                [product.id]: "",
+                              }));
+                              handleAddToCart(product);
+                            }}
                             aria-label={`Agregar ${product.name}`}
                           >
                             <Plus size={14} />
                           </button>
                         </div>
+                        {quantityErrors[product.id] && (
+                          <small className="quantity-validation-error" role="alert">
+                            {quantityErrors[product.id]}
+                          </small>
+                        )}
                       </div>
                     )}
                     {isLoggedIn && (
