@@ -35,6 +35,7 @@ const relatedProducts = [
   { id: 'nutrilon-2', name: 'Nutrilon Profutura 2 Brick x 200 ml', code: 'AA NUT 2 BRICK PR', price: 1912, image: '/hero-nutrilon-1.jpg' },
   { id: 'nutrilon-confort', name: 'Nutrilon Confort 1 Brick x 200 ml', code: 'AA NUT CONF BRICK', price: 1874, image: '/hero-nutrilon-1.jpg' },
   { id: 'nutrilon-premium', name: 'Nutrilon Premium 1 Brick x 200 ml', code: 'AA NUT PREM BRICK', price: 1750, image: '/hero-nutrilon-1.jpg' },
+  { id: 'nutrilon-3', name: 'Nutrilon Profutura 3 Brick x 200 ml', code: 'AA NUT 3 BRICK PR', price: 1986, image: '/hero-nutrilon-1.jpg' },
 ]
 
 export default function ProductDetailPage() {
