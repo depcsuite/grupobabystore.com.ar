@@ -8,6 +8,10 @@ import {
   Clock3,
   Mail,
   MapPin,
+  Baby,
+  Droplets,
+  Gamepad2,
+  Milk,
   Menu,
   MessageCircle,
   PackageCheck,
@@ -116,11 +120,11 @@ const banners = [
   ]
 
 const categories = [
-  { label: 'Leches Infantiles', icon: '◒', color: 'coral', brands: ['Nutrilon', 'Vital', 'Serenísima', 'Sancor', 'Nestle', 'Nidina', 'Nido', 'Nestum'] },
-  { label: 'Puericultura Liviana', icon: '✦', color: 'sky', brands: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Nursimom', 'Nursimom Baby', 'Baby Innovation', 'Loopi', 'Punti', 'Ingenuity', 'Minikoioi', 'Tatoon', 'Tramontina', 'Ok Baby'] },
-  { label: 'Hidratación', icon: '◌', color: 'mint', brands: ['Bubba', 'Contigo', 'Termy'] },
-  { label: 'Accesorios', icon: '✦', color: 'yellow', brands: ['DEMA', 'A Wish Deco', 'Floating Baby', 'Min Renee', 'Baby Safe', 'Poco Piano'] },
-  { label: 'Juguetes', icon: '⊹', color: 'coral', brands: ['Bright Stars', 'Baby Einstein', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phi Phi toys', 'Bestway'] },
+  { label: 'Leches Infantiles', icon: 'milk', color: 'coral', brands: ['Nutrilon', 'Vital', 'Serenísima', 'Sancor', 'Nestle', 'Nidina', 'Nido', 'Nestum'] },
+  { label: 'Puericultura Liviana', icon: 'baby', color: 'sky', brands: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Nursimom', 'Nursimom Baby', 'Baby Innovation', 'Loopi', 'Punti', 'Ingenuity', 'Minikoioi', 'Tatoon', 'Tramontina', 'Ok Baby'] },
+  { label: 'Hidratación', icon: 'droplets', color: 'mint', brands: ['Bubba', 'Contigo', 'Termy'] },
+  { label: 'Accesorios', icon: 'shopping-bag', color: 'yellow', brands: ['DEMA', 'A Wish Deco', 'Floating Baby', 'Min Renee', 'Baby Safe', 'Poco Piano'] },
+  { label: 'Juguetes', icon: 'gamepad', color: 'coral', brands: ['Bright Stars', 'Baby Einstein', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phi Phi toys', 'Bestway'] },
 ]
 
 const categorySubtitles: Record<string, string> = {
@@ -129,6 +133,11 @@ const categorySubtitles: Record<string, string> = {
   Hidratación: 'Botellas y accesorios para acompañarlos siempre',
   Accesorios: 'Detalles funcionales para cuidar cada momento',
   Juguetes: 'Juego, aprendizaje y diversión',
+}
+
+function CategoryIcon({ name }: { name: string }) {
+  const Icon = name === 'milk' ? Milk : name === 'baby' ? Baby : name === 'droplets' ? Droplets : name === 'gamepad' ? Gamepad2 : ShoppingBag
+  return <Icon aria-hidden="true" />
 }
 
 const normalizeBrand = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f.']/g, '').toLowerCase()
@@ -192,12 +201,13 @@ export default function Page() {
         <div className="section-heading"><div><div className="eyebrow">NUESTRO CATÁLOGO</div><h2>Marcas para cada etapa</h2></div><a href="/productos" className="text-link">Ver todos los productos <ArrowRight size={16} /></a></div>
         <p className="section-lead">Trabajamos con las marcas más importantes del mundo para que encuentres siempre lo mejor para tus clientes.</p>
 <div className="brand-category-filters" role="tablist" aria-label="Filtrar marcas por categoría">
-  {['Todas', ...categories.map((category) => category.label)].map((categoryName) => <button type="button" role="tab" aria-selected={activeCategory === categoryName} className={activeCategory === categoryName ? 'is-active' : ''} onClick={() => setActiveCategory(categoryName)} key={categoryName}>{categoryName}</button>)}
+  <button type="button" role="tab" aria-selected={activeCategory === 'Todas'} className={activeCategory === 'Todas' ? 'is-active' : ''} onClick={() => setActiveCategory('Todas')}><ShoppingBag aria-hidden="true" />Todas</button>
+  {categories.map((category) => <button type="button" role="tab" aria-selected={activeCategory === category.label} className={activeCategory === category.label ? 'is-active' : ''} onClick={() => setActiveCategory(category.label)} key={category.label}><CategoryIcon name={category.icon} />{category.label}</button>)}
 </div>
 <div className="brand-category-list" aria-label="Marcas agrupadas por categoría">
   {categories.filter((category) => activeCategory === 'Todas' || activeCategory === category.label).map((category) => (
             <section className={`brand-category brand-category-${category.color}`} key={category.label} aria-labelledby={`category-${category.label}`}>
-              <div className="brand-category-heading"><h3 id={`category-${category.label}`}>{category.label}</h3><p>{categorySubtitles[category.label]}</p></div>
+              <div className="brand-category-heading"><div className="brand-category-title"><CategoryIcon name={category.icon} /><h3 id={`category-${category.label}`}>{category.label}</h3></div><p>{categorySubtitles[category.label]}</p></div>
               <div className="brand-logo-grid">
                 {category.brands.map((brandName) => {
                   const brand = getBrandAsset(brandName)
