@@ -8,6 +8,10 @@ import {
   Clock3,
   Mail,
   MapPin,
+  Baby,
+  Droplets,
+  Gamepad2,
+  Milk,
   Menu,
   MessageCircle,
   PackageCheck,
@@ -69,6 +73,10 @@ const banners = [
     { name: 'Nestlé NIDO', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/nido-evvisuB3QL1OhtE8zJkbZzH45R6L8j.png' },
     { name: 'Nestlé Nestum', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/nestum-dIg4ABI7UdWNeCBMz14memjMDYqHBs.png' },
     { name: 'Philips Avent', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/event-t1wrPnRLKQtb9WSIrkjvOvD6P9Wmfz.jpg' },
+  { name: 'Nuk', src: '/nuk.png' },
+  { name: 'Nuby', src: '/nuby.webp' },
+  { name: 'Bbox', src: '/bbox.png' },
+  { name: 'Chicco', src: '/chicco.png' },
     { name: 'Suavinex', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/suavinex-HalzaABpLN8Ww2GgTmukIaBDADwX1K.png' },
     { name: 'BIBS', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bibs-bELCVMQsj0gYnJmqhDbmBmy9W5yJNF.png' },
     { name: 'Lillo', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/lillo-eS8IcApsMvxnYTOIHTahOXPmt2dSgI.png' },
@@ -91,27 +99,56 @@ const banners = [
     { name: 'Poco Piano', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/poco-piano-716IHQbahgVoUZGUwSoTBDHYt0saGY.jpg' },
     { name: 'Woody Toys', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/woody-toys-8sfX7qeW5crUltCGCAWamm3WnPUlfY.png' },
     { name: 'Soft Blocks', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/soft-blocks-b9YytgjvCvJkj1NCdYROn1rJDmMC2N.jpg' },
-    { name: 'J’adore Paris', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/jadore-heh5aPcXGsRuDUQ1XMUAJq3iO5iXZv.jpg' },
+    { name: 'J’adore Paris', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/jadore-xfJBLaus6inCQe6vFGbRjG3X1bmrE4.jpg' },
     { name: 'Baby Favorite', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/baby-favorite-64gZT1Ok4qZEwAuzY2PPFDZ37RyxvI.jpg' },
     { name: 'Little Learner', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/little-learner-cxxgrUx5N0ACNZY7XoWz8001ol9snJ.jpg' },
     { name: 'Baby Sunki', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/baby-sunki-0TSzzmVX8XIm35Ion0oQvJLXAYMF3t.jpg' },
     { name: 'VTech', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/vtech-t66BFbcEStuxVKMfWl64IROF0ZcjhL.jpg' },
+    { name: 'Baby Einstein', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/baby-einstein-JGeyfh6ellYGrQirpqFHsujozKEom2.png' },
+    { name: 'Bright Stars', src: '/bright-starts.png' },
+    { name: 'Bubba', src: '/buba.jpg' },
+    { name: 'Ingenuity', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ingenuity-iI4SYkkPmZJev19tvMlTyMbg1TYSWY.png' },
+    { name: 'Lansinoh', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/lansinoh-MPL80tKPCUhNEJo7LmkBhtU2SYFvmM.jpg' },
+  { name: 'Punti', src: '/punti.jpeg' },
     { name: '5 Sentidos', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/5-sentidos-WmmMyfNELdo3xJdtAjQkNJxm9YRqd5.jpg' },
     { name: 'Bimbi', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bimbi-Iq3YgH0lfOmNXRKJPb3vNAGOyg31dz.jpg' },
     { name: 'Duravit', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/duravit-PZzM2YykuYx0kGdxJwzv9KCwXzDV6x.jpg' },
     { name: 'Rondi', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/rondi-4evfo56tdYhcnAou66jmBHRpA13M1u.png' },
     { name: 'Juliana', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/juliana-qIDi0k4bXPoblWPOV61OoeSzTZbgGc.jpg' },
-    { name: 'Phiphi Toys Madera', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/phiphi-9xT7j7O9TPgFhnBaZXUUbAPnmpbcrL.jpg' },
+    { name: 'Phiphi Toys Madera', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/phi-phi-toys-PoLX6B5XGiftuDwfEx8NMjoIksPgz8.jpg' },
     { name: 'Bestway', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bestway-FpMR5KFqrZ2TgIVsh6bklhzzNzJ8vx.jpg' },
     { name: 'Outlet', src: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/outlet-XUqM4p8xJaBYXkreayion2agPKZ9gc.png' },
   ]
 
 const categories = [
-  { label: 'Alimentación', icon: '◒', color: 'coral', brands: ['Nutrilon', 'Vital', 'La Serenísima Baby', 'Sancor', 'Nan', 'Nidina', 'Nido', 'Nestum', 'Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo'] },
-  { label: 'Puericultura', icon: '✦', color: 'sky', brands: ['Polymem', 'Nursimom', 'Nursimom Baby', 'Dema', 'Baby Innovation', 'Loopi', 'Punti', 'Ingenuity', 'Bright Starts', 'Baby Einstein', 'Bubba', 'Contigo', 'Termy', 'Minikoioi', 'Tatoon'] },
-  { label: 'Juguetes', icon: '⊹', color: 'yellow', brands: ['Tramontina', 'Baby Safe', 'OK Baby', 'A Wish', 'Floating Baby', 'Min Renée', 'Pocopiano', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 Sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phiphi Toys Madera', 'Bestway'] },
-  { label: 'Oportunidades', icon: '%', color: 'mint', brands: ['Outlet', 'Promos accesorios', 'Promos juguetes'] },
+  { label: 'Leches Infantiles', icon: 'milk', color: 'coral', brands: ['Nutrilon', 'Vital', 'Serenísima', 'Sancor', 'Nestle', 'Nidina', 'Nido', 'Nestum'] },
+  { label: 'Puericultura Liviana', icon: 'baby', color: 'sky', brands: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Nursimom', 'Nursimom Baby', 'Baby Innovation', 'Loopi', 'Punti', 'Ingenuity', 'Minikoioi', 'Tatoon', 'Tramontina', 'Ok Baby'] },
+  { label: 'Hidratación', icon: 'droplets', color: 'mint', brands: ['Bubba', 'Contigo', 'Termy'] },
+  { label: 'Accesorios', icon: 'shopping-bag', color: 'yellow', brands: ['DEMA', 'A Wish Deco', 'Floating Baby', 'Min Renee', 'Baby Safe', 'Poco Piano'] },
+  { label: 'Juguetes', icon: 'gamepad', color: 'coral', brands: ['Bright Stars', 'Baby Einstein', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phi Phi toys', 'Bestway'] },
 ]
+
+const categorySubtitles: Record<string, string> = {
+  'Leches Infantiles': 'Nutrición y alimentación para cada etapa',
+  'Puericultura Liviana': 'Soluciones prácticas para el día a día',
+  Hidratación: 'Botellas y accesorios para acompañarlos siempre',
+  Accesorios: 'Detalles funcionales para cuidar cada momento',
+  Juguetes: 'Juego, aprendizaje y diversión',
+}
+
+function CategoryIcon({ name }: { name: string }) {
+  const Icon = name === 'milk' ? Milk : name === 'baby' ? Baby : name === 'droplets' ? Droplets : name === 'gamepad' ? Gamepad2 : ShoppingBag
+  return <Icon aria-hidden="true" />
+}
+
+const normalizeBrand = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f.'’\s]/g, '').toLowerCase()
+const getBrandAsset = (name: string) => {
+  const normalizedName = normalizeBrand(name)
+  return featuredBrands.find((brand) => {
+    const normalizedBrand = normalizeBrand(brand.name)
+    return normalizedBrand.includes(normalizedName) || normalizedName.includes(normalizedBrand)
+  })
+}
 
 export default function Page() {
   const [activeBanner, setActiveBanner] = useState(0)
@@ -119,6 +156,7 @@ export default function Page() {
   const [showExpress, setShowExpress] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const { isLoggedIn } = useAuthSession()
+  const [activeCategory, setActiveCategory] = useState('Todas')
   const nextBanner = () => setActiveBanner((current) => (current + 1) % banners.length)
   const previousBanner = () => setActiveBanner((current) => (current - 1 + banners.length) % banners.length)
 
@@ -163,7 +201,23 @@ export default function Page() {
       <section className="brands-section" id="marcas">
         <div className="section-heading"><div><div className="eyebrow">NUESTRO CATÁLOGO</div><h2>Marcas para cada etapa</h2></div><a href="/productos" className="text-link">Ver todos los productos <ArrowRight size={16} /></a></div>
         <p className="section-lead">Trabajamos con las marcas más importantes del mundo para que encuentres siempre lo mejor para tus clientes.</p>
-        <div className="brand-logo-grid" aria-label="Marcas destacadas">{featuredBrands.map((brand) => <a className="brand-logo-card" href={`/productos?marca=${encodeURIComponent(brand.name)}`} key={brand.name} aria-label={`Ver productos de ${brand.name}`}><img src={brand.src} alt={brand.name} /></a>)}</div>
+<div className="brand-category-filters" role="tablist" aria-label="Filtrar marcas por categoría">
+  <button type="button" role="tab" aria-selected={activeCategory === 'Todas'} className={activeCategory === 'Todas' ? 'is-active' : ''} onClick={() => setActiveCategory('Todas')}><ShoppingBag aria-hidden="true" />Todas</button>
+  {categories.map((category) => <button type="button" role="tab" aria-selected={activeCategory === category.label} className={activeCategory === category.label ? 'is-active' : ''} onClick={() => setActiveCategory(category.label)} key={category.label}><CategoryIcon name={category.icon} />{category.label}</button>)}
+</div>
+<div className="brand-category-list" aria-label="Marcas agrupadas por categoría">
+  {categories.filter((category) => activeCategory === 'Todas' || activeCategory === category.label).map((category) => (
+            <section className={`brand-category brand-category-${category.color}`} key={category.label} aria-labelledby={`category-${category.label}`}>
+              <div className="brand-category-heading"><div className="brand-category-title"><h3 id={`category-${category.label}`}>{category.label}</h3></div><p>{categorySubtitles[category.label]}</p></div>
+              <div className="brand-logo-grid">
+                {category.brands.map((brandName) => {
+                  const brand = getBrandAsset(brandName)
+                  return <a className="brand-logo-card" href={`/productos?marca=${encodeURIComponent(brandName)}`} key={brandName} aria-label={`Ver productos de ${brandName}`}><span className="brand-name-fallback">{brandName}</span>{brand && <img src={brand.src} alt={brandName} />}</a>
+                })}
+              </div>
+            </section>
+          ))}
+        </div>
       </section>
 
       {isLoggedIn && <section className="express-banner-section" id="oportunidades"><div className="express-seo-copy"><img className="express-block-logo" src="/logo-express.svg" alt="Express: envíos y retiros en el mismo día" /><div><div className="eyebrow">SERVICIO EXPRESS</div><h2>Envíos y retiros express<br /><span>para tu negocio.</span></h2><p>Hacé tu pedido mayorista antes del mediodía y retiralo o recibilo en el mismo día.</p></div><a className="express-seo-link" href="/envio-express">Ver zonas, horarios y condiciones <ArrowRight size={16} /></a></div></section>}
