@@ -114,6 +114,14 @@ const categories = [
   { label: 'Juguetes', icon: '⊹', color: 'coral', brands: ['Bright Stars', 'Baby Einstein', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phi Phi toys', 'Bestway'] },
 ]
 
+const categorySubtitles: Record<string, string> = {
+  'Leches Infantiles': 'Nutrición y alimentación para cada etapa',
+  'Puericultura Liviana': 'Soluciones prácticas para el día a día',
+  Hidratación: 'Botellas y accesorios para acompañarlos siempre',
+  Accesorios: 'Detalles funcionales para cuidar cada momento',
+  Juguetes: 'Juego, aprendizaje y diversión',
+}
+
 const normalizeBrand = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f.']/g, '').toLowerCase()
 const getBrandAsset = (name: string) => {
   const normalizedName = normalizeBrand(name)
@@ -176,7 +184,7 @@ export default function Page() {
         <div className="brand-category-list" aria-label="Marcas agrupadas por categoría">
           {categories.map((category) => (
             <section className={`brand-category brand-category-${category.color}`} key={category.label} aria-labelledby={`category-${category.label}`}>
-              <div className="brand-category-heading"><span className="brand-category-icon" aria-hidden="true">{category.icon}</span><h3 id={`category-${category.label}`}>{category.label}</h3></div>
+              <div className="brand-category-heading"><h3 id={`category-${category.label}`}>{category.label}</h3><p>{categorySubtitles[category.label]}</p></div>
               <div className="brand-logo-grid">
                 {category.brands.map((brandName) => {
                   const brand = getBrandAsset(brandName)
