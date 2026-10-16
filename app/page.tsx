@@ -107,11 +107,21 @@ const banners = [
   ]
 
 const categories = [
-  { label: 'Alimentación', icon: '◒', color: 'coral', brands: ['Nutrilon', 'Vital', 'La Serenísima Baby', 'Sancor', 'Nan', 'Nidina', 'Nido', 'Nestum', 'Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo'] },
-  { label: 'Puericultura', icon: '✦', color: 'sky', brands: ['Polymem', 'Nursimom', 'Nursimom Baby', 'Dema', 'Baby Innovation', 'Loopi', 'Punti', 'Ingenuity', 'Bright Starts', 'Baby Einstein', 'Bubba', 'Contigo', 'Termy', 'Minikoioi', 'Tatoon'] },
-  { label: 'Juguetes', icon: '⊹', color: 'yellow', brands: ['Tramontina', 'Baby Safe', 'OK Baby', 'A Wish', 'Floating Baby', 'Min Renée', 'Pocopiano', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 Sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phiphi Toys Madera', 'Bestway'] },
-  { label: 'Oportunidades', icon: '%', color: 'mint', brands: ['Outlet', 'Promos accesorios', 'Promos juguetes'] },
+  { label: 'Leches Infantiles', icon: '◒', color: 'coral', brands: ['Nutrilon', 'Vital', 'Serenísima', 'Sancor', 'Nestle', 'Nidina', 'Nido', 'Nestum'] },
+  { label: 'Puericultura Liviana', icon: '✦', color: 'sky', brands: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Nursimom', 'Nursimom Baby', 'Baby Innovation', 'Loopi', 'Punti', 'Ingenuity', 'Minikoioi', 'Tatoon', 'Tramontina', 'Ok Baby'] },
+  { label: 'Hidratación', icon: '◌', color: 'mint', brands: ['Bubba', 'Contigo', 'Termy'] },
+  { label: 'Accesorios', icon: '✦', color: 'yellow', brands: ['DEMA', 'A Wish Deco', 'Floating Baby', 'Min Renee', 'Baby Safe', 'Poco Piano'] },
+  { label: 'Juguetes', icon: '⊹', color: 'coral', brands: ['Bright Stars', 'Baby Einstein', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phi Phi toys', 'Bestway'] },
 ]
+
+const normalizeBrand = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f.']/g, '').toLowerCase()
+const getBrandAsset = (name: string) => {
+  const normalizedName = normalizeBrand(name)
+  return featuredBrands.find((brand) => {
+    const normalizedBrand = normalizeBrand(brand.name)
+    return normalizedBrand.includes(normalizedName) || normalizedName.includes(normalizedBrand)
+  })
+}
 
 export default function Page() {
   const [activeBanner, setActiveBanner] = useState(0)
@@ -163,7 +173,19 @@ export default function Page() {
       <section className="brands-section" id="marcas">
         <div className="section-heading"><div><div className="eyebrow">NUESTRO CATÁLOGO</div><h2>Marcas para cada etapa</h2></div><a href="/productos" className="text-link">Ver todos los productos <ArrowRight size={16} /></a></div>
         <p className="section-lead">Trabajamos con las marcas más importantes del mundo para que encuentres siempre lo mejor para tus clientes.</p>
-        <div className="brand-logo-grid" aria-label="Marcas destacadas">{featuredBrands.map((brand) => <a className="brand-logo-card" href={`/productos?marca=${encodeURIComponent(brand.name)}`} key={brand.name} aria-label={`Ver productos de ${brand.name}`}><img src={brand.src} alt={brand.name} /></a>)}</div>
+        <div className="brand-category-list" aria-label="Marcas agrupadas por categoría">
+          {categories.map((category) => (
+            <section className={`brand-category brand-category-${category.color}`} key={category.label} aria-labelledby={`category-${category.label}`}>
+              <div className="brand-category-heading"><span className="brand-category-icon" aria-hidden="true">{category.icon}</span><h3 id={`category-${category.label}`}>{category.label}</h3></div>
+              <div className="brand-logo-grid">
+                {category.brands.map((brandName) => {
+                  const brand = getBrandAsset(brandName)
+                  return <a className="brand-logo-card" href={`/productos?marca=${encodeURIComponent(brandName)}`} key={brandName} aria-label={`Ver productos de ${brandName}`}><span className="brand-name-fallback">{brandName}</span>{brand && <img src={brand.src} alt={brandName} />}</a>
+                })}
+              </div>
+            </section>
+          ))}
+        </div>
       </section>
 
       {isLoggedIn && <section className="express-banner-section" id="oportunidades"><div className="express-seo-copy"><img className="express-block-logo" src="/logo-express.svg" alt="Express: envíos y retiros en el mismo día" /><div><div className="eyebrow">SERVICIO EXPRESS</div><h2>Envíos y retiros express<br /><span>para tu negocio.</span></h2><p>Hacé tu pedido mayorista antes del mediodía y retiralo o recibilo en el mismo día.</p></div><a className="express-seo-link" href="/envio-express">Ver zonas, horarios y condiciones <ArrowRight size={16} /></a></div></section>}
