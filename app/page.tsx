@@ -137,6 +137,7 @@ export default function Page() {
   const [showExpress, setShowExpress] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const { isLoggedIn } = useAuthSession()
+  const [activeCategory, setActiveCategory] = useState('Todas')
   const nextBanner = () => setActiveBanner((current) => (current + 1) % banners.length)
   const previousBanner = () => setActiveBanner((current) => (current - 1 + banners.length) % banners.length)
 
@@ -181,8 +182,11 @@ export default function Page() {
       <section className="brands-section" id="marcas">
         <div className="section-heading"><div><div className="eyebrow">NUESTRO CATÁLOGO</div><h2>Marcas para cada etapa</h2></div><a href="/productos" className="text-link">Ver todos los productos <ArrowRight size={16} /></a></div>
         <p className="section-lead">Trabajamos con las marcas más importantes del mundo para que encuentres siempre lo mejor para tus clientes.</p>
-        <div className="brand-category-list" aria-label="Marcas agrupadas por categoría">
-          {categories.map((category) => (
+<div className="brand-category-filters" role="tablist" aria-label="Filtrar marcas por categoría">
+  {['Todas', ...categories.map((category) => category.label)].map((categoryName) => <button type="button" role="tab" aria-selected={activeCategory === categoryName} className={activeCategory === categoryName ? 'is-active' : ''} onClick={() => setActiveCategory(categoryName)} key={categoryName}>{categoryName}</button>)}
+</div>
+<div className="brand-category-list" aria-label="Marcas agrupadas por categoría">
+  {categories.filter((category) => activeCategory === 'Todas' || activeCategory === category.label).map((category) => (
             <section className={`brand-category brand-category-${category.color}`} key={category.label} aria-labelledby={`category-${category.label}`}>
               <div className="brand-category-heading"><h3 id={`category-${category.label}`}>{category.label}</h3><p>{categorySubtitles[category.label]}</p></div>
               <div className="brand-logo-grid">
