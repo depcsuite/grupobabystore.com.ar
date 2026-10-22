@@ -123,9 +123,9 @@ const banners = [
 const categories = [
   { label: 'Leches Infantiles', icon: 'milk', color: 'coral', brands: ['Nutrilon', 'Vital', 'Serenísima', 'Sancor', 'Nestle', 'Nidina', 'Nido', 'Nestum'] },
   { label: 'Puericultura Liviana', icon: 'baby', color: 'sky', brands: ['Avent', 'Nuk', 'Lansinoh', 'Chicco', 'Nuby', 'Bbox', 'Suavinex', 'Bibs', 'Lillo', 'Nursimom', 'Nursimom Baby', 'Baby Innovation', 'Loopi', 'Punti', 'Ingenuity', 'Minikoioi', 'Tatoon', 'Tramontina', 'Ok Baby'] },
-  { label: 'Hidratación', icon: 'droplets', color: 'mint', brands: ['Bubba', 'Contigo', 'Termy'] },
   { label: 'Accesorios', icon: 'shopping-bag', color: 'yellow', brands: ['DEMA', 'A Wish Deco', 'Floating Baby', 'Min Renee', 'Baby Safe', 'Poco Piano'] },
   { label: 'Juguetes', icon: 'gamepad', color: 'coral', brands: ['Bright Stars', 'Baby Einstein', 'Woody Toys', 'Soft Blocks', "J'adore", 'Baby Favorite', 'Little Learner', 'Baby Sunki', 'Vtech', '5 sentidos', 'Bimbi', 'Duravit', 'Rondi', 'Juliana', 'Phi Phi toys', 'Bestway'] },
+  { label: 'Hidratación', icon: 'droplets', color: 'mint', brands: ['Bubba', 'Contigo', 'Termy'] },
 ]
 
 const categorySubtitles: Record<string, string> = {

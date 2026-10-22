@@ -6,8 +6,22 @@ type CartItem = { id: string; name: string; code: string; price: number; quantit
 type CartContextValue = { items: CartItem[]; addItem: (item: Omit<CartItem, 'quantity'>) => void; updateQuantity: (id: string, quantity: number) => void; removeItem: (id: string) => void; clearCart: () => void; subtotal: number; count: number }
 const CartContext = createContext<CartContextValue | null>(null)
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => { if (typeof window === 'undefined') return []; const saved = window.sessionStorage.getItem('gb_cart'); if (!saved) return []; try { return JSON.parse(saved) as CartItem[] } catch { window.sessionStorage.removeItem('gb_cart'); return [] } })
-  useEffect(() => { window.sessionStorage.setItem('gb_cart', JSON.stringify(items)) }, [items])
+  const [items, setItems] = useState<CartItem[]>([])
+  const [isHydrated, setIsHydrated] = useState(false)
+  useEffect(() => {
+    const saved = window.sessionStorage.getItem('gb_cart')
+    if (saved) {
+      try {
+        setItems(JSON.parse(saved) as CartItem[])
+      } catch {
+        window.sessionStorage.removeItem('gb_cart')
+      }
+    }
+    setIsHydrated(true)
+  }, [])
+  useEffect(() => {
+    if (isHydrated) window.sessionStorage.setItem('gb_cart', JSON.stringify(items))
+  }, [items, isHydrated])
   const addItem = (item: Omit<CartItem, 'quantity'>) => setItems(current => { const existing = current.find(product => product.id === item.id); const step = item.packItems ?? existing?.packItems ?? 1; return existing ? current.map(product => product.id === item.id ? { ...product, quantity: product.quantity + step } : product) : [...current, { ...item, quantity: step }] })
   const updateQuantity = (id: string, quantity: number) => setItems(current => current.flatMap(item => { if (item.id !== id) return [item]; const step = item.packItems ?? 1; if (quantity <= 0) return []; return [{ ...item, quantity: Math.max(step, Math.round(quantity / step) * step) }] }))
   const removeItem = (id: string) => setItems(current => current.filter(item => item.id !== id))

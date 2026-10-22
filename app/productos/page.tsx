@@ -229,11 +229,9 @@ export default function ProductosPage() {
   const brands = Array.from(
     new Set(filterGroups.flatMap((group) => group.items)),
   );
-  useEffect(() => {
-    setCartOpen(false);
-  }, [count]);
   const handleAddToCart = (product: (typeof products)[number]) => {
     addItem(product);
+    setCartOpen(false);
     setCartPulse(true);
     window.setTimeout(() => setCartPulse(false), 650);
   };
@@ -353,7 +351,7 @@ export default function ProductosPage() {
       <section className="catalog-novelties" aria-labelledby="novelties-title">
         <div className="catalog-novelties-head">
           <div>
-            <span className="eyebrow">NUEVOS INGRESOS</span>
+            <span className="eyebrow">LO MÁS VENDIDO</span>
             {selectedCategory && (
               <small className="novelty-context">{selectedCategory}</small>
             )}
@@ -567,6 +565,19 @@ export default function ProductosPage() {
                   aria-label="Buscar por nombre o código"
                 />
               </div>
+              <label className="catalog-brand-select">
+                <span className="sr-only">Buscar por marca</span>
+                <select
+                  value={selectedBrand}
+                  onChange={(event) => setSelectedBrand(event.target.value)}
+                  aria-label="Buscar por marca"
+                >
+                  <option value="">Todas las marcas</option>
+                  {[...new Set(products.map((product) => product.brand))].sort().map((brand) => (
+                    <option key={brand} value={brand}>{brand}</option>
+                  ))}
+                </select>
+              </label>
               <div className="catalog-tools">
                 <span>{filtered.length} productos</span>
                 <button
@@ -875,8 +886,12 @@ export default function ProductosPage() {
                       <button
                         type="button"
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
+                          updateQuantity(
+                            item.id,
+                            item.quantity - (item.packItems ?? 1),
+                          )
                         }
+                        aria-label={`Disminuir cantidad de ${item.name}`}
                       >
                         <Minus size={12} />
                       </button>
@@ -896,8 +911,12 @@ export default function ProductosPage() {
                       <button
                         type="button"
                         onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
+                          updateQuantity(
+                            item.id,
+                            item.quantity + (item.packItems ?? 1),
+                          )
                         }
+                        aria-label={`Aumentar cantidad de ${item.name}`}
                       >
                         <Plus size={12} />
                       </button>
@@ -917,9 +936,18 @@ export default function ProductosPage() {
             <div className="cart-sidebar-total">
               <span>Subtotal sin IVA</span>
               <strong>{money(subtotal)}</strong>
-              <a href="/checkout" className="cart-checkout-button">
-                Finalizar pedido <ArrowRight size={16} />
-              </a>
+                  <div className="cart-action-buttons">
+                    <button
+                      type="button"
+                      className="cart-continue-button"
+                      onClick={() => setCartOpen(false)}
+                    >
+                      Seguir comprando
+                    </button>
+                    <a href="/checkout" className="cart-checkout-button">
+                      Finalizar pedido <ArrowRight size={16} />
+                    </a>
+                  </div>
             </div>
           </>
         )}
