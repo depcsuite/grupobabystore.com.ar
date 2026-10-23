@@ -540,3 +540,65 @@ footer { max-width:1192px; margin:auto; padding:54px 42px 30px; display:grid; gr
 .new-address-form { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .new-address-form label { font-size:12px; }
 .new-address-form input,.new-address-form select { box-sizing:border-box; width:100%; min-width:0; padding:9px 10px; border:1px solid #cfe3e6; border-radius:7px; color:#173d50; background:#fff; font-size:12px; }
+.checkout-order:has(> .delivery-page-card) { padding:0; border:0; background:transparent; box-shadow:none; }
+.delivery-card-heading > svg { flex:0 0 auto; }
+.delivery-card-heading > div { min-width:0; }
+.delivery-card-heading h2 { display:none; }
+.delivery-card-heading p { margin:7px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
+.delivery-address-heading { margin-top:24px; }
+.delivery-address-heading h3,.pickup-choice h3 { margin:0; color:var(--ink); font-size:16px; }
+.delivery-address-heading p,.pickup-choice p { margin:5px 0 0; color:var(--muted); font-size:13px; line-height:1.5; }
+.delivery-address-list { display:grid; gap:9px; margin-top:12px; }
+.delivery-address-option { position:relative; display:flex; align-items:center; gap:11px; box-sizing:border-box; width:100%; min-height:52px; padding:12px 14px; border:1px solid #dce9eb; border-radius:12px; color:var(--ink); background:#fff; font-size:13px; line-height:1.45; cursor:pointer; transition:border-color .18s ease, background .18s ease; }
+.delivery-address-option:hover,.delivery-address-option.selected { border-color:var(--blue); background:#f1f8fb; }
+.delivery-address-option input { position:absolute; width:1px; height:1px; opacity:0; }
+.delivery-address-option:focus-within { outline:2px solid var(--blue); outline-offset:2px; }
+.delivery-radio { display:grid; flex:0 0 20px; place-items:center; width:20px; height:20px; box-sizing:border-box; border:1px solid #b9cdd4; border-radius:50%; color:#fff; background:#fff; }
+.delivery-radio svg { opacity:0; }
+.delivery-address-option.selected .delivery-radio { border-color:var(--blue); background:var(--blue); }
+.delivery-address-option.selected .delivery-radio svg { opacity:1; }
+.delivery-cost-card { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:16px; padding:17px 18px; border:1px solid #d9e9ec; border-radius:13px; background:#f5fafb; }
+.delivery-cost-kicker { color:var(--blue); font-size:10px; font-weight:800; letter-spacing:.08em; }
+.delivery-cost-card h3 { margin:5px 0 0; color:var(--ink); font-size:15px; }
+.delivery-cost-card p { margin:5px 0 0; color:var(--muted); font-size:12px; line-height:1.45; }
+.delivery-cost-card > strong { flex:0 0 auto; color:var(--blue); font-size:18px; white-space:nowrap; }
+.delivery-express-option { display:flex; align-items:flex-start; gap:11px; margin-top:10px; padding:14px; border:1px solid #dce9eb; border-radius:12px; color:var(--ink); background:#fff; cursor:pointer; }
+.delivery-express-option input { flex:0 0 auto; width:16px; height:16px; margin:2px 0 0; accent-color:var(--blue); }
+.delivery-express-option > span { display:grid; gap:4px; }
+.delivery-express-option b { font-size:13px; }
+.delivery-express-option small { color:var(--muted); font-size:12px; line-height:1.45; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option { display:grid; grid-template-columns:18px minmax(0,1fr) auto; align-items:center; gap:12px; border-color:#b9ebc7; color:#174f2a; background:#f0fff4; transition:border-color .18s ease, background .18s ease, box-shadow .18s ease; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option:hover { border-color:#00b83f; background:#e6ffed; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option:has(input:checked) { border-color:#00b83f; background:#e0ffe9; box-shadow:0 0 0 1px #00b83f33; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option:focus-within { outline:2px solid #00a83a; outline-offset:2px; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option input { accent-color:#00b83f; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option > span { min-width:0; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option b { color:#12652c; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option small { color:#367848; }
+.checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option::after { content:""; display:block; width:clamp(76px,11vw,132px); height:24px; background:url("/logo-express.svg") center / contain no-repeat; }
+.pickup-choice { margin-top:22px; padding:17px; border:1px solid #dce9eb; border-radius:13px; background:#f8fbfc; }
+.pickup-choice .pickup-service-options { margin-top:14px; }
+.pickup-choice .pickup-service-options legend { color:var(--ink); }
+.pickup-choice .pickup-service-option-express { display:grid; grid-template-columns:20px minmax(0,1fr) 86px; align-items:center; gap:10px; border-color:#b9ebc7; color:#174f2a; background:#f0fff4; }
+.pickup-choice .pickup-service-option-express:hover { border-color:#00b83f; background:#e6ffed; }
+.pickup-choice .pickup-service-option-express:has(input:checked) { border-color:#00b83f; background:#e0ffe9; box-shadow:0 0 0 1px #00b83f33; }
+.pickup-choice .pickup-service-option-express:focus-within { outline:2px solid #00a83a; outline-offset:2px; }
+.pickup-choice .pickup-service-option-express input { accent-color:#00b83f; }
+.pickup-choice .pickup-service-option-express b { color:#12652c; }
+.pickup-choice .pickup-service-option-express small { color:#367848; line-height:1.5; }
+.pickup-choice .pickup-service-option-express img { display:block; width:100%; height:auto; }
+.checkout-notes { display:grid; gap:8px; margin-top:18px; color:var(--ink); font-size:12px; font-weight:800; }
+.checkout-notes textarea { width:100%; box-sizing:border-box; min-height:82px; padding:11px 12px; border:1px solid #d5e5e8; border-radius:10px; outline:0; color:var(--ink); background:#fbfdfe; font:inherit; font-size:13px; font-weight:400; resize:vertical; }
+.checkout-notes textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px #287fba1a; }
+
+@media (max-width:680px) {
+  .delivery-page-card { padding:20px; }
+  .delivery-mode-tabs button { padding:10px 8px; font-size:11px; }
+  .delivery-address-option { padding:11px 12px; font-size:12px; }
+  .delivery-cost-card { align-items:flex-start; padding:14px; }
+  .delivery-cost-card > strong { font-size:16px; }
+  .checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option { gap:9px; padding:12px; }
+  .checkout-order:has(.delivery-address-list) .delivery-address-list + .delivery-cost-card + .delivery-express-option::after { width:76px; height:19px; }
+  .pickup-choice .pickup-service-option-express { grid-template-columns:18px minmax(0,1fr) 64px; gap:8px; padding:11px; }
+  .checkout-summary { padding:20px; }
+}
