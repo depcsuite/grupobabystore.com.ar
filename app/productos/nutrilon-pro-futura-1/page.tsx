@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { AccountMenu } from '@/components/account-menu'
 import { PromoTopbar } from '@/components/promo-topbar'
+import { useAuthSession } from '@/components/auth-session-sync'
 import { useCart } from '@/components/cart-context'
 
 const product = {
@@ -40,6 +41,7 @@ const relatedProducts = [
 
 export default function ProductDetailPage() {
   const { addItem, count } = useCart()
+  const { isLoggedIn, isReady } = useAuthSession()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [quantity, setQuantity] = useState(product.packItems)
@@ -87,19 +89,21 @@ export default function ProductDetailPage() {
             <p className="product-kicker">NUTRILON / ETAPA 1 / PROMOCIÓN</p>
             <h1>{product.name}</h1>
             <p className="product-code-line">Código: {product.code}</p>
-            <div className="product-price-block"><span className="product-old-price">{money(product.originalPrice)}</span><strong>{money(product.price)}</strong><small>+ IVA</small></div>
+            {isReady && isLoggedIn ? <div className="product-price-block"><span className="product-old-price">{money(product.originalPrice)}</span><strong>{money(product.price)}</strong><small>+ IVA</small></div> : <div className="product-login-required"><strong>Iniciá sesión para ver el precio</strong><span>Los precios mayoristas están disponibles para clientes registrados.</span></div>}
             <div className="product-pack-note"><span>Pack mayorista</span><strong>{product.packItems} unidades por bulto</strong></div>
             <p className="product-description">Nueva fórmula avanzada con prebióticos GOS/FOS y postbiótico HMO para acompañar la nutrición infantil. Una presentación práctica para sumar a tu catálogo mayorista.</p>
             <div className="product-stock"><Check size={16} /> Hay existencias disponibles</div>
-            <div className="product-buy-row">
-              <div className="product-detail-stepper" aria-label="Cantidad de unidades">
-                <button type="button" onClick={() => changeQuantity(quantity - product.packItems)} disabled={quantity <= product.packItems} aria-label="Disminuir cantidad"><Minus size={15} /></button>
-                <strong>{quantity}</strong>
-                <button type="button" onClick={() => changeQuantity(quantity + product.packItems)} aria-label="Aumentar cantidad"><Plus size={15} /></button>
+            {isReady && isLoggedIn ? <>
+              <div className="product-buy-row">
+                <div className="product-detail-stepper" aria-label="Cantidad de unidades">
+                  <button type="button" onClick={() => changeQuantity(quantity - product.packItems)} disabled={quantity <= product.packItems} aria-label="Disminuir cantidad"><Minus size={15} /></button>
+                  <strong>{quantity}</strong>
+                  <button type="button" onClick={() => changeQuantity(quantity + product.packItems)} aria-label="Aumentar cantidad"><Plus size={15} /></button>
+                </div>
+                <button className={`product-add-button${added ? ' is-added' : ''}`} type="button" onClick={addToCart}>{added ? <><Check size={17} /> Agregado</> : <><ShoppingBag size={17} /> Agregar al carrito</>}</button>
               </div>
-              <button className={`product-add-button${added ? ' is-added' : ''}`} type="button" onClick={addToCart}>{added ? <><Check size={17} /> Agregado</> : <><ShoppingBag size={17} /> Agregar al carrito</>}</button>
-            </div>
-            <small className="product-buy-hint">La cantidad se modifica en múltiplos de {product.packItems}, según el pack.</small>
+              <small className="product-buy-hint">La cantidad se modifica en múltiplos de {product.packItems}, según el pack.</small>
+            </> : <a className="product-login-button" href="/iniciar-sesion">Iniciar sesión para comprar</a>}
           </div>
         </section>
 
@@ -108,7 +112,7 @@ export default function ProductDetailPage() {
         <section className="related-products-section" aria-labelledby="related-products-title">
           <div className="related-products-heading"><div><p className="product-kicker">TAMBIÉN TE PUEDE INTERESAR</p><h2 id="related-products-title">Otras personas también vieron</h2></div><div className="related-products-controls"><button type="button" aria-label="Productos anteriores"><ChevronLeft size={17} /></button><button type="button" aria-label="Productos siguientes"><ChevronRight size={17} /></button></div></div>
           <div className="related-products-track">
-            {relatedProducts.map((item) => <article className="novelty-card related-product-card" key={item.id}><div className="novelty-image related-product-image"><span>NUEVO</span><img src={item.image} alt={item.name} /></div><div className="novelty-card-body"><h2 className="novelty-product-title">{item.name}</h2><small className="novelty-product-code">Código: {item.code}</small><span className="pack-quantity">Pack de 4 unidades</span><strong>{money(item.price)}</strong><button type="button" onClick={() => addItem({ ...item, packItems: 4 })}><ShoppingBag size={15} /> Agregar al carrito</button></div></article>)}
+            {relatedProducts.map((item) => <article className="novelty-card related-product-card" key={item.id}><div className="novelty-image related-product-image"><span>NUEVO</span><img src={item.image} alt={item.name} /></div><div className="novelty-card-body"><h2 className="novelty-product-title">{item.name}</h2><small className="novelty-product-code">Código: {item.code}</small><span className="pack-quantity">Pack de 4 unidades</span>{isReady && isLoggedIn ? <><strong>{money(item.price)}</strong><button type="button" onClick={() => addItem({ ...item, packItems: 4 })}><ShoppingBag size={15} /> Agregar al carrito</button></> : <a className="related-login-link" href="/iniciar-sesion">Iniciar sesión para comprar</a>}</div></article>)}
           </div>
         </section>
       </div>

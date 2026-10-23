@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { CartProvider } from '@/components/cart-context'
 import { AuthSessionProvider } from '@/components/auth-session-sync'
+import { OrderModal } from '@/components/order-modal'
 import './auth.css'
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default function RootLayout({
         <AuthSessionProvider>
           <CartProvider>
             {children}
+            <OrderModal />
           </CartProvider>
         </AuthSessionProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}

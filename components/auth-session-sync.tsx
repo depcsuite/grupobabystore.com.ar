@@ -14,7 +14,12 @@ const sessionCookie = 'gb_logged_in'
 const sessionDuration = 60 * 60 * 24 * 30
 
 function hasSessionCookie() {
-  return document.cookie.split(';').some(cookie => cookie.trim() === `${sessionCookie}=1`)
+  const cookie = document.cookie
+    .split(';')
+    .map(item => item.trim())
+    .find(item => item.startsWith(`${sessionCookie}=`))
+
+  return cookie?.slice(sessionCookie.length + 1) === '1'
 }
 
 function writeSessionCookie(value: '1' | '') {

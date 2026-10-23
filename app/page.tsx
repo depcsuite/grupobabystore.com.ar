@@ -18,7 +18,6 @@ import {
   Phone,
   Search,
   ShoppingBag,
-  ShoppingCart,
   Truck,
   X,
 } from 'lucide-react'
@@ -154,8 +153,11 @@ export default function Page() {
   const [activeBanner, setActiveBanner] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const [showExpress, setShowExpress] = useState(false)
+  const [orderModalOpen, setOrderModalOpen] = useState(false)
+  const [brandSearch, setBrandSearch] = useState('')
   const [searchOpen, setSearchOpen] = useState(false)
   const { isLoggedIn } = useAuthSession()
+
   const [activeCategory, setActiveCategory] = useState('Todas')
   const nextBanner = () => setActiveBanner((current) => (current + 1) % banners.length)
   const previousBanner = () => setActiveBanner((current) => (current - 1 + banners.length) % banners.length)
@@ -176,7 +178,7 @@ export default function Page() {
   <a href="/como-comprar">Cómo comprar</a>
   <a href="/contacto">Contacto</a>
 </nav>
-  <div className="header-actions">
+          <div className="header-actions">
             <AccountMenu /><button aria-label="Buscar" className="icon-button" onClick={() => setSearchOpen(!searchOpen)}><Search /></button>
           </div>
         </div>
@@ -226,6 +228,7 @@ export default function Page() {
 
       <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/">Inicio</a><a href="/productos">Productos</a><a href="/nosotros">Nosotros</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><form className="footer-subscribe" onSubmit={(event) => event.preventDefault()}><strong>Recibí nuestras novedades</strong><span>Ingresá tu email y enterate primero.</span><div><input type="email" required placeholder="tu@email.com" aria-label="Email para suscribirse" /><button type="submit">Suscribirme</button></div></form><div className="footer-legal">© {new Date().getFullYear()} Grupo Baby Store<br />Distribuidor oficial</div></footer>
 
+      {orderModalOpen && <div className="modal-backdrop" role="presentation" onClick={() => setOrderModalOpen(false)}><div className="order-modal" role="dialog" aria-modal="true" aria-labelledby="order-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" type="button" aria-label="Cerrar" onClick={() => setOrderModalOpen(false)}><X /></button><div className="eyebrow">CATÁLOGO MAYORISTA</div><h2 id="order-title">Hacé tu pedido</h2><p>Elegí una categoría o marca para encontrar productos y comprar online.</p><div className="order-filter-section"><strong>Filtrar por categoría</strong><div className="order-filter-grid">{categories.map((category) => <a key={category.label} href={`/productos?categoria=${encodeURIComponent(category.label)}`} onClick={() => setOrderModalOpen(false)}><CategoryIcon name={category.icon} /><span>{category.label}</span><ArrowRight size={14} /></a>)}</div></div><div className="order-filter-section"><strong>Filtrar por marca</strong><label className="order-brand-search"><Search size={16} aria-hidden="true" /><span className="sr-only">Buscar marca</span><input type="search" value={brandSearch} onChange={(event) => setBrandSearch(event.target.value)} placeholder="Buscá una marca" aria-label="Buscar una marca" /></label><div className="order-brand-list">{Array.from(new Set(categories.flatMap((category) => category.brands))).sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' })).filter((brand) => normalizeBrand(brand).includes(normalizeBrand(brandSearch))).map((brand) => <a key={brand} href={`/productos?marca=${encodeURIComponent(brand)}`} onClick={() => setOrderModalOpen(false)}>{brand}</a>)}</div>{!Array.from(new Set(categories.flatMap((category) => category.brands))).some((brand) => normalizeBrand(brand).includes(normalizeBrand(brandSearch))) && <p className="order-no-results">No encontramos marcas con esa búsqueda.</p>}</div><a href="/productos" className="primary-button order-catalog-link" onClick={() => setOrderModalOpen(false)}>Ver todo el catálogo <ArrowRight size={17} /></a></div></div>}
       {showExpress && <div className="modal-backdrop" role="presentation" onClick={() => setShowExpress(false)}><div className="express-modal" role="dialog" aria-modal="true" aria-labelledby="express-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" aria-label="Cerrar" onClick={() => setShowExpress(false)}><X /></button><div className="eyebrow">NOVEDAD</div><h2 id="express-title">Envíos y retiros <em>express</em></h2><p>Hacé tu pedido antes de las 12 del mediodía y te lo entregamos en el día.</p><div className="modal-row"><Truck /><div><b>Entregas / Envíos</b><span>CABA $10.000 · 1er cordón $12.000 · 2do cordón $15.000</span></div></div><div className="modal-row"><PackageCheck /><div><b>Retiros express</b><span>Retirá en Palpa 3828, 3 horas después de hacer tu pedido.</span></div></div><div className="modal-note">Seleccioná la modalidad y escribí <strong>EXPRESS</strong> en comentarios. No te olvides de avisarle a tu comercial.</div><a href="/iniciar-sesion" className="primary-button" onClick={() => setShowExpress(false)}>Hacer mi pedido <ArrowRight size={17} /></a></div></div>}
     </main>
   )

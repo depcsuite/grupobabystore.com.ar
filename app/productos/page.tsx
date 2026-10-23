@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -20,7 +21,7 @@ import { PromoTopbar } from "@/components/promo-topbar";
 const products = [
   {
     id: "nutrilon-1-brick",
-    category: "Fórmulas Infantiles",
+    category: "Leches Infantiles",
     brand: "Nutrilon",
     name: "Nutrilon Profutura 1 Brick x 200 ml",
     code: "AA NUT 1 BRICK PR",
@@ -30,7 +31,7 @@ const products = [
   },
   {
     id: "nutrilon-1-tarro",
-    category: "Fórmulas Infantiles",
+    category: "Leches Infantiles",
     brand: "Nutrilon",
     name: "Nutrilon Profutura 1 Tarro x 800 g",
     code: "AA NUT 1 TARRO PR",
@@ -39,7 +40,7 @@ const products = [
   },
   {
     id: "nutrilon-1-pack",
-    category: "Fórmulas Infantiles",
+    category: "Leches Infantiles",
     brand: "Nutrilon",
     name: "Nutrilon Profutura 1 Pack x 1,2 kg",
     code: "AA NUT 1 POUCH PR",
@@ -49,7 +50,7 @@ const products = [
   },
   {
     id: "nutrilon-2-brick",
-    category: "Fórmulas Infantiles",
+    category: "Leches Infantiles",
     brand: "Nutrilon",
     name: "Nutrilon Profutura 2 Brick x 200 ml",
     code: "AA NUT 2 BRICK PR",
@@ -58,7 +59,7 @@ const products = [
   },
   {
     id: "vital-4",
-    category: "Fórmulas Infantiles",
+    category: "Leches Infantiles",
     brand: "Vital",
     name: "Vital 4 Fórmula infantil",
     code: "AA VIT 4 TARRO",
@@ -66,7 +67,7 @@ const products = [
   },
   {
     id: "nan-1",
-    category: "Fórmulas Infantiles",
+    category: "Leches Infantiles",
     brand: "NAN",
     name: "NAN Expert Pro 1 Fórmula infantil",
     code: "AA NAN 1 TARRO",
@@ -76,128 +77,39 @@ const products = [
 const money = (value: number) => `$${value.toLocaleString("es-AR")}`;
 const filterGroups = [
   {
-    name: "Promos accesorios",
-    items: [
-      "Bbox",
-      "Suavinex",
-      "Avent",
-      "Nuk",
-      "Chicco",
-      "Lansinoh",
-      "Bibs",
-      "Loopi",
-      "Baby Innovation",
-      "Minikoioi",
-      "Phi Phi Toys",
-      "Nuby",
-      "Lillo",
-      "Poco Piano",
-      "Love",
-      "Safety 1st",
-      "Punti",
-      "Ok Baby",
-      "Happy Little Moments",
-    ],
-  },
-  {
-    name: "Promos juguetes",
-    items: [
-      "Baby Einstein",
-      "Baby Sunki",
-      "Bright Starts",
-      "J'Adore",
-      "Juliana",
-      "Phi Phi Toys",
-      "Pure Baby",
-      "Rondi",
-      "Soft Blocks",
-      "Sophie",
-      "V Tech",
-      "LeapFrog",
-      "Ok Baby",
-      "Win Fun",
-      "Playgro",
-      "Blocky",
-      "Rasti",
-      "Calesita",
-      "Animal Life",
-      "Bestway",
-    ],
-  },
-  {
-    name: "Fórmulas Infantiles",
-    items: [
-      "Nutrilon",
-      "Vital",
-      "La Serenísima Baby",
-      "Sancor",
-      "NAN",
-      "Nidina",
-      "Nido",
-      "Nestum",
-    ],
+    name: "Leches Infantiles",
+    items: ["Nutrilon", "Vital", "Serenísima", "Sancor", "Nestle", "Nidina", "Nido", "Nestum"],
   },
   {
     name: "Puericultura Liviana",
-    items: [
-      "Avent",
-      "Nuk",
-      "Lansinoh",
-      "Chicco",
-      "Nuby",
-      "Bbox",
-      "Suavinex",
-      "Bibs",
-      "Lillo",
-      "Baby Innovation",
-      "Loopi",
-      "Punti",
-      "Minikoioi",
-      "Ingenuity",
-      "Bright Starts",
-      "Baby Einstein",
-      "Bubba",
-      "Contigo",
-      "Termy",
-    ],
+    items: ["Avent", "Nuk", "Lansinoh", "Chicco", "Nuby", "Bbox", "Suavinex", "Bibs", "Lillo", "Nursimom", "Nursimom Baby", "Baby Innovation", "Loopi", "Punti", "Ingenuity", "Minikoioi", "Tatoon", "Tramontina", "Ok Baby"],
+  },
+  {
+    name: "Accesorios",
+    items: ["DEMA", "A Wish Deco", "Floating Baby", "Min Renee", "Baby Safe", "Poco Piano"],
   },
   {
     name: "Juguetes",
-    items: [
-      "Tatoon",
-      "Tramontina",
-      "Baby Safe",
-      "Ok Baby",
-      "A Wish",
-      "Floating Baby",
-      "Min Renée",
-      "Pocopiano",
-      "Woody Toys",
-      "Soft Blocks",
-      "J'Adore",
-      "Baby Favorite",
-      "Little Learner",
-      "Baby Sunki",
-      "VTech",
-      "5 Sentidos",
-      "Bimbi",
-      "Duravit",
-      "Rondi",
-      "Juliana",
-      "PhiPhi Toys Madera",
-      "Bestway",
-      "Outlet",
-    ],
+    items: ["Bright Stars", "Baby Einstein", "Woody Toys", "Soft Blocks", "J'adore", "Baby Favorite", "Little Learner", "Baby Sunki", "Vtech", "5 sentidos", "Bimbi", "Duravit", "Rondi", "Juliana", "Phi Phi toys", "Bestway"],
+  },
+  {
+    name: "Hidratación",
+    items: ["Bubba", "Contigo", "Termy"],
   },
 ];
 export default function ProductosPage() {
   const { isLoggedIn, isReady: authChecked } = useAuthSession();
+  const searchParams = useSearchParams();
   const { items, addItem, updateQuantity, removeItem, subtotal, count } =
     useCart();
   const [query, setQuery] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filterOptionQuery, setFilterOptionQuery] = useState("");
+  useEffect(() => {
+    setSelectedBrand(searchParams.get("marca") ?? "");
+    setSelectedCategory(searchParams.get("categoria") ?? "");
+  }, [searchParams]);
   const [openFilterGroups, setOpenFilterGroups] = useState<string[]>([
     filterGroups[0].name,
   ]);

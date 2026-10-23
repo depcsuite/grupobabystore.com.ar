@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, ShoppingBag } from 'lucide-react'
 import { useAuthSession } from '@/components/auth-session-sync'
@@ -14,7 +14,6 @@ const accountLinks = [
 
 export function AccountMenu({ active = false }: { active?: boolean }) {
   const { isLoggedIn, logout } = useAuthSession()
-  const pathname = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -42,15 +41,19 @@ export function AccountMenu({ active = false }: { active?: boolean }) {
     logout()
     setOpen(false)
     router.replace('/')
+    router.refresh()
   }
 
   return (
     <>
-      {pathname !== '/productos' && (
-        <Link className="header-order" href={isLoggedIn ? '/productos' : '/iniciar-sesion'}>
-          <ShoppingBag size={16} /> Hacé tu pedido
-        </Link>
-      )}
+      <button
+        className="header-order"
+        type="button"
+        aria-haspopup="dialog"
+        onClick={() => window.dispatchEvent(new CustomEvent('open-order-modal'))}
+      >
+        <ShoppingBag size={16} aria-hidden="true" /> Hacé tu pedido
+      </button>
       {isLoggedIn ? (
         <div className="account-dropdown" ref={menuRef}>
           <button className={`header-login account-dropdown-trigger${active ? ' active' : ''}`} type="button" aria-expanded={open} aria-controls="account-dropdown-options" onClick={() => setOpen(current => !current)}>
