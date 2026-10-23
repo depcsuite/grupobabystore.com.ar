@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowDownToLine,
@@ -97,7 +97,7 @@ const filterGroups = [
     items: ["Bubba", "Contigo", "Termy"],
   },
 ];
-export default function ProductosPage() {
+function ProductosContent() {
   const { isLoggedIn, isReady: authChecked } = useAuthSession();
   const searchParams = useSearchParams();
   const { items, addItem, updateQuantity, removeItem, subtotal, count } =
@@ -872,5 +872,15 @@ export default function ProductosPage() {
         />
       )}
     </main>
+  );
+}
+
+export default function ProductosPage() {
+  return (
+    <Suspense
+      fallback={<main className="site-shell catalog-shell" aria-busy="true" />}
+    >
+      <ProductosContent />
+    </Suspense>
   );
 }
