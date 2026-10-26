@@ -82,11 +82,7 @@ const filterGroups = [
   },
   {
     name: "Puericultura Liviana",
-    items: ["Avent", "Nuk", "Lansinoh", "Chicco", "Nuby", "Bbox", "Suavinex", "Bibs", "Lillo", "Nursimom", "Nursimom Baby", "Baby Innovation", "Loopi", "Punti", "Ingenuity", "Minikoioi", "Tatoon", "Tramontina", "Ok Baby"],
-  },
-  {
-    name: "Accesorios",
-    items: ["DEMA", "A Wish Deco", "Floating Baby", "Min Renee", "Baby Safe", "Poco Piano"],
+    items: ["Avent", "Nuk", "Lansinoh", "Chicco", "Nuby", "Bbox", "Suavinex", "Bibs", "Lillo", "Nursimom", "Nursimom Baby", "Baby Innovation", "Loopi", "Punti", "Ingenuity", "Minikoioi", "Tatoon", "Tramontina", "Ok Baby", "DEMA", "A Wish Deco", "Floating Baby", "Min Renee", "Baby Safe", "Poco Piano"],
   },
   {
     name: "Juguetes",
