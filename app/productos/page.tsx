@@ -75,23 +75,72 @@ const products = [
   },
 ];
 const money = (value: number) => `$${value.toLocaleString("es-AR")}`;
-const filterGroups = [
-  {
-    name: "Leches Infantiles",
-    items: ["Nutrilon", "Vital", "Serenísima", "Sancor", "Nestle", "Nidina", "Nido", "Nestum"],
-  },
-  {
-    name: "Puericultura Liviana",
-    items: ["Avent", "Nuk", "Lansinoh", "Chicco", "Nuby", "Bbox", "Suavinex", "Bibs", "Lillo", "Nursimom", "Nursimom Baby", "Baby Innovation", "Loopi", "Punti", "Ingenuity", "Minikoioi", "Tatoon", "Tramontina", "Ok Baby", "DEMA", "A Wish Deco", "Floating Baby", "Min Renee", "Baby Safe", "Poco Piano"],
-  },
-  {
-    name: "Juguetes",
-    items: ["Bright Stars", "Baby Einstein", "Woody Toys", "Soft Blocks", "J'adore", "Baby Favorite", "Little Learner", "Baby Sunki", "Vtech", "5 sentidos", "Bimbi", "Duravit", "Rondi", "Juliana", "Phi Phi toys", "Bestway"],
-  },
-  {
-    name: "Hidratación",
-    items: ["Bubba", "Contigo", "Termy"],
-  },
+type FilterGroup = {
+  name: string;
+  items: string[];
+  subitems?: Record<string, string[]>;
+};
+
+const brandSubitems: Record<string, string[]> = {
+  Nutrilon: ["Etapa 1", "Etapa 2", "Etapa 3", "Etapa 4"],
+  Vital: ["Etapa 1", "Etapa 2", "Etapa 3", "Etapa 4"],
+  "La Serenísima Baby": ["Etapa 1", "Etapa 2", "Etapa 3"],
+  Sancor: ["Etapa 1", "Etapa 2", "Etapa 3"],
+  NAN: ["Etapa 1", "Etapa 2", "Etapa 3", "Expert Pro Medicamentosa"],
+  Nidina: ["Etapa 1", "Etapa 2", "Etapa 3"],
+  Nido: ["Etapa 3", "Etapa 4", "FortiGrow"],
+  Avent: ["Promociones", "Eléctricos", "Accesorios para lactancia", "Mamaderas y tetinas", "Chupetes", "Vasos"],
+  NUK: ["Combos", "Peppa Pig", "Promociones", "Disney", "Accesorios", "Eléctricos", "Alimentación", "Accesorios para lactancia", "Chupetes", "Cuidado Bucal", "Mamaderas", "Tetinas", "Vasos", "Repuestos"],
+  Lansinoh: ["Promociones", "Cuidar", "Extraer", "Guardar", "Alimentar", "Postparto", "Repuestos"],
+  Chicco: ["Promociones", "Perfumería - Chicco POP", "Silicona", "Antimosquitos", "Accesorios", "Lactancia", "Mamaderas y tetinas", "Chupetes", "Mordillos", "Vasos", "Alimentación", "Higiene", "Higiene Bucal", "Luz de Noche"],
+  Nuby: ["Promociones", "Lactancia", "Mamaderas", "Tetinas", "Alimentación", "Higiene", "Juguetes", "Mordillos", "Chupetes", "Vasos"],
+  Bbox: ["Promociones", "Mordillos y Chupetes p/ Fruta", "Accesorios", "Vasos", "Alimentación", "Termos", "Higiene", "Repuestos"],
+  Suavinex: ["Promociones", "Colección Zero.Zero", "Repuestos", "Colección Colour Essence", "Colección Prints", "Colección Night & Day", "Colección Wonderland", "Accesorios", "Tetinas para Colour Essence, Prints y Wonderland"],
+  Bibs: ["Portachupetes", "Mamaderas con tetina de silicona", "Mamaderas con tetina de caucho", "Tetinas", "Mordillos", "Chupetes"],
+  Lillo: ["Mamaderas", "Tetinas", "Chupetes", "Vasos"],
+  Polymem: ["Nursimom", "Accesorios", "Fajas", "Fulares", "Mochilas"],
+  "Nursimom Baby": ["Accesorios para Chupete", "Alimentadores de Fruta", "Almacenamiento de Alimentos", "Higiene", "Juguetes", "Lactancia", "Mordillos", "Vajilla y Cubiertos"],
+  Dema: ["Faja Post Parto", "Faja Pre Parto"],
+  "Baby Innovation": ["Promociones", "Accesorios", "Accesorios para Chupetes", "Chupete Inicial", "Chupete Premium", "Chupete Ortodóntico", "Chupete Fisiológico", "Mordillos", "Alimentación", "Vasos", "Baño", "Higiene Bucal", "Higiene de Manos", "Higiene de Nariz", "Higiene del Pelo", "Paseo", "Puertas de Seguridad", "Seguridad", "Varios"],
+  Loopi: ["Promociones", "Loopi"],
+  Punti: ["Alimentación", "Baberos", "Seguridad", "Butacas para Auto", "Bañeras", "Pelelas y Reductores", "Sillas de Comer", "Cambiadores", "Catre de Baño"],
+  Ingenuity: [],
+  "Bright Starts": [],
+  "Baby Einstein": [],
+  Bubba: [],
+  Contigo: [],
+  Termy: ["Mates", "Termos", "Viandas"],
+  Minikoioi: ["Puzzle", "Bowly", "Flexi Bibs", "Scoops", "Mini cup", "Flexi Straws", "Pulps", "Icy Pops"],
+  Tatoon: [],
+  Tramontina: ["Línea Baby Friends", "Línea Le Petit", "Línea Lellos", "Línea Monster Baby"],
+  "Baby Safe": [],
+  "OK Baby": ["Alfombras Antigolpes", "Promos Alfombras Antigolpe", "Bañeras y reductores", "Pelelas", "Sillas de comer", "Butacas"],
+  "A Wish": ["Novedades", "Bolsas de Dormir", "Red de Baño", "Luncheras", "Sábanas", "Protectores", "Acolchados", "Chichoneras", "Mantas", "Almohadón y Nidos", "Fulares Elásticos", "Fulares Pre-Armados", "Cambiadores", "Baberos y Babitas", "Muñecos de Apego", "Toallas y toallones", "Accesorios"],
+  "Floating Baby": [],
+  "Min Renée": ["Baberos", "Babitas", "Blanquería", "Sets"],
+  "Poco Piano": [],
+  "Woody Toys": ["Gimnasios y Barrales", "Móviles", "Cuneros", "Libros", "Sonajeros", "Portachupete", "Peluche"],
+  "Soft Blocks": [],
+  "J'adore": ["Colgantes y Sonajeros", "Baño", "Pelotas y Animales", "Apilables y Encastres", "Sets"],
+  "Baby Favorite": [],
+  "Little Learner": [],
+  "Baby Sunki": [],
+  Vtech: ["Primera Infancia"],
+  "5 Sentidos": ["Doypack Económico", "Agua", "Bebés", "Didácticos"],
+  Bimbi: [],
+  Duravit: ["Patapata", "Didácticos Primera Infancia", "Hogar", "Masas", "Blocks", "Rodados Minis", "Rodados Chicos", "Rodados Medianos", "Rodados Grandes", "Estaciones de servicio", "Juegos", "Playa"],
+  Rondi: ["Baldes de Juego", "Transportes y Camiones", "Bebé", "Andadores", "Triciclos", "Cocinas", "Estaciones de Servicio y Garages", "Juegos de Rol", "Outdoor", "Metegoles y Flippers"],
+  Juliana: ["Juliana Valija Chica", "Juliana Valija Grande"],
+  "Phi Phi Toys": ["Puzzles", "Encastres"],
+  Bestway: ["Licencias", "Botes y Asientos", "Salvavidas", "Antiparras", "Accesorios Natación"],
+};
+
+const filterGroups: FilterGroup[] = [
+  { name: "Leches Infantiles", items: ["Nutrilon", "Vital", "La Serenísima Baby", "Sancor", "NAN", "Nidina", "Nido", "Nestum"] },
+  { name: "Puericultura Liviana", items: ["Avent", "NUK", "Lansinoh", "Chicco", "Nuby", "Bbox", "Suavinex", "Bibs", "Lillo", "Nursimom", "Nursimom Baby", "Baby Innovation", "Loopi", "Punti", "Ingenuity", "Minikoioi", "Tatoon", "Tramontina", "OK Baby", "Dema", "A Wish", "Floating Baby", "Min Renée", "Baby Safe", "Poco Piano"] },
+  { name: "Juguetes", items: ["Bright Starts", "Baby Einstein", "Woody Toys", "Soft Blocks", "J'adore", "Baby Favorite", "Little Learner", "Baby Sunki", "Vtech", "5 Sentidos", "Bimbi", "Duravit", "Rondi", "Juliana", "Phi Phi Toys", "Bestway"] },
+  { name: "Hidratación", items: ["Bubba", "Contigo", "Termy"] },
+  { name: "Marcas", items: Object.keys(brandSubitems), subitems: brandSubitems },
 ];
 function ProductosContent() {
   const { isLoggedIn, isReady: authChecked } = useAuthSession();
@@ -450,6 +499,26 @@ function ProductosContent() {
                                 <span>{item}</span>
                                 <small>({itemCount})</small>
                               </a>
+                              {group.subitems?.[item]?.length ? (
+                                <ul className="filter-sublist">
+                                  {group.subitems[item]
+                                    .filter((subitem) =>
+                                      subitem
+                                        .toLowerCase()
+                                        .includes(filterOptionQuery.toLowerCase()),
+                                    )
+                                    .map((subitem) => (
+                                      <li key={`${item}-${subitem}`}>
+                                        <a
+                                          href={`/productos?marca=${encodeURIComponent(item)}`}
+                                          onClick={() => setSelectedBrand(item)}
+                                        >
+                                          {subitem}
+                                        </a>
+                                      </li>
+                                    ))}
+                                </ul>
+                              ) : null}
                             </li>
                           );
                         })}
