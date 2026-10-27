@@ -78,7 +78,7 @@ const money = (value: number) => `$${value.toLocaleString("es-AR")}`;
 type FilterGroup = {
   name: string;
   items: string[];
-  subitems?: Record<string, string[]>;
+  brand: string;
 };
 
 const brandSubitems: Record<string, string[]> = {
@@ -142,9 +142,9 @@ const categoryFilters = [
   "Hidratación",
 ];
 
-const filterGroups: FilterGroup[] = [
-  { name: "Marcas", items: Object.keys(brandSubitems), subitems: brandSubitems },
-];
+const filterGroups: FilterGroup[] = Object.entries(brandSubitems).map(
+  ([brand, subitems]) => ({ name: brand, items: subitems, brand }),
+);
 function ProductosContent() {
   const { isLoggedIn, isReady: authChecked } = useAuthSession();
   const searchParams = useSearchParams();
@@ -401,88 +401,49 @@ function ProductosContent() {
             )}
             {filterGroups.map((group) => {
               const isOpen = openFilterGroups.includes(group.name);
+              const isSelected = selectedBrand === group.brand;
+              const brandCount = products.filter(
+                (product) => product.brand.toLowerCase() === group.brand.toLowerCase(),
+              ).length;
+              const visibleItems = group.items.filter((item) =>
+                item.toLowerCase().includes(filterOptionQuery.toLowerCase()),
+              );
               return (
                 <section className="filter-group" key={group.name}>
                   <button
-                    className="filter-group-heading"
+                    className={`filter-group-heading ${isSelected ? "selected" : ""}`}
                     type="button"
                     aria-expanded={isOpen}
-                    onClick={() =>
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      setSelectedBrand(isSelected ? "" : group.brand);
+                      setSelectedCategory("");
                       setOpenFilterGroups(
                         isOpen
-                          ? openFilterGroups.filter(
-                              (name) => name !== group.name,
-                            )
+                          ? openFilterGroups.filter((name) => name !== group.name)
                           : [...openFilterGroups, group.name],
-                      )
-                    }
+                      );
+                    }}
                   >
-                    <span>{group.name}</span>
-                    <small>{group.items.length}</small>
+                    <span>{group.brand}</span>
+                    <small>{brandCount}</small>
                     <b>{isOpen ? "−" : "+"}</b>
                   </button>
-                  {isOpen && (
-                    <ul className="filter-list">
-                      {group.items
-                        .filter((item) =>
-                          item
-                            .toLowerCase()
-                            .includes(filterOptionQuery.toLowerCase()),
-                        )
-                        .map((item) => {
-                          const isCategoryGroup = group.name === "Categorías";
-                          const isSelected =
-                            selectedBrand === item || selectedCategory === item;
-                          const itemCount = products.filter((product) =>
-                            isCategoryGroup
-                              ? product.category
-                                  .toLowerCase()
-                                  .includes(item.toLowerCase()) ||
-                                product.name
-                                  .toLowerCase()
-                                  .includes(item.toLowerCase())
-                              : product.brand.toLowerCase() ===
-                                item.toLowerCase(),
-                          ).length;
-                          return (
-                            <li key={`${group.name}-${item}`}>
-                              <a
-                                className={isSelected ? "selected" : ""}
-                                href={`/productos?${isCategoryGroup ? "categoria" : "marca"}=${encodeURIComponent(item)}`}
-                                aria-current={isSelected ? "true" : undefined}
-                                onClick={(event) => {
-                                  event.preventDefault();
-                                  if (isCategoryGroup)
-                                    setSelectedCategory(isSelected ? "" : item);
-                                  else setSelectedBrand(isSelected ? "" : item);
-                                }}
-                              >
-                                <span>{item}</span>
-                                <small>({itemCount})</small>
-                              </a>
-                              {group.subitems?.[item]?.length ? (
-                                <ul className="filter-sublist">
-                                  {group.subitems[item]
-                                    .filter((subitem) =>
-                                      subitem
-                                        .toLowerCase()
-                                        .includes(filterOptionQuery.toLowerCase()),
-                                    )
-                                    .map((subitem) => (
-                                      <li key={`${item}-${subitem}`}>
-                                        <a
-                                          href={`/productos?marca=${encodeURIComponent(item)}`}
-                                          onClick={() => setSelectedBrand(item)}
-                                        >
-                                          {subitem}
-                                        </a>
-                                      </li>
-                                    ))}
-                                </ul>
-                              ) : null}
-                            </li>
-                          );
-                        })}
+                  {isOpen && visibleItems.length > 0 && (
+                    <ul className="filter-sublist">
+                      {visibleItems.map((item) => (
+                        <li key={`${group.brand}-${item}`}>
+                          <a
+                            href={`/productos?marca=${encodeURIComponent(group.brand)}`}
+                            onClick={() => {
+                              setSelectedBrand(group.brand);
+                              setSelectedCategory("");
+                            }}
+                          >
+                            {item}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </section>
