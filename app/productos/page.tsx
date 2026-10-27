@@ -308,89 +308,6 @@ function ProductosContent() {
           </div>
         )}
       </header>
-      <section className="catalog-novelties" aria-labelledby="novelties-title">
-        <div className="catalog-novelties-head">
-          <div>
-            <span className="eyebrow">LO MÁS VENDIDO</span>
-            {selectedCategory && (
-              <small className="novelty-context">{selectedCategory}</small>
-            )}
-          </div>
-          <div className="novelty-controls">
-            <button
-              type="button"
-              onClick={() => setNoveltyIndex(Math.max(0, noveltyIndex - 1))}
-              disabled={noveltyIndex === 0}
-              aria-label="Ingreso anterior"
-            >
-              ‹
-            </button>
-            <button
-              type="button"
-              onClick={() =>
-                setNoveltyIndex(Math.min(incomingMaxIndex, noveltyIndex + 1))
-              }
-              disabled={noveltyIndex >= incomingMaxIndex}
-              aria-label="Ingreso siguiente"
-            >
-              ›
-            </button>
-          </div>
-        </div>
-        <div className="novelty-carousel">
-          <div
-            className="novelty-track"
-            style={{
-              transform: `translateX(calc(-${noveltyIndex} * (25% + 12px))`,
-            }}
-          >
-            {incomingProducts.map((product) => (
-              <article className="novelty-card" key={product.id}>
-                <div className="novelty-image">
-                  <span>NUEVO</span>
-                  <a
-                    className="novelty-product-link"
-                    href="/productos/nutrilon-pro-futura-1"
-                    aria-label={`Ver ${product.name}`}
-                  >
-                    <img src="/hero-nutrilon-1.jpg" alt={product.name} />
-                  </a>
-                </div>
-                <div className="novelty-card-body">
-                  <h2 className="novelty-product-title">
-                    <a href="/productos/nutrilon-pro-futura-1">
-                      {product.name}
-                    </a>
-                  </h2>
-                  <small className="novelty-product-code">
-                    Código: {product.code}
-                  </small>
-                  {product.packItems && (
-                    <span className="pack-quantity">
-                      Pack de {product.packItems} unidades
-                    </span>
-                  )}
-                  <button
-                    className="novelty-cart-button"
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (!isLoggedIn) {
-                        window.location.href = "/iniciar-sesion";
-                        return;
-                      }
-                          handleAddToCart(product);
-                    }}
-                  >
-                    <ShoppingCart size={16} aria-hidden="true" />
-                    {isLoggedIn ? "Agregar al carrito" : "Iniciar sesión"}
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
       <section className="product-category-cloud" aria-labelledby="product-category-cloud-title">
         <div className="product-category-cloud-heading">
           <div>
@@ -782,6 +699,89 @@ function ProductosContent() {
               })
             )}
           </section>
+        </div>
+      </section>
+      <section className="catalog-novelties" aria-labelledby="novelties-title">
+        <div className="catalog-novelties-head">
+          <div>
+            <span className="eyebrow">LO MÁS VENDIDO</span>
+            {selectedCategory && (
+              <small className="novelty-context">{selectedCategory}</small>
+            )}
+          </div>
+          <div className="novelty-controls">
+            <button
+              type="button"
+              onClick={() => setNoveltyIndex(Math.max(0, noveltyIndex - 1))}
+              disabled={noveltyIndex === 0}
+              aria-label="Ingreso anterior"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                setNoveltyIndex(Math.min(incomingMaxIndex, noveltyIndex + 1))
+              }
+              disabled={noveltyIndex >= incomingMaxIndex}
+              aria-label="Ingreso siguiente"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+        <div className="novelty-carousel">
+          <div
+            className="novelty-track"
+            style={{
+              transform: `translateX(calc(-${noveltyIndex} * (25% + 12px))`,
+            }}
+          >
+            {incomingProducts.map((product) => (
+              <article className="novelty-card" key={product.id}>
+                <div className="novelty-image">
+                  <span>NUEVO</span>
+                  <a
+                    className="novelty-product-link"
+                    href="/productos/nutrilon-pro-futura-1"
+                    aria-label={`Ver ${product.name}`}
+                  >
+                    <img src="/hero-nutrilon-1.jpg" alt={product.name} />
+                  </a>
+                </div>
+                <div className="novelty-card-body">
+                  <h2 className="novelty-product-title">
+                    <a href="/productos/nutrilon-pro-futura-1">
+                      {product.name}
+                    </a>
+                  </h2>
+                  <small className="novelty-product-code">
+                    Código: {product.code}
+                  </small>
+                  {product.packItems && (
+                    <span className="pack-quantity">
+                      Pack de {product.packItems} unidades
+                    </span>
+                  )}
+                  <button
+                    className="novelty-cart-button"
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (!isLoggedIn) {
+                        window.location.href = "/iniciar-sesion";
+                        return;
+                      }
+                      handleAddToCart(product);
+                    }}
+                  >
+                    <ShoppingCart size={16} aria-hidden="true" />
+                    {isLoggedIn ? "Agregar al carrito" : "Iniciar sesión"}
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
       <SiteFooter showContact={false} />
