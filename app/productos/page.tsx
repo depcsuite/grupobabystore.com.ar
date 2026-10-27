@@ -135,11 +135,14 @@ const brandSubitems: Record<string, string[]> = {
   Bestway: ["Licencias", "Botes y Asientos", "Salvavidas", "Antiparras", "Accesorios Natación"],
 };
 
+const categoryFilters = [
+  "Leches Infantiles",
+  "Puericultura Liviana",
+  "Juguetes",
+  "Hidratación",
+];
+
 const filterGroups: FilterGroup[] = [
-  { name: "Leches Infantiles", items: ["Nutrilon", "Vital", "La Serenísima Baby", "Sancor", "NAN", "Nidina", "Nido", "Nestum"] },
-  { name: "Puericultura Liviana", items: ["Avent", "NUK", "Lansinoh", "Chicco", "Nuby", "Bbox", "Suavinex", "Bibs", "Lillo", "Nursimom", "Nursimom Baby", "Baby Innovation", "Loopi", "Punti", "Ingenuity", "Minikoioi", "Tatoon", "Tramontina", "OK Baby", "Dema", "A Wish", "Floating Baby", "Min Renée", "Baby Safe", "Poco Piano"] },
-  { name: "Juguetes", items: ["Bright Starts", "Baby Einstein", "Woody Toys", "Soft Blocks", "J'adore", "Baby Favorite", "Little Learner", "Baby Sunki", "Vtech", "5 Sentidos", "Bimbi", "Duravit", "Rondi", "Juliana", "Phi Phi Toys", "Bestway"] },
-  { name: "Hidratación", items: ["Bubba", "Contigo", "Termy"] },
   { name: "Marcas", items: Object.keys(brandSubitems), subitems: brandSubitems },
 ];
 function ProductosContent() {
@@ -386,6 +389,47 @@ function ProductosContent() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+      <section className="product-category-cloud" aria-labelledby="product-category-cloud-title">
+        <div className="product-category-cloud-heading">
+          <div>
+            <span className="eyebrow">EXPLORÁ POR CATEGORÍA</span>
+            <h2 id="product-category-cloud-title">Encontrá lo que buscás</h2>
+          </div>
+          {(selectedBrand || selectedCategory) && (
+            <button
+              className="filter-clear"
+              type="button"
+              onClick={() => {
+                setSelectedBrand("");
+                setSelectedCategory("");
+              }}
+            >
+              Limpiar filtros
+            </button>
+          )}
+        </div>
+        <div className="product-category-cloud-list" role="list">
+          {categoryFilters.map((category) => {
+            const isSelected = selectedCategory === category;
+            return (
+              <a
+                className={isSelected ? "is-active" : ""}
+                href={`/productos?categoria=${encodeURIComponent(category)}`}
+                key={category}
+                role="listitem"
+                aria-current={isSelected ? "true" : undefined}
+                onClick={(event) => {
+                  event.preventDefault();
+                  setSelectedCategory(isSelected ? "" : category);
+                  setSelectedBrand("");
+                }}
+              >
+                {category}
+              </a>
+            );
+          })}
         </div>
       </section>
       <section className="wholesale-catalog">
