@@ -4,6 +4,7 @@ import './globals.css'
 import { CartProvider } from '@/components/cart-context'
 import { AuthSessionProvider } from '@/components/auth-session-sync'
 import { OrderModal } from '@/components/order-modal'
+import { GlobalCart } from '@/components/global-cart'
 import './auth.css'
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
         <AuthSessionProvider>
           <CartProvider>
             {children}
+            <GlobalCart />
             <OrderModal />
           </CartProvider>
         </AuthSessionProvider>
