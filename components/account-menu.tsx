@@ -46,14 +46,9 @@ export function AccountMenu({ active = false }: { active?: boolean }) {
 
   return (
     <>
-      <button
-        className="header-order"
-        type="button"
-        aria-haspopup="dialog"
-        onClick={() => window.dispatchEvent(new CustomEvent('open-order-modal'))}
-      >
+      <Link className="header-order" href="/hace-tu-pedido">
         <ShoppingBag size={16} aria-hidden="true" /> Hacé tu pedido
-      </button>
+      </Link>
       {isLoggedIn ? (
         <div className="account-dropdown" ref={menuRef}>
           <button className={`header-login account-dropdown-trigger${active ? ' active' : ''}`} type="button" aria-expanded={open} aria-controls="account-dropdown-options" onClick={() => setOpen(current => !current)}>

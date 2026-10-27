@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { CartProvider } from '@/components/cart-context'
 import { AuthSessionProvider } from '@/components/auth-session-sync'
-import { OrderModal } from '@/components/order-modal'
 import { GlobalCart } from '@/components/global-cart'
 import './auth.css'
 
@@ -37,7 +36,6 @@ export default function RootLayout({
           <CartProvider>
             {children}
             <GlobalCart />
-            <OrderModal />
           </CartProvider>
         </AuthSessionProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
