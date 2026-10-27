@@ -17,8 +17,27 @@ import { useAuthSession } from "@/components/auth-session-sync";
 import { AccountMenu } from "@/components/account-menu";
 import { SiteFooter } from "@/components/site-footer";
 import { PromoTopbar } from "@/components/promo-topbar";
+import {
+  CatalogDownloadOptions,
+  CatalogPrintDocument,
+} from "@/components/catalog-downloads";
+import { getBrandAsset } from "@/lib/brand-assets";
 
-const products = [
+type ProductAvailability = "in_stock" | "out_of_stock";
+
+type CatalogProduct = {
+  id: string;
+  category: string;
+  brand: string;
+  name: string;
+  code: string;
+  price: number;
+  originalPrice?: number;
+  packItems?: number;
+  availability: ProductAvailability;
+};
+
+const products: CatalogProduct[] = [
   {
     id: "nutrilon-1-brick",
     category: "Leches Infantiles",
@@ -28,6 +47,7 @@ const products = [
     price: 1808,
     originalPrice: 2232,
     packItems: 4,
+    availability: "out_of_stock",
   },
   {
     id: "nutrilon-1-tarro",
@@ -37,6 +57,7 @@ const products = [
     code: "AA NUT 1 TARRO PR",
     price: 35855,
     originalPrice: 44266,
+    availability: "in_stock",
   },
   {
     id: "nutrilon-1-pack",
@@ -47,6 +68,7 @@ const products = [
     price: 46161,
     originalPrice: 56989,
     packItems: 6,
+    availability: "in_stock",
   },
   {
     id: "nutrilon-2-brick",
@@ -56,6 +78,7 @@ const products = [
     code: "AA NUT 2 BRICK PR",
     price: 1720,
     originalPrice: 2123,
+    availability: "in_stock",
   },
   {
     id: "vital-4",
@@ -64,6 +87,7 @@ const products = [
     name: "Vital 4 Fórmula infantil",
     code: "AA VIT 4 TARRO",
     price: 24000,
+    availability: "in_stock",
   },
   {
     id: "nan-1",
@@ -72,33 +96,92 @@ const products = [
     name: "NAN Expert Pro 1 Fórmula infantil",
     code: "AA NAN 1 TARRO",
     price: 29500,
+    availability: "in_stock",
+  },
+  {
+    id: "nan-2",
+    category: "Leches Infantiles",
+    brand: "NAN",
+    name: "NAN Expert Pro 2 Fórmula infantil",
+    code: "AA NAN 2 TARRO",
+    price: 29500,
+    availability: "out_of_stock",
   },
 ];
 const money = (value: number) => `$${value.toLocaleString("es-AR")}`;
-const filterGroups = [
-  {
-    name: "Leches Infantiles",
-    items: ["Nutrilon", "Vital", "Serenísima", "Sancor", "Nestle", "Nidina", "Nido", "Nestum"],
-  },
-  {
-    name: "Puericultura Liviana",
-    items: ["Avent", "Nuk", "Lansinoh", "Chicco", "Nuby", "Bbox", "Suavinex", "Bibs", "Lillo", "Nursimom", "Nursimom Baby", "Baby Innovation", "Loopi", "Punti", "Ingenuity", "Minikoioi", "Tatoon", "Tramontina", "Ok Baby"],
-  },
-  {
-    name: "Accesorios",
-    items: ["DEMA", "A Wish Deco", "Floating Baby", "Min Renee", "Baby Safe", "Poco Piano"],
-  },
-  {
-    name: "Juguetes",
-    items: ["Bright Stars", "Baby Einstein", "Woody Toys", "Soft Blocks", "J'adore", "Baby Favorite", "Little Learner", "Baby Sunki", "Vtech", "5 sentidos", "Bimbi", "Duravit", "Rondi", "Juliana", "Phi Phi toys", "Bestway"],
-  },
-  {
-    name: "Hidratación",
-    items: ["Bubba", "Contigo", "Termy"],
-  },
+type FilterGroup = {
+  name: string;
+  items: string[];
+  brand: string;
+};
+
+const brandSubitems: Record<string, string[]> = {
+  Nutrilon: ["Etapa 1", "Etapa 2", "Etapa 3", "Etapa 4"],
+  Vital: ["Etapa 1", "Etapa 2", "Etapa 3", "Etapa 4"],
+  "La Serenísima Baby": ["Etapa 1", "Etapa 2", "Etapa 3"],
+  Sancor: ["Etapa 1", "Etapa 2", "Etapa 3"],
+  NAN: ["Etapa 1", "Etapa 2", "Etapa 3", "Expert Pro Medicamentosa"],
+  Nidina: ["Etapa 1", "Etapa 2", "Etapa 3"],
+  Nido: ["Etapa 3", "Etapa 4", "FortiGrow"],
+  Avent: ["Promociones", "Eléctricos", "Accesorios para lactancia", "Mamaderas y tetinas", "Chupetes", "Vasos"],
+  NUK: ["Combos", "Peppa Pig", "Promociones", "Disney", "Accesorios", "Eléctricos", "Alimentación", "Accesorios para lactancia", "Chupetes", "Cuidado Bucal", "Mamaderas", "Tetinas", "Vasos", "Repuestos"],
+  Lansinoh: ["Promociones", "Cuidar", "Extraer", "Guardar", "Alimentar", "Postparto", "Repuestos"],
+  Chicco: ["Promociones", "Perfumería - Chicco POP", "Silicona", "Antimosquitos", "Accesorios", "Lactancia", "Mamaderas y tetinas", "Chupetes", "Mordillos", "Vasos", "Alimentación", "Higiene", "Higiene Bucal", "Luz de Noche"],
+  Nuby: ["Promociones", "Lactancia", "Mamaderas", "Tetinas", "Alimentación", "Higiene", "Juguetes", "Mordillos", "Chupetes", "Vasos"],
+  Bbox: ["Promociones", "Mordillos y Chupetes p/ Fruta", "Accesorios", "Vasos", "Alimentación", "Termos", "Higiene", "Repuestos"],
+  Suavinex: ["Promociones", "Colección Zero.Zero", "Repuestos", "Colección Colour Essence", "Colección Prints", "Colección Night & Day", "Colección Wonderland", "Accesorios", "Tetinas para Colour Essence, Prints y Wonderland"],
+  Bibs: ["Portachupetes", "Mamaderas con tetina de silicona", "Mamaderas con tetina de caucho", "Tetinas", "Mordillos", "Chupetes"],
+  Lillo: ["Mamaderas", "Tetinas", "Chupetes", "Vasos"],
+  Polymem: ["Nursimom", "Accesorios", "Fajas", "Fulares", "Mochilas"],
+  "Nursimom Baby": ["Accesorios para Chupete", "Alimentadores de Fruta", "Almacenamiento de Alimentos", "Higiene", "Juguetes", "Lactancia", "Mordillos", "Vajilla y Cubiertos"],
+  Dema: ["Faja Post Parto", "Faja Pre Parto"],
+  "Baby Innovation": ["Promociones", "Accesorios", "Accesorios para Chupetes", "Chupete Inicial", "Chupete Premium", "Chupete Ortodóntico", "Chupete Fisiológico", "Mordillos", "Alimentación", "Vasos", "Baño", "Higiene Bucal", "Higiene de Manos", "Higiene de Nariz", "Higiene del Pelo", "Paseo", "Puertas de Seguridad", "Seguridad", "Varios"],
+  Loopi: ["Promociones", "Loopi"],
+  Punti: ["Alimentación", "Baberos", "Seguridad", "Butacas para Auto", "Bañeras", "Pelelas y Reductores", "Sillas de Comer", "Cambiadores", "Catre de Baño"],
+  Ingenuity: [],
+  "Bright Starts": [],
+  "Baby Einstein": [],
+  Bubba: [],
+  Contigo: [],
+  Termy: ["Mates", "Termos", "Viandas"],
+  Minikoioi: ["Puzzle", "Bowly", "Flexi Bibs", "Scoops", "Mini cup", "Flexi Straws", "Pulps", "Icy Pops"],
+  Tatoon: [],
+  Tramontina: ["Línea Baby Friends", "Línea Le Petit", "Línea Lellos", "Línea Monster Baby"],
+  "Baby Safe": [],
+  "OK Baby": ["Alfombras Antigolpes", "Promos Alfombras Antigolpe", "Bañeras y reductores", "Pelelas", "Sillas de comer", "Butacas"],
+  "A Wish": ["Novedades", "Bolsas de Dormir", "Red de Baño", "Luncheras", "Sábanas", "Protectores", "Acolchados", "Chichoneras", "Mantas", "Almohadón y Nidos", "Fulares Elásticos", "Fulares Pre-Armados", "Cambiadores", "Baberos y Babitas", "Muñecos de Apego", "Toallas y toallones", "Accesorios"],
+  "Floating Baby": [],
+  "Min Renée": ["Baberos", "Babitas", "Blanquería", "Sets"],
+  "Poco Piano": [],
+  "Woody Toys": ["Gimnasios y Barrales", "Móviles", "Cuneros", "Libros", "Sonajeros", "Portachupete", "Peluche"],
+  "Soft Blocks": [],
+  "J'adore": ["Colgantes y Sonajeros", "Baño", "Pelotas y Animales", "Apilables y Encastres", "Sets"],
+  "Baby Favorite": [],
+  "Little Learner": [],
+  "Baby Sunki": [],
+  Vtech: ["Primera Infancia"],
+  "5 Sentidos": ["Doypack Económico", "Agua", "Bebés", "Didácticos"],
+  Bimbi: [],
+  Duravit: ["Patapata", "Didácticos Primera Infancia", "Hogar", "Masas", "Blocks", "Rodados Minis", "Rodados Chicos", "Rodados Medianos", "Rodados Grandes", "Estaciones de servicio", "Juegos", "Playa"],
+  Rondi: ["Baldes de Juego", "Transportes y Camiones", "Bebé", "Andadores", "Triciclos", "Cocinas", "Estaciones de Servicio y Garages", "Juegos de Rol", "Outdoor", "Metegoles y Flippers"],
+  Juliana: ["Juliana Valija Chica", "Juliana Valija Grande"],
+  "Phi Phi Toys": ["Puzzles", "Encastres"],
+  Bestway: ["Licencias", "Botes y Asientos", "Salvavidas", "Antiparras", "Accesorios Natación"],
+};
+
+const categoryFilters = [
+  "Leches Infantiles",
+  "Puericultura Liviana",
+  "Juguetes",
+  "Hidratación",
 ];
+
+const filterGroups: FilterGroup[] = Object.entries(brandSubitems).map(
+  ([brand, subitems]) => ({ name: brand, items: subitems, brand }),
+);
 function ProductosContent() {
   const { isLoggedIn, isReady: authChecked } = useAuthSession();
+  const canSeePricing = authChecked && isLoggedIn;
   const searchParams = useSearchParams();
   const { items, addItem, updateQuantity, removeItem, subtotal, count } =
     useCart();
@@ -138,32 +221,39 @@ function ProductosContent() {
   const [selectedPriceBrands, setSelectedPriceBrands] = useState<string[]>([]);
   const [noveltyIndex, setNoveltyIndex] = useState(0);
   const [quantityErrors, setQuantityErrors] = useState<Record<string, string>>({});
-  const brands = Array.from(
-    new Set(filterGroups.flatMap((group) => group.items)),
-  );
+  const priceListBrands = filterGroups.map((group) => group.brand);
   const handleAddToCart = (product: (typeof products)[number]) => {
+    if (product.availability === "out_of_stock") return;
     addItem(product);
     setCartOpen(false);
     setCartPulse(true);
     window.setTimeout(() => setCartPulse(false), 650);
   };
   const downloadPriceList = () => {
-    const exportProducts = selectedPriceBrands.length
-      ? products.filter((product) =>
-          selectedPriceBrands.includes(product.brand),
-        )
-      : products;
-    const rows = exportProducts
-      .map(
-        (product) =>
-          `<tr><td>${product.brand}</td><td>${product.name}</td><td>${product.code}</td><td>${product.price}</td><td>${product.originalPrice ?? ""}</td></tr>`,
-      )
+    const brandsToExport = selectedPriceBrands.length
+      ? priceListBrands.filter((brand) => selectedPriceBrands.includes(brand))
+      : priceListBrands;
+    const brandSections = brandsToExport
+      .map((brand) => {
+        const brandProducts = products.filter((product) => product.brand === brand);
+        if (brandProducts.length === 0) return "";
+        const rows = brandProducts
+          .map(
+            (product) =>
+              `<tr><td>${product.brand}</td><td>${product.name}</td><td>${product.code}</td><td>${product.price}</td><td>${product.originalPrice ?? ""}</td></tr>`,
+          )
+          .join("");
+        return `<tr><td colspan="5" style="background-color:#eaf4f8;font-weight:bold">${brand}</td></tr>${rows}`;
+      })
       .join("");
+    const exportRows =
+      brandSections ||
+      `<tr><td colspan="5">No hay productos cargados para las marcas seleccionadas.</td></tr>`;
     const blob = new Blob(
       [
-        `<table><tr><th>Marca</th><th>Producto</th><th>Código</th><th>Precio sin IVA</th><th>Precio anterior</th></tr>${rows}</table>`,
+        `<meta charset="UTF-8"><table><tr><th>Marca</th><th>Producto</th><th>Código</th><th>Precio sin IVA</th><th>Precio anterior</th></tr>${exportRows}</table>`,
       ],
-      { type: "application/vnd.ms-excel" },
+      { type: "application/vnd.ms-excel;charset=utf-8" },
     );
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -191,6 +281,7 @@ function ProductosContent() {
       ),
     [query, selectedBrand, selectedCategory],
   );
+  const selectedBrandAsset = getBrandAsset(selectedBrand);
   const incomingProducts = selectedCategory
     ? products.filter(
         (product) =>
@@ -208,8 +299,9 @@ function ProductosContent() {
     return <main className="site-shell catalog-shell" aria-busy="true" />;
   return (
     <main
-      className={`site-shell catalog-shell ${isLoggedIn ? "is-logged-in" : "is-guest"}`}
+      className={`site-shell catalog-shell ${canSeePricing ? "is-logged-in" : "is-guest"}`}
     >
+      <CatalogPrintDocument products={products} />
       <PromoTopbar />
       <header className="site-header catalog-site-header">
         <div className="header-inner">
@@ -260,87 +352,51 @@ function ProductosContent() {
           </div>
         )}
       </header>
-      <section className="catalog-novelties" aria-labelledby="novelties-title">
-        <div className="catalog-novelties-head">
+      <section className="product-category-cloud" aria-labelledby="product-category-cloud-title">
+        <div className="product-category-cloud-heading">
           <div>
-            <span className="eyebrow">LO MÁS VENDIDO</span>
-            {selectedCategory && (
-              <small className="novelty-context">{selectedCategory}</small>
-            )}
+            <span className="eyebrow">EXPLORÁ POR CATEGORÍA</span>
+            <h2 id="product-category-cloud-title">Encontrá lo que buscás</h2>
           </div>
-          <div className="novelty-controls">
+          {(selectedBrand || selectedCategory) && (
             <button
+              className="filter-clear"
               type="button"
-              onClick={() => setNoveltyIndex(Math.max(0, noveltyIndex - 1))}
-              disabled={noveltyIndex === 0}
-              aria-label="Ingreso anterior"
+              onClick={() => {
+                setSelectedBrand("");
+                setSelectedCategory("");
+              }}
             >
-              ‹
+              Limpiar filtros
             </button>
-            <button
-              type="button"
-              onClick={() =>
-                setNoveltyIndex(Math.min(incomingMaxIndex, noveltyIndex + 1))
-              }
-              disabled={noveltyIndex >= incomingMaxIndex}
-              aria-label="Ingreso siguiente"
-            >
-              ›
-            </button>
-          </div>
+          )}
         </div>
-        <div className="novelty-carousel">
-          <div
-            className="novelty-track"
-            style={{
-              transform: `translateX(calc(-${noveltyIndex} * (25% + 12px))`,
-            }}
-          >
-            {incomingProducts.map((product) => (
-              <article className="novelty-card" key={product.id}>
-                <div className="novelty-image">
-                  <span>NUEVO</span>
-                  <a
-                    className="novelty-product-link"
-                    href="/productos/nutrilon-pro-futura-1"
-                    aria-label={`Ver ${product.name}`}
-                  >
-                    <img src="/hero-nutrilon-1.jpg" alt={product.name} />
-                  </a>
-                </div>
-                <div className="novelty-card-body">
-                  <h2 className="novelty-product-title">
-                    <a href="/productos/nutrilon-pro-futura-1">
-                      {product.name}
-                    </a>
-                  </h2>
-                  <small className="novelty-product-code">
-                    Código: {product.code}
-                  </small>
-                  {product.packItems && (
-                    <span className="pack-quantity">
-                      Pack de {product.packItems} unidades
-                    </span>
-                  )}
-                  <button
-                    className="novelty-cart-button"
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (!isLoggedIn) {
-                        window.location.href = "/iniciar-sesion";
-                        return;
-                      }
-                          handleAddToCart(product);
-                    }}
-                  >
-                    <ShoppingCart size={16} aria-hidden="true" />
-                    {isLoggedIn ? "Agregar al carrito" : "Iniciar sesión"}
-                  </button>
-                </div>
-              </article>
-            ))}
+        <div className="product-category-cloud-tools">
+          <div className="product-category-cloud-list" role="list">
+            {categoryFilters.map((category) => {
+              const isSelected = selectedCategory === category;
+              return (
+                <a
+                  className={isSelected ? "is-active" : ""}
+                  href={`/productos?categoria=${encodeURIComponent(category)}`}
+                  key={category}
+                  role="listitem"
+                  aria-current={isSelected ? "true" : undefined}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setSelectedCategory(isSelected ? "" : category);
+                    setSelectedBrand("");
+                  }}
+                >
+                  {category}
+                </a>
+              );
+            })}
           </div>
+          <CatalogDownloadOptions
+            canViewPrices={canSeePricing}
+            onDownloadPriceList={() => setPriceModalOpen(true)}
+          />
         </div>
       </section>
       <section className="wholesale-catalog">
@@ -395,68 +451,49 @@ function ProductosContent() {
             )}
             {filterGroups.map((group) => {
               const isOpen = openFilterGroups.includes(group.name);
+              const isSelected = selectedBrand === group.brand;
+              const brandCount = products.filter(
+                (product) => product.brand.toLowerCase() === group.brand.toLowerCase(),
+              ).length;
+              const visibleItems = group.items.filter((item) =>
+                item.toLowerCase().includes(filterOptionQuery.toLowerCase()),
+              );
               return (
                 <section className="filter-group" key={group.name}>
                   <button
-                    className="filter-group-heading"
+                    className={`filter-group-heading ${isSelected ? "selected" : ""}`}
                     type="button"
                     aria-expanded={isOpen}
-                    onClick={() =>
+                    aria-pressed={isSelected}
+                    onClick={() => {
+                      setSelectedBrand(isSelected ? "" : group.brand);
+                      setSelectedCategory("");
                       setOpenFilterGroups(
                         isOpen
-                          ? openFilterGroups.filter(
-                              (name) => name !== group.name,
-                            )
+                          ? openFilterGroups.filter((name) => name !== group.name)
                           : [...openFilterGroups, group.name],
-                      )
-                    }
+                      );
+                    }}
                   >
-                    <span>{group.name}</span>
-                    <small>{group.items.length}</small>
+                    <span>{group.brand}</span>
+                    <small>{brandCount}</small>
                     <b>{isOpen ? "−" : "+"}</b>
                   </button>
-                  {isOpen && (
-                    <ul className="filter-list">
-                      {group.items
-                        .filter((item) =>
-                          item
-                            .toLowerCase()
-                            .includes(filterOptionQuery.toLowerCase()),
-                        )
-                        .map((item) => {
-                          const isCategoryGroup = group.name === "Categorías";
-                          const isSelected =
-                            selectedBrand === item || selectedCategory === item;
-                          const itemCount = products.filter((product) =>
-                            isCategoryGroup
-                              ? product.category
-                                  .toLowerCase()
-                                  .includes(item.toLowerCase()) ||
-                                product.name
-                                  .toLowerCase()
-                                  .includes(item.toLowerCase())
-                              : product.brand.toLowerCase() ===
-                                item.toLowerCase(),
-                          ).length;
-                          return (
-                            <li key={`${group.name}-${item}`}>
-                              <a
-                                className={isSelected ? "selected" : ""}
-                                href={`/productos?${isCategoryGroup ? "categoria" : "marca"}=${encodeURIComponent(item)}`}
-                                aria-current={isSelected ? "true" : undefined}
-                                onClick={(event) => {
-                                  event.preventDefault();
-                                  if (isCategoryGroup)
-                                    setSelectedCategory(isSelected ? "" : item);
-                                  else setSelectedBrand(isSelected ? "" : item);
-                                }}
-                              >
-                                <span>{item}</span>
-                                <small>({itemCount})</small>
-                              </a>
-                            </li>
-                          );
-                        })}
+                  {isOpen && visibleItems.length > 0 && (
+                    <ul className="filter-sublist">
+                      {visibleItems.map((item) => (
+                        <li key={`${group.brand}-${item}`}>
+                          <a
+                            href={`/productos?marca=${encodeURIComponent(group.brand)}`}
+                            onClick={() => {
+                              setSelectedBrand(group.brand);
+                              setSelectedCategory("");
+                            }}
+                          >
+                            {item}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </section>
@@ -477,7 +514,7 @@ function ProductosContent() {
                   aria-label="Buscar por nombre o código"
                 />
               </div>
-              <label className="catalog-brand-select">
+              <label className={`catalog-brand-select${selectedBrandAsset ? " has-selected-brand" : ""}`}>
                 <span className="sr-only">Buscar por marca</span>
                 <select
                   value={selectedBrand}
@@ -489,30 +526,27 @@ function ProductosContent() {
                     <option key={brand} value={brand}>{brand}</option>
                   ))}
                 </select>
+                {selectedBrandAsset && (
+                  <img
+                    className="catalog-selected-brand-logo"
+                    src={selectedBrandAsset.src}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                )}
               </label>
               <div className="catalog-tools">
                 <span>{filtered.length} productos</span>
-                <button
-                  type="button"
-                  className="price-list-download"
-                  onClick={() => setPriceModalOpen(true)}
-                >
-                  <ArrowDownToLine size={17} aria-hidden="true" />
-                  <span>Descargar lista de precios</span>
-                  <span className="excel-brand-icon" aria-hidden="true">
-                    XLS
-                  </span>
-                </button>
               </div>
             </div>
           </div>
           <div className="catalog-columns">
             <span>Producto</span>
-            {isLoggedIn ? (
+            {canSeePricing ? (
               <>
                 <span>Valor unitario</span>
-  <span>Cant x bulto</span>
-  <span>Cantidad</span>
+                <span>Cant x bulto</span>
+                <span>Cantidad</span>
                 <span>Total ítem</span>
               </>
             ) : (
@@ -529,10 +563,15 @@ function ProductosContent() {
               </p>
             ) : (
               filtered.map((product) => {
+                const isOutOfStock =
+                  product.availability === "out_of_stock";
                 const quantity =
                   items.find((item) => item.id === product.id)?.quantity || 0;
                 return (
-                  <article className="wholesale-product" key={product.id}>
+                  <article
+                    className={`wholesale-product${canSeePricing && isOutOfStock ? " is-out-of-stock" : ""}`}
+                    key={product.id}
+                  >
                     <a
                       href="/productos/nutrilon-pro-futura-1"
                       className="wholesale-product-image"
@@ -554,20 +593,22 @@ function ProductosContent() {
                         Código: <strong>{product.code}</strong>
                       </p>
                     </div>
-                    <div
-                      className={
-                        product.originalPrice
-                          ? "unit-price has-promo"
-                          : "unit-price"
-                      }
-                    >
-                      {product.originalPrice && (
-                        <del>{money(product.originalPrice)}</del>
-                      )}
-                      {money(product.price)}
-                      <small>+ IVA</small>
-                    </div>
-                    {isLoggedIn && (
+                    {canSeePricing && (
+                      <div
+                        className={
+                          product.originalPrice
+                            ? "unit-price has-promo"
+                            : "unit-price"
+                        }
+                      >
+                        {product.originalPrice && (
+                          <del>{money(product.originalPrice)}</del>
+                        )}
+                        {money(product.price)}
+                        <small>+ IVA</small>
+                      </div>
+                    )}
+                    {canSeePricing && !isOutOfStock && (
                       <div className="product-pack-column">
                         <span
                           className="product-pack-value"
@@ -577,7 +618,7 @@ function ProductosContent() {
                         </span>
                       </div>
                     )}
-                    {isLoggedIn && (
+                    {canSeePricing && !isOutOfStock && (
                       <div className="product-quantity-column">
                         <div className="quantity-stepper">
                           <button
@@ -653,12 +694,12 @@ function ProductosContent() {
                         )}
                       </div>
                     )}
-                    {isLoggedIn && (
+                    {canSeePricing && !isOutOfStock && (
                       <div className="item-total">
                         <strong>{money(product.price * quantity)}</strong>
                       </div>
                     )}
-                    {!isLoggedIn && (
+                    {!canSeePricing && (
                       <div className="product-login-column">
                         <a
                           className="add-product-button product-login-link"
@@ -668,6 +709,11 @@ function ProductosContent() {
                         </a>
                       </div>
                     )}
+                    {canSeePricing && isOutOfStock && (
+                      <div className="out-of-stock-row-status" role="status">
+                        <span className="out-of-stock-badge">AGOTADO</span>
+                      </div>
+                    )}
                   </article>
                 );
               })
@@ -675,8 +721,110 @@ function ProductosContent() {
           </section>
         </div>
       </section>
+      <section className="catalog-novelties" aria-labelledby="novelties-title">
+        <div className="catalog-novelties-head">
+          <div>
+            <span className="eyebrow">LO MÁS VENDIDO</span>
+            {selectedCategory && (
+              <small className="novelty-context">{selectedCategory}</small>
+            )}
+          </div>
+          <div className="novelty-controls">
+            <button
+              type="button"
+              onClick={() => setNoveltyIndex(Math.max(0, noveltyIndex - 1))}
+              disabled={noveltyIndex === 0}
+              aria-label="Ingreso anterior"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                setNoveltyIndex(Math.min(incomingMaxIndex, noveltyIndex + 1))
+              }
+              disabled={noveltyIndex >= incomingMaxIndex}
+              aria-label="Ingreso siguiente"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+        <div className="novelty-carousel">
+          <div
+            className="novelty-track"
+            style={{
+              transform: `translateX(calc(-${noveltyIndex} * (25% + 12px))`,
+            }}
+          >
+            {incomingProducts.map((product) => {
+              const isOutOfStock =
+                product.availability === "out_of_stock";
+              return (
+                <article className="novelty-card" key={product.id}>
+                  <div className="novelty-image">
+                    {(!isOutOfStock || canSeePricing) && (
+                      <span className={isOutOfStock ? "is-out-of-stock" : undefined}>
+                        {isOutOfStock ? "AGOTADO" : "NUEVO"}
+                      </span>
+                    )}
+                    <a
+                      className="novelty-product-link"
+                      href="/productos/nutrilon-pro-futura-1"
+                      aria-label={`Ver ${product.name}`}
+                    >
+                      <img src="/hero-nutrilon-1.jpg" alt={product.name} />
+                    </a>
+                  </div>
+                  <div className="novelty-card-body">
+                    <h2 className="novelty-product-title">
+                      <a href="/productos/nutrilon-pro-futura-1">
+                        {product.name}
+                      </a>
+                    </h2>
+                    <small className="novelty-product-code">
+                      Código: {product.code}
+                    </small>
+                    {!isOutOfStock && product.packItems && (
+                      <span className="pack-quantity">
+                        Pack de {product.packItems} unidades
+                      </span>
+                    )}
+                    {isOutOfStock && canSeePricing ? (
+                      <>
+                        <strong className="novelty-out-of-stock-price">
+                          {money(product.price)} <small>+ IVA</small>
+                        </strong>
+                        <span className="novelty-out-of-stock-note" role="status">
+                          No disponible para agregar
+                        </span>
+                      </>
+                    ) : (
+                      <button
+                        className="novelty-cart-button"
+                        type="button"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          if (!canSeePricing) {
+                            window.location.href = "/iniciar-sesion";
+                            return;
+                          }
+                          handleAddToCart(product);
+                        }}
+                      >
+                        <ShoppingCart size={16} aria-hidden="true" />
+                        {canSeePricing ? "Agregar al carrito" : "Iniciar sesión"}
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
       <SiteFooter showContact={false} />
-      {priceModalOpen && (
+      {priceModalOpen && canSeePricing && (
         <div
           className="modal-backdrop"
           role="presentation"
@@ -712,7 +860,7 @@ function ProductosContent() {
                 />{" "}
                 Todas las marcas
               </label>
-              {brands.map((brand) => (
+              {priceListBrands.map((brand) => (
                 <label key={brand}>
                   <input
                     type="checkbox"
