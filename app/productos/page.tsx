@@ -73,6 +73,14 @@ const products = [
     code: "AA NAN 1 TARRO",
     price: 29500,
   },
+  {
+    id: "nan-2",
+    category: "Leches Infantiles",
+    brand: "NAN",
+    name: "NAN Expert Pro 2 Fórmula infantil",
+    code: "AA NAN 2 TARRO",
+    price: 29500,
+  },
 ];
 const money = (value: number) => `$${value.toLocaleString("es-AR")}`;
 type FilterGroup = {
