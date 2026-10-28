@@ -685,9 +685,9 @@ footer { max-width:1192px; margin:auto; padding:54px 42px 30px; display:grid; gr
 .wholesale-sidebar .filter-group-heading.selected { color:#0b4ba2; background:#eff7fc; }
 .wholesale-sidebar .filter-group-heading.selected .brand-mark { color:#fff; background:#0b4ba2; }
 .wholesale-sidebar .filter-group-heading.selected small { color:#0b4ba2; background:#dceeff; }
-.wholesale-sidebar .filter-sublist { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0 10px 10px 52px; list-style:none; }
+.wholesale-sidebar .filter-sublist { display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0 10px 10px; list-style:none; }
 .wholesale-sidebar .filter-sublist li { width:auto; margin:0; }
-.wholesale-sidebar .filter-sublist a { display:inline-flex; align-items:center; min-height:28px; padding:5px 9px; border:1px solid #e0ecee; border-radius:999px; color:#54707c; background:#f8fbfb; font-size:10px; line-height:1.2; text-decoration:none; transition:background .18s ease,border-color .18s ease,color .18s ease; }
+.wholesale-sidebar .filter-sublist a { display:inline-flex; align-items:center; min-height:28px; padding:5px 9px; border:1px solid #e0ecee; border-radius:999px; color:#54707c; background:#f8fbfb; font-size:12px; line-height:1.2; text-decoration:none; transition:background .18s ease,border-color .18s ease,color .18s ease; }
 .wholesale-sidebar .filter-sublist a:hover { border-color:#9bcfd6; color:#0b4ba2; background:#eff8fb; }
 .brand-filter-empty { margin:8px 0 2px; padding:12px; border-radius:10px; color:#6b858e; background:#f4f8f8; font-size:11px; line-height:1.4; }
 .mobile-brand-filter-toggle { display:none; }
@@ -1342,6 +1342,84 @@ body:has(.checkout-page) .floating-cart-button { display:none; }
 
 .checkout-page .checkout-layout { margin-bottom:32px; }
 .brand-category-filters > .all-category-filter-mobile { display:none; }
+
+/* Listado del buscador: imagen y descripción, con cantidad y subtotal debajo. */
+@media (max-width:760px) {
+  .catalog-shell .catalog-product-list > .wholesale-product {
+    display:grid;
+    grid-template-columns:112px minmax(0,1fr);
+    grid-template-rows:auto auto auto;
+    align-items:start;
+    gap:8px 12px;
+    padding:12px;
+  }
+  .catalog-shell .catalog-product-list .wholesale-product-image {
+    grid-column:1;
+    grid-row:1 / span 2;
+    width:100%;
+    height:112px;
+    min-height:0;
+    margin:0;
+  }
+  .catalog-shell .catalog-product-list .wholesale-product-info {
+    grid-column:2;
+    grid-row:1;
+  }
+  .catalog-shell .catalog-product-list .wholesale-product-info h3 a {
+    display:block;
+    overflow:visible;
+    -webkit-line-clamp:unset;
+  }
+  .catalog-shell .catalog-product-list .product-code-line { display:block; }
+  .catalog-shell.is-logged-in .catalog-product-list .price-meta-row {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    grid-column:2;
+    grid-row:2;
+    gap:6px;
+    margin:0;
+  }
+  .catalog-shell .catalog-product-list .unit-price {
+    margin:0;
+    padding:0;
+    border:0;
+  }
+  .catalog-shell.is-logged-in .catalog-product-list .product-quantity-column {
+    grid-column:1;
+    grid-row:3;
+    width:100%;
+    min-width:0;
+    margin:8px 0 0;
+    align-items:stretch;
+  }
+  .catalog-shell.is-logged-in .catalog-product-list .quantity-stepper {
+    justify-content:space-between;
+    width:100%;
+    height:44px;
+  }
+  .catalog-shell.is-logged-in .catalog-product-list .quantity-stepper button {
+    width:32px;
+    height:44px;
+  }
+  .catalog-shell.is-logged-in .catalog-product-list .item-total {
+    grid-column:2;
+    grid-row:3;
+    align-self:start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    min-height:44px;
+    width:100%;
+    margin:8px 0 0;
+    padding:0;
+    border:0;
+  }
+  .catalog-shell .catalog-product-list .item-total::before { content:"Subtotal"; }
+  .catalog-shell .catalog-product-list .product-login-column {
+    grid-column:1 / -1;
+    grid-row:3;
+  }
+}
 
 @media (max-width:680px) {
   .checkout-page .pickup-choice .pickup-service-option-express { width:100%; box-sizing:border-box; grid-template-columns:18px minmax(0,1fr); align-items:start; }
