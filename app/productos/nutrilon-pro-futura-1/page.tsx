@@ -63,7 +63,7 @@ export default function ProductDetailPage() {
       <PromoTopbar />
       <header className="site-header">
         <div className="header-inner">
-          <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+          <button className="mobile-menu" aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
           <a className="brand" href="#inicio" aria-label="Grupo Baby Store inicio">
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" />
           </a>
@@ -73,6 +73,7 @@ export default function ProductDetailPage() {
             <a href="/nosotros">Nosotros</a>
             <a href="/como-comprar">Cómo comprar</a>
             <a href="/contacto">Contacto</a>
+            <AccountMenu variant="mobile" />
           </nav>
           <div className="header-actions">
             <AccountMenu />
@@ -188,7 +189,7 @@ export default function ProductDetailPage() {
 
       <a className="floating-cart-button product-floating-cart" href="/checkout" aria-label={`Abrir carrito con ${count} productos`}><ShoppingCart size={20} /><span>Carrito</span>{count > 0 && <b>{count}</b>}</a>
 
-      <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><div className="footer-legal">© 2025 Grupo Baby Store<br />Distribuidor oficial</div></footer>
+      <footer><div className="footer-brand"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /><p>El mayorista más completo de productos para bebés.</p></div><div className="footer-links"><a href="/nosotros">Nosotros</a><a href="/productos">Productos</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a></div><div className="footer-legal">© {new Date().getFullYear()} Grupo Baby Store<br />Distribuidor oficial</div></footer>
     </main>
   )
 }

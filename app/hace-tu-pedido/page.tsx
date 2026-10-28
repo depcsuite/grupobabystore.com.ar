@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Baby, Droplets, Gamepad2, Milk, ShoppingBag } from 'lucide-react'
+import { Baby, Droplets, Gamepad2, Menu, Milk, ShoppingBag, X } from 'lucide-react'
 import { AccountMenu } from '@/components/account-menu'
 import { PromoTopbar } from '@/components/promo-topbar'
 import { categories, featuredBrands } from '@/app/page'
@@ -20,17 +20,20 @@ const getBrandAsset = (name: string) => featuredBrands.find((brand) => {
 
 export default function HaceTuPedidoPage() {
   const [activeCategory, setActiveCategory] = useState('Todas')
+  const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <main className="site-shell order-page">
       <PromoTopbar />
       <header className="site-header">
         <div className="header-inner">
+          <button className="mobile-menu" type="button" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} aria-controls="site-navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X /> : <Menu />}</button>
           <a className="brand" href="/" aria-label="Grupo Baby Store inicio">
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" />
           </a>
-          <nav className="main-nav" aria-label="Navegación principal">
+          <nav id="site-navigation" className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
             <a href="/">Inicio</a><a href="/productos">Productos</a><a href="/nosotros">Nosotros</a><a href="/como-comprar">Cómo comprar</a><a href="/contacto">Contacto</a>
+            <AccountMenu variant="mobile" />
           </nav>
           <div className="header-actions"><AccountMenu /></div>
         </div>
@@ -48,7 +51,7 @@ export default function HaceTuPedidoPage() {
             type="button"
             role="tab"
             aria-selected={activeCategory === 'Todas'}
-            className={activeCategory === 'Todas' ? 'is-active' : ''}
+            className={`all-category-filter all-category-filter-desktop${activeCategory === 'Todas' ? ' is-active' : ''}`}
             onClick={() => setActiveCategory('Todas')}
           >
             <ShoppingBag aria-hidden="true" />
@@ -67,6 +70,16 @@ export default function HaceTuPedidoPage() {
               {category.label}
             </button>
           ))}
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeCategory === 'Todas'}
+            className={`all-category-filter all-category-filter-mobile${activeCategory === 'Todas' ? ' is-active' : ''}`}
+            onClick={() => setActiveCategory('Todas')}
+          >
+            <ShoppingBag aria-hidden="true" />
+            Todas
+          </button>
         </div>
         <div className="brand-category-list" aria-label="Marcas agrupadas por categoría">
           {categories

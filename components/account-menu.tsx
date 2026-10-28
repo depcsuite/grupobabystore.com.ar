@@ -12,7 +12,7 @@ const accountLinks = [
   { href: '/cuenta/cuenta-corriente', label: 'Cuenta corriente' },
 ]
 
-export function AccountMenu({ active = false }: { active?: boolean }) {
+export function AccountMenu({ active = false, variant = 'header' }: { active?: boolean; variant?: 'header' | 'mobile' }) {
   const { isLoggedIn, logout } = useAuthSession()
   const router = useRouter()
   const [open, setOpen] = useState(false)
@@ -42,6 +42,22 @@ export function AccountMenu({ active = false }: { active?: boolean }) {
     setOpen(false)
     router.replace('/')
     router.refresh()
+  }
+
+  if (variant === 'mobile') {
+    return (
+      <div className="mobile-menu-actions">
+        <Link className="mobile-menu-action mobile-menu-order" href="/hace-tu-pedido">
+          <ShoppingBag size={16} aria-hidden="true" /> Hacé tu pedido
+        </Link>
+        <Link
+          className={`mobile-menu-action mobile-menu-account${active ? ' active' : ''}`}
+          href={isLoggedIn ? '/cuenta' : '/iniciar-sesion'}
+        >
+          {isLoggedIn ? 'Mi cuenta' : 'Ingresar'}
+        </Link>
+      </div>
+    )
   }
 
   return (

@@ -21,7 +21,7 @@ useEffect(() => { setPromoIndex(0); const timer = window.setInterval(() => setPr
       <div className="promo-bar" role="region" aria-label="Promociones de Grupo Baby Store"><button className="promo-control" type="button" aria-label="Frase anterior" onClick={() => setPromoIndex(current => (current - 1 + visiblePromoMessages.length) % visiblePromoMessages.length)}><ChevronLeft size={18} /></button><a className="promo-content" href="/como-comprar">{isLoggedIn && promoIndex === 0 ? <img className="promo-logo-express" src="/logo-express.svg" alt="Express" /> : <Sparkles className="promo-generic-icon" size={19} aria-hidden="true" />} <span className="promo-message">{visiblePromoMessages[promoIndex]}</span><ArrowRight size={14} /></a><button className="promo-control" type="button" aria-label="Frase siguiente" onClick={() => setPromoIndex(current => (current + 1) % visiblePromoMessages.length)}><ChevronRight size={18} /></button></div>
       <header className="site-header">
         <div className="header-inner">
-          <button className="mobile-menu" aria-label="Abrir menú" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+          <button className="mobile-menu" aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
           <a className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store distribuidor oficial" /></a>
           <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Navegación principal">
             <a href="/">Inicio</a>
@@ -29,6 +29,7 @@ useEffect(() => { setPromoIndex(0); const timer = window.setInterval(() => setPr
             <a className="active" href="/nosotros">Nosotros</a>
             <a href="/como-comprar">Cómo comprar</a>
             <a href="/contacto">Contacto</a>
+            <AccountMenu variant="mobile" />
           </nav><div className="header-actions"><AccountMenu /></div>
         </div>
       </header>

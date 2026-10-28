@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowDownToLine, ArrowRight, Check, ChevronDown, Copy, FileText, Pencil, Plus, RotateCcw, Wallet } from "lucide-react"
+import { ArrowDownToLine, ArrowRight, Check, ChevronDown, Copy, FileText, Menu, Pencil, Plus, RotateCcw, Wallet, X } from "lucide-react"
 import { SiteFooter } from "@/components/site-footer"
 import { useAuthSession } from "@/components/auth-session-sync"
 import { AccountMenu } from "@/components/account-menu"
@@ -20,6 +20,7 @@ export type AccountSection = "profile" | "orders" | "account"
 
 export default function CuentaPage({ initialSection = "orders" }: { initialSection?: AccountSection }) {
   const { logout } = useAuthSession()
+  const [menuOpen, setMenuOpen] = useState(false)
   const [section, setSection] = useState<AccountSection>(initialSection)
   const [openOrder, setOpenOrder] = useState<string | null>(orders[0].id)
   const [editingAddress, setEditingAddress] = useState<string | null>(null)
@@ -29,7 +30,7 @@ export default function CuentaPage({ initialSection = "orders" }: { initialSecti
 
   return <main className="account-page">
     <PromoTopbar />
-    <header className="site-header"><div className="header-inner"><Link className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /></Link><nav className="main-nav"><Link href="/">Inicio</Link><Link href="/productos">Productos</Link><Link href="/nosotros">Nosotros</Link><Link href="/como-comprar">Cómo comprar</Link><Link href="/contacto">Contacto</Link></nav><div className="header-actions"><AccountMenu active /></div></div></header>
+    <header className="site-header"><div className="header-inner"><button className="mobile-menu" type="button" aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} aria-controls="site-navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X /> : <Menu />}</button><Link className="brand" href="/" aria-label="Grupo Baby Store inicio"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg" alt="Grupo Baby Store" /></Link><nav id="site-navigation" className={`main-nav ${menuOpen ? "is-open" : ""}`} aria-label="Navegación principal"><Link href="/">Inicio</Link><Link href="/productos">Productos</Link><Link href="/nosotros">Nosotros</Link><Link href="/como-comprar">Cómo comprar</Link><Link href="/contacto">Contacto</Link><AccountMenu variant="mobile" active /></nav><div className="header-actions"><AccountMenu active /></div></div></header>
     <div className="account-wrap">
       <div className="account-intro"><div><span className="eyebrow">CUENTA MAYORISTA</span><h1>Hola, <span>María.</span></h1><p>Gestioná tus pedidos y consultá el estado de tu cuenta corriente.</p></div><Link className="primary-button" href="/productos">Nuevo pedido <ArrowRight size={16} /></Link></div>
       <div className="account-layout"><aside className="account-menu"><Link className={section === "profile" ? "selected" : ""} href="/cuenta/datos-personales"><FileText size={18} /><span>Datos personales<small>Razón social y contacto</small></span><ArrowRight size={15} /></Link><Link className={section === "orders" ? "selected" : ""} href="/cuenta/mis-pedidos"><FileText size={18} /><span>Mis pedidos<small>Historial y estados</small></span><ArrowRight size={15} /></Link><Link className={section === "account" ? "selected" : ""} href="/cuenta/cuenta-corriente"><Wallet size={18} /><span>Cuenta corriente<small>Saldo y movimientos</small></span><ArrowRight size={15} /></Link><div className="account-help"><strong>¿Necesitás ayuda?</strong><p>Consultá con tu asesor comercial.</p><Link href="/contacto">Contactar <ArrowRight size={13} /></Link></div><button className="account-logout" type="button" onClick={() => { logout(); window.location.href = '/' }}>Cerrar sesión</button></aside>

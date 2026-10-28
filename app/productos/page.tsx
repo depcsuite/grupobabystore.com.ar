@@ -6,11 +6,13 @@ import {
   ArrowDownToLine,
   ArrowRight,
   ChevronLeft,
+  Menu,
   Minus,
   Plus,
   Search,
   ShoppingCart,
   Trash2,
+  X,
 } from "lucide-react";
 import { useCart } from "@/components/cart-context";
 import { useAuthSession } from "@/components/auth-session-sync";
@@ -186,6 +188,8 @@ function ProductosContent() {
   const { items, addItem, updateQuantity, removeItem, subtotal, count } =
     useCart();
   const [query, setQuery] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileBrandsOpen, setMobileBrandsOpen] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filterOptionQuery, setFilterOptionQuery] = useState("");
@@ -193,9 +197,7 @@ function ProductosContent() {
     setSelectedBrand(searchParams.get("marca") ?? "");
     setSelectedCategory(searchParams.get("categoria") ?? "");
   }, [searchParams]);
-  const [openFilterGroups, setOpenFilterGroups] = useState<string[]>([
-    filterGroups[0].name,
-  ]);
+  const [openFilterGroups, setOpenFilterGroups] = useState<string[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [cartPulse, setCartPulse] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -222,6 +224,16 @@ function ProductosContent() {
   const [noveltyIndex, setNoveltyIndex] = useState(0);
   const [quantityErrors, setQuantityErrors] = useState<Record<string, string>>({});
   const priceListBrands = filterGroups.map((group) => group.brand);
+  const availableBrandGroups = filterGroups;
+  const normalizedBrandQuery = filterOptionQuery.trim().toLowerCase();
+  const visibleBrandGroups = availableBrandGroups.filter(
+    (group) =>
+      !normalizedBrandQuery ||
+      group.brand.toLowerCase().includes(normalizedBrandQuery) ||
+      group.items.some((item) =>
+        item.toLowerCase().includes(normalizedBrandQuery),
+      ),
+  );
   const handleAddToCart = (product: (typeof products)[number]) => {
     if (product.availability === "out_of_stock") return;
     addItem(product);
@@ -305,13 +317,14 @@ function ProductosContent() {
       <PromoTopbar />
       <header className="site-header catalog-site-header">
         <div className="header-inner">
+          <button className="mobile-menu" type="button" aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"} aria-expanded={menuOpen} aria-controls="site-navigation" onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X /> : <Menu />}</button>
           <a className="brand" href="/" aria-label="Grupo Baby Store inicio">
             <img
               src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-babystore-klfdfcTpVMM0KnSFJTMWDSKE9qJY1k.jpg"
               alt="Grupo Baby Store"
             />
           </a>
-          <nav className="main-nav" aria-label="Navegación principal">
+          <nav id="site-navigation" className={`main-nav ${menuOpen ? "is-open" : ""}`} aria-label="Navegación principal">
             <a href="/">Inicio</a>
             <a className="active" href="/productos">
               Productos
@@ -319,6 +332,7 @@ function ProductosContent() {
             <a href="/nosotros">Nosotros</a>
             <a href="/como-comprar">Cómo comprar</a>
             <a href="/contacto">Contacto</a>
+            <AccountMenu variant="mobile" />
           </nav>
           <div className="header-actions">
             <AccountMenu />
@@ -416,91 +430,136 @@ function ProductosContent() {
               </div>
             </a>
           )}
-          <aside className="wholesale-sidebar">
-          <div className="eyebrow">CATÁLOGO MAYORISTA</div>
-          <div className="catalog-filter-panel">
-            <label className="quick-filter">
-              <Search size={14} />
-              <input
-                value={filterOptionQuery}
-                onChange={(event) => setFilterOptionQuery(event.target.value)}
-                placeholder="Buscar en filtros"
-                aria-label="Buscar entre las opciones de filtros"
-              />
-              {filterOptionQuery && (
+          <button
+            className="mobile-brand-filter-toggle"
+            type="button"
+            aria-controls="brand-filter-panel"
+            aria-expanded={mobileBrandsOpen}
+            onClick={() => setMobileBrandsOpen((open) => !open)}
+          >
+            <span className="mobile-brand-filter-icon" aria-hidden="true">
+              <Search size={16} />
+            </span>
+            <span className="mobile-brand-filter-copy">
+              <strong>Filtrar por marca</strong>
+              <small>{selectedBrand || "Todas las marcas"}</small>
+            </span>
+            <span className="mobile-brand-filter-chevron" aria-hidden="true">
+              {mobileBrandsOpen ? "−" : "+"}
+            </span>
+          </button>
+          <aside
+            id="brand-filter-panel"
+            className={`wholesale-sidebar${mobileBrandsOpen ? " is-mobile-open" : ""}`}
+          >
+            <div className="wholesale-sidebar-heading">
+              <div>
+                <span className="eyebrow">FILTRÁ POR MARCA</span>
+                <h2>Marcas</h2>
+              </div>
+            </div>
+            <div className="catalog-filter-panel">
+              <label className="quick-filter">
+                <Search size={14} aria-hidden="true" />
+                <input
+                  value={filterOptionQuery}
+                  onChange={(event) => setFilterOptionQuery(event.target.value)}
+                  placeholder="Buscar marca o etapa"
+                  aria-label="Buscar entre marcas y categorías"
+                />
+                {filterOptionQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setFilterOptionQuery("")}
+                    aria-label="Limpiar búsqueda de filtros"
+                  >
+                    ×
+                  </button>
+                )}
+              </label>
+              {(selectedBrand || selectedCategory) && (
                 <button
+                  className="filter-clear"
                   type="button"
-                  onClick={() => setFilterOptionQuery("")}
-                  aria-label="Limpiar búsqueda de filtros"
+                  onClick={() => {
+                    setSelectedBrand("");
+                    setSelectedCategory("");
+                  }}
                 >
-                  ×
+                  Limpiar filtros
                 </button>
               )}
-            </label>
-            {(selectedBrand || selectedCategory) && (
-              <button
-                className="filter-clear"
-                type="button"
-                onClick={() => {
-                  setSelectedBrand("");
-                  setSelectedCategory("");
-                }}
-              >
-                Limpiar filtros
-              </button>
-            )}
-            {filterGroups.map((group) => {
-              const isOpen = openFilterGroups.includes(group.name);
-              const isSelected = selectedBrand === group.brand;
-              const brandCount = products.filter(
-                (product) => product.brand.toLowerCase() === group.brand.toLowerCase(),
-              ).length;
-              const visibleItems = group.items.filter((item) =>
-                item.toLowerCase().includes(filterOptionQuery.toLowerCase()),
-              );
-              return (
-                <section className="filter-group" key={group.name}>
-                  <button
-                    className={`filter-group-heading ${isSelected ? "selected" : ""}`}
-                    type="button"
-                    aria-expanded={isOpen}
-                    aria-pressed={isSelected}
-                    onClick={() => {
-                      setSelectedBrand(isSelected ? "" : group.brand);
-                      setSelectedCategory("");
-                      setOpenFilterGroups(
-                        isOpen
-                          ? openFilterGroups.filter((name) => name !== group.name)
-                          : [...openFilterGroups, group.name],
+              {visibleBrandGroups.map((group) => {
+                const isOpen = openFilterGroups.includes(group.name);
+                const isSelected = selectedBrand === group.brand;
+                const brandAsset = getBrandAsset(
+                  group.brand === "Bright Starts" ? "Bright Stars" : group.brand,
+                );
+                const brandMatchesQuery = group.brand
+                  .toLowerCase()
+                  .includes(normalizedBrandQuery);
+                const visibleItems =
+                  !normalizedBrandQuery || brandMatchesQuery
+                    ? group.items
+                    : group.items.filter((item) =>
+                        item.toLowerCase().includes(normalizedBrandQuery),
                       );
-                    }}
-                  >
-                    <span>{group.brand}</span>
-                    <small>{brandCount}</small>
-                    <b>{isOpen ? "−" : "+"}</b>
-                  </button>
-                  {isOpen && visibleItems.length > 0 && (
-                    <ul className="filter-sublist">
-                      {visibleItems.map((item) => (
-                        <li key={`${group.brand}-${item}`}>
-                          <a
-                            href={`/productos?marca=${encodeURIComponent(group.brand)}`}
-                            onClick={() => {
-                              setSelectedBrand(group.brand);
-                              setSelectedCategory("");
-                            }}
-                          >
-                            {item}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </section>
-              );
-            })}
-          </div>
-        </aside>
+                return (
+                  <section className="filter-group" key={group.name}>
+                    <button
+                      className={`filter-group-heading ${isSelected ? "selected" : ""}`}
+                      type="button"
+                      aria-label={`Filtrar por ${group.brand}`}
+                      aria-expanded={isOpen}
+                      aria-pressed={isSelected}
+                      onClick={() => {
+                        setSelectedCategory("");
+                        setOpenFilterGroups(
+                          isOpen
+                            ? openFilterGroups.filter((name) => name !== group.name)
+                            : [...openFilterGroups, group.name],
+                        );
+                      }}
+                    >
+                      <span className="brand-filter-logo" aria-hidden="true">
+                        {brandAsset ? (
+                          <img src={brandAsset.src} alt="" />
+                        ) : (
+                          <span className="brand-mark">
+                            {group.brand.slice(0, 1).toUpperCase()}
+                          </span>
+                        )}
+                      </span>
+                      <b aria-hidden="true">{isOpen ? "−" : "+"}</b>
+                    </button>
+                    {isOpen && visibleItems.length > 0 && (
+                      <ul className="filter-sublist">
+                        {visibleItems.map((item) => (
+                          <li key={`${group.brand}-${item}`}>
+                            <a
+                              href={`/productos?marca=${encodeURIComponent(group.brand)}`}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setSelectedBrand(group.brand);
+                                setSelectedCategory("");
+                              }}
+                            >
+                              {item}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </section>
+                );
+              })}
+              {visibleBrandGroups.length === 0 && (
+                <p className="brand-filter-empty">
+                  No encontramos marcas para esa búsqueda.
+                </p>
+              )}
+            </div>
+          </aside>
         </div>
         <div className="wholesale-results">
           <div className="catalog-toolbar">
@@ -594,28 +653,35 @@ function ProductosContent() {
                       </p>
                     </div>
                     {canSeePricing && (
-                      <div
-                        className={
-                          product.originalPrice
-                            ? "unit-price has-promo"
-                            : "unit-price"
-                        }
-                      >
-                        {product.originalPrice && (
-                          <del>{money(product.originalPrice)}</del>
-                        )}
-                        {money(product.price)}
-                        <small>+ IVA</small>
-                      </div>
-                    )}
-                    {canSeePricing && !isOutOfStock && (
-                      <div className="product-pack-column">
-                        <span
-                          className="product-pack-value"
-                          aria-label={`Cantidad por bulto de ${product.name}`}
+                      <div className="price-meta-row">
+                        <div
+                          className={
+                            product.originalPrice
+                              ? "unit-price has-promo"
+                              : "unit-price"
+                          }
                         >
-                          {product.packItems ?? 1}
-                        </span>
+                          {product.originalPrice && (
+                            <del>{money(product.originalPrice)}</del>
+                          )}
+                          {money(product.price)}
+                          <small>+ IVA</small>
+                        </div>
+                        {!isOutOfStock && (
+                          <div className="product-pack-column">
+                            <span
+                              className="product-pack-value"
+                              aria-label={`Cantidad por bulto de ${product.name}`}
+                            >
+                              {product.packItems ?? 1}
+                            </span>
+                          </div>
+                        )}
+                        {isOutOfStock && (
+                          <div className="out-of-stock-row-status" role="status">
+                            <span className="out-of-stock-badge">AGOTADO</span>
+                          </div>
+                        )}
                       </div>
                     )}
                     {canSeePricing && !isOutOfStock && (
@@ -709,11 +775,6 @@ function ProductosContent() {
                         </a>
                       </div>
                     )}
-                    {canSeePricing && isOutOfStock && (
-                      <div className="out-of-stock-row-status" role="status">
-                        <span className="out-of-stock-badge">AGOTADO</span>
-                      </div>
-                    )}
                   </article>
                 );
               })
@@ -801,8 +862,9 @@ function ProductosContent() {
                       </>
                     ) : (
                       <button
-                        className="novelty-cart-button"
+                        className={`novelty-cart-button${canSeePricing ? "" : " is-login-button"}`}
                         type="button"
+                        aria-label={canSeePricing ? "Agregar al carrito" : "Iniciar sesión"}
                         onClick={(event) => {
                           event.stopPropagation();
                           if (!canSeePricing) {
@@ -813,7 +875,21 @@ function ProductosContent() {
                         }}
                       >
                         <ShoppingCart size={16} aria-hidden="true" />
-                        {canSeePricing ? "Agregar al carrito" : "Iniciar sesión"}
+                        {canSeePricing ? (
+                          <>
+                            <span className="novelty-cart-label-full">
+                              Agregar al carrito
+                            </span>
+                            <span
+                              className="novelty-cart-label-short"
+                              aria-hidden="true"
+                            >
+                              Agregar
+                            </span>
+                          </>
+                        ) : (
+                          "Iniciar sesión"
+                        )}
                       </button>
                     )}
                   </div>
