@@ -1096,7 +1096,7 @@ footer { max-width:1192px; margin:auto; padding:54px 42px 30px; display:grid; gr
 .promo-popup-close:hover { background:#f5f9f4; transform:scale(1.06); }
 @keyframes promo-popup-fade { from { opacity:0; } to { opacity:1; } }
 @keyframes promo-popup-enter { from { opacity:0; transform:translateY(12px) scale(.98); } to { opacity:1; transform:translateY(0) scale(1); } }
-@media (max-width:600px) { .promo-popup-backdrop { padding:14px; } .promo-popup { width:min(100%,440px); border-width:3px; border-radius:12px; } .promo-popup img { max-height:calc(100dvh - 40px); } .promo-popup-close { top:6px; right:6px; width:32px; height:32px; } }
+@media (max-width:600px) { .promo-popup-backdrop { padding:14px; } .promo-popup { width:min(90%,380px); border-width:3px; border-radius:12px; } .promo-popup img { max-height:80dvh; } .promo-popup-close { top:6px; right:6px; width:32px; height:32px; } }
 
 .out-of-stock-row-status { display:flex; align-items:center; justify-content:flex-end; min-width:0; grid-column:4 / -1; }
 .catalog-shell.is-logged-in .wholesale-product.is-out-of-stock .out-of-stock-row-status { grid-column:4 / -1; }
